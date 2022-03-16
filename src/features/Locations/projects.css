@@ -1,0 +1,17 @@
+.White-block {
+  height: 400px;
+  width: 300px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  box-shadow: 2px 1px 4px #aa9e9e;
+  position: relative;
+}
+.Center-icon {
+  left: 40%;
+  position: absolute;
+  top: 40%;
+}
+.ant-breadcrumb .anticon {
+  font-size: 50px;
+}
