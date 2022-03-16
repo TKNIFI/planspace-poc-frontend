@@ -128,7 +128,6 @@ export default function Locations() {
         async () => {
           const url = await storageRef.getDownloadURL();
           if (editFormValues) {
-            console.log("ifworking");
             Location.DeleteLocation({
               formValues,
               location_image: url,
@@ -136,7 +135,6 @@ export default function Locations() {
             console.log(formValues.id);
             updateMesg();
           } else {
-            console.log("elseworking");
             await Location.CreateLocation({
               formValues,
               location_image: url,
