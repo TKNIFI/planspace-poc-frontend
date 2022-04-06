@@ -1,7 +1,7 @@
 import React from "react";
 import Dashboard from "../features/dashboard/dashboard";
 import Login from "../features/login/login";
-import Projects from "../features/Locations/Locations";
+import Locations from "../features/Locations/Locations";
 // import EditLocation from "../features/Locations/EditLocation";
 import Register from "../features/register/register";
 import Unauthorized from "../features/unauthorized/unauthorized";
@@ -9,7 +9,7 @@ import Users from "../features/users/users";
 import GuestPageLayout from "../layout/guestPageLayout";
 import LoggedInPageLayout from "../layout/loggedInPageLayout";
 import K from "../utilities/constants";
-
+import {Counter} from "../features/counter/Counter"
 // Template for a route
 // {
 //   path: '/login',
@@ -42,7 +42,7 @@ const routes = [
     {
         path: "/Locations",
         name: "Locations",
-        component: Projects,
+        component: Locations,
         authenticated: true,
         roles: [K.Roles.Admin],
         children: defaultCrudChildren,

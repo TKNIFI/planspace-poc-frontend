@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import styles from "./layout.module.scss";
 import navigations from "./navigations";
-import planLogo from "../assets/images/plan.png";
+
 
 export default function Sider() {
   const { Sider } = Layout;
@@ -20,18 +20,11 @@ export default function Sider() {
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
   };
+  console.log("navigations",navigations)
 
   return (
+    <>
     <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-      <div className={styles["logo"]}>
-        <span>
-          <img
-            style={{ width: "112px", height: "28px", borderRadius: "5px" }}
-            src={planLogo}
-            alt="logo"
-          />
-        </span>
-      </div>
       <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
         {navigations.map((navigation, i) => {
           if ((navigation.children?.length ?? 0) > 0) {
@@ -54,5 +47,6 @@ export default function Sider() {
         })}
       </Menu>
     </Sider>
+    </>
   );
 }

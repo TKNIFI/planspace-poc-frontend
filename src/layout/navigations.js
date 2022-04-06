@@ -18,8 +18,11 @@ import {
 //     children: [], // If item has children, then the path field will be ignored.
 // }
 
-const defaultChildren = (basePath) => [
-  { path: `${basePath}/companyProfile/location`, name: "Company Settings" },
+const childrenForCompanyProfile = (basePath) => [
+  {
+    path: `${basePath}/companyProfile/companySettings`,
+    name: "Company Settings",
+  },
   { path: `${basePath}/companyProfile/location`, name: "Locations" },
 ];
 
@@ -28,7 +31,7 @@ const navigations = [
     name: "Company Profile",
     icon: <InsertRowLeftOutlined />,
     roles: [K.Roles.Admin],
-    children: defaultChildren("/Locations"),
+    children: childrenForCompanyProfile("/Locations"),
   },
   {
     name: "Service Package",
