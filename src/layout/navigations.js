@@ -31,7 +31,7 @@ const navigations = [
     name: "Company Profile",
     icon: <InsertRowLeftOutlined />,
     roles: [K.Roles.Admin],
-    children: childrenForCompanyProfile("/Locations"),
+    children: childrenForCompanyProfile("/home"),
   },
   {
     name: "Service Package",

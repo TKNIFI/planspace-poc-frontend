@@ -6,17 +6,16 @@ import routes from "../routes/routes";
 import RouteWithSubRoutes from "../routes/routeWithSubRoutes";
 
 function App() {
-
+  console.log(routes)
   return (
     <div className="App">
       <Switch>
         {routes.map((route, i) => (
-          <RouteWithSubRoutes key={i} {...route} />
+            <RouteWithSubRoutes key={i} {...route} />
         ))}
       </Switch>
     </div>
   );
-  
 }
 
 export default App;

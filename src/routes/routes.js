@@ -1,4 +1,3 @@
-import React from "react";
 import Dashboard from "../features/dashboard/dashboard";
 import Login from "../features/login/login";
 import Locations from "../features/Locations/Locations";
@@ -9,7 +8,6 @@ import Users from "../features/users/users";
 import GuestPageLayout from "../layout/guestPageLayout";
 import LoggedInPageLayout from "../layout/loggedInPageLayout";
 import K from "../utilities/constants";
-import {Counter} from "../features/counter/Counter"
 // Template for a route
 // {
 //   path: '/login',
@@ -40,7 +38,7 @@ const routes = [
         layout: GuestPageLayout,
     },
     {
-        path: "/Locations",
+        path: "/home",
         name: "Locations",
         component: Locations,
         authenticated: true,
