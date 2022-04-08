@@ -19,9 +19,6 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { Button as Muibtn } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -31,9 +28,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import Location from "../../models/Locations/Location";
 import { projectStorage } from "../../utilities/storage";
-import Switch from "@mui/material/Switch";
-import Stack from "@mui/material/Stack";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import AddCompanyfrom from "../forms/AddCompanyfrom";
 const { Option } = Select;
 const { TabPane } = Tabs;
 const { Meta } = Card;
@@ -367,104 +362,7 @@ export default function Locations() {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Box
-          component="form"
-          sx={{
-            "& .MuiTextField-root": { m: 1, width: "50ch", marginTop: 3 },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField
-            id="outlined-input"
-            label="Enter the business name"
-            type="text"
-            // autoComplete="current"
-          />
-          <TextField
-            id="outlined-input"
-            label="Address line 1"
-            type="text"
-            // autoComplete="current"
-          />
-          <TextField
-            id="outlined-input"
-            label="Address line 2"
-            type="text"
-            // autoComplete="current"
-          />
-          <Box
-            sx={{
-              "& .MuiTextField-root": { width: "25ch" },
-            }}
-          >
-            <TextField
-              id="outlined-input"
-              label="City"
-              type="text"
-              // autoComplete="current"
-            />
-            <TextField
-              id="outlined-input"
-              label="State"
-              type="text"
-              // autoComplete="current"
-            />
-            <TextField
-              id="outlined-input"
-              label="Zip code"
-              type="text"
-              // autoComplete="current"
-            />
-          </Box>
-          <Box
-            sx={{
-              "& .MuiTextField-root": { width: "25ch" },
-            }}
-          >
-            <FormControlLabel
-              control={<Switch defaultChecked />}
-              label="Mailing Address Only"
-            />
-            <FormControlLabel
-              control={<Switch />}
-              label="Physical Main Location"
-            />
-            <FormControlLabel control={<Switch />} label="Virtual Location" />
-            <FormControlLabel
-              control={<Switch defaultChecked />}
-              label="Add as a venue"
-            />
-          </Box>
-          <Box
-            sx={{
-              "& .MuiTextField-root": { m: 1, width: "70ch", marginTop: 3 },
-            }}
-          >
-            <TextField
-              id="outlined-input"
-              label="Enter phone number"
-              type="text"
-              // autoComplete="current"
-            />
-            <TextField
-              id="outlined-input"
-              label="Enter email address"
-              type="text"
-              // autoComplete="current"
-            />
-          </Box>
-          <Box
-            sx={{
-              "& .MuiTextField-root": { m: 1 },
-            }}
-          >
-            <Stack spacing={2} direction="row">
-              <Muibtn variant="outlined">Cancel</Muibtn>
-              <Muibtn variant="contained">Save changes</Muibtn>
-            </Stack>
-          </Box>
-        </Box>
+        <AddCompanyfrom />
       </Dialog>
       {/* <Modal
                 title={editFormValues ? "Update Location" : "New location Name"}
