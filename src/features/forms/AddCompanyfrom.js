@@ -16,7 +16,7 @@ const Input = styled("input")({
   display: "none",
 });
 
-function AddCompanyfrom() {
+function AddCompanyfrom({ onSubmit = () => {} }) {
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -24,25 +24,33 @@ function AddCompanyfrom() {
       addressTwo: "",
       city: "",
       state: "",
-      zipcode: null,
+      zipcode: "",
       phnumber: "",
       email: "",
       imgfile: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().max(15, "Must be 15 characters or less").required("Name is required"),
+      name: Yup.string()
+        .max(15, "Must be 15 characters or less")
+        .required("Name is required"),
       addressOne: Yup.string().required("Address is required"),
       addressTwo: Yup.string().required("Address is required"),
       city: Yup.string().required("City name is required"),
       state: Yup.string().required("State name is required"),
-      zipcode: Yup.number().required("Zip code is required").positive().integer(),
-      phnumber: Yup.number().required("Phone number is required").positive().integer(),
+      zipcode: Yup.number()
+        .required("Zip code is required")
+        .positive()
+        .integer(),
+      phnumber: Yup.number()
+        .required("Phone number is required")
+        .positive()
+        .integer(),
       email: Yup.string().email("Invalid email").required("Email is required"),
       imgfile: Yup.mixed().nullable().required("Company image is required"),
     }),
     onSubmit: (values) => {
       let a = JSON.stringify(values, null, 2);
-      console.log(a);
+      onSubmit(a);
     },
   });
   return (
@@ -64,7 +72,7 @@ function AddCompanyfrom() {
             />
             {formik.touched.name && formik.errors.name ? (
               <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <div style={{ color: "red" }}>{formik.errors.name}</div>
+                <p>{formik.errors.name}</p>
               </MuiAlert>
             ) : null}
             <TextField
@@ -77,7 +85,7 @@ function AddCompanyfrom() {
             />
             {formik.touched.addressOne && formik.errors.addressOne ? (
               <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <div style={{ color: "red" }}>{formik.errors.addressOne}</div>
+                <p>{formik.errors.addressOne}</p>
               </MuiAlert>
             ) : null}
             <TextField
@@ -90,7 +98,7 @@ function AddCompanyfrom() {
             />
             {formik.touched.addressTwo && formik.errors.addressTwo ? (
               <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <div style={{ color: "red" }}>{formik.errors.addressTwo}</div>
+                <div>{formik.errors.addressTwo}</div>
               </MuiAlert>
             ) : null}
             <Box
@@ -117,10 +125,10 @@ function AddCompanyfrom() {
                 </IconButton>
               </label>
               {formik.touched.imgfile && formik.errors.imgfile ? (
-              <MuiAlert severity="error">
-                <div style={{ color: "red" }}>{formik.errors.imgfile}</div>
-              </MuiAlert>
-            ) : null}
+                <MuiAlert severity="error">
+                  <div>{formik.errors.imgfile}</div>
+                </MuiAlert>
+              ) : null}
             </Box>
           </Box>
           <Box
@@ -138,7 +146,7 @@ function AddCompanyfrom() {
             />
             {formik.touched.city && formik.errors.city ? (
               <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <div style={{ color: "red" }}>{formik.errors.city}</div>
+                <p>{formik.errors.city}</p>
               </MuiAlert>
             ) : null}
             <TextField
@@ -151,7 +159,7 @@ function AddCompanyfrom() {
             />
             {formik.touched.state && formik.errors.state ? (
               <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <div style={{ color: "red" }}>{formik.errors.state}</div>
+                <p>{formik.errors.state}</p>
               </MuiAlert>
             ) : null}
             <TextField
@@ -164,7 +172,7 @@ function AddCompanyfrom() {
             />
             {formik.touched.zipcode && formik.errors.zipcode ? (
               <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <div style={{ color: "red" }}>{formik.errors.zipcode}</div>
+                <p>{formik.errors.zipcode}</p>
               </MuiAlert>
             ) : null}
           </Box>
@@ -203,7 +211,7 @@ function AddCompanyfrom() {
             />
             {formik.touched.phnumber && formik.errors.phnumber ? (
               <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <div style={{ color: "red" }}>{formik.errors.phnumber}</div>
+                <p>{formik.errors.phnumber}</p>
               </MuiAlert>
             ) : null}
             <TextField
@@ -216,7 +224,7 @@ function AddCompanyfrom() {
             />
             {formik.touched.email && formik.errors.email ? (
               <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <div style={{ color: "red" }}>{formik.errors.email}</div>
+                <p>{formik.errors.email}</p>
               </MuiAlert>
             ) : null}
           </Box>

@@ -34,6 +34,22 @@ const Search = styled("div")(({ theme }) => ({
   },
 }));
 
+const StyledSelect = styled(Select)(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 3,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(2),
+    width: "70%",
+  },
+}));
+
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
@@ -149,7 +165,7 @@ export default function PrimarySearchAppBar() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 0 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography
@@ -176,14 +192,18 @@ export default function PrimarySearchAppBar() {
             />
           </Search>
           <FormControl sx={{ m: 1, minWidth: 350 }}>
-            <Select
+            <StyledSelect
               labelId="select"
-              sx={{backgroundColor:"lightgray", color:"black", height: "40px", display:{xs:"flex-wrap", md:"flex" }}}
+              sx={{
+                backgroundColor: "inherit",
+                color: "black",
+                height: "40px",
+                display: { xs: "flex", md: "flex" },
+              }}
               // value="2972 Westheimer Rd. Santa Ana, Illinois 85486"
               label="locations"
               // onChange={handleChange}
-            >
-            </Select>
+            />
           </FormControl>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>

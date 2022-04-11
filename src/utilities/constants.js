@@ -13,8 +13,8 @@ const K = {
       // },
 
       // Development
-      Base: "http://3.110.42.109/api/company",
-      BaseAPI: "http://3.110.42.109/api/company",
+      Base: "http://ba17-180-178-189-186.ngrok.io/api/companies",
+      BaseAPI: "http://6822-180-178-189-186.ngrok.io/",
       Timeout: 1000,
       TenantURL: (domainPrefix = "") => {
         return "http://" + domainPrefix + ".localhost:8080/api";
