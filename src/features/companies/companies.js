@@ -16,57 +16,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function Companies() {
-  const [formValues, setFormValues] = useState({
-    bname: "Business Name",
-    owner: "admin@gmail.com",
-    address1: "Address line 1",
-    address2: "Address line 2",
-    city: "City",
-    state: "State",
-    zipcode: "Zip Code",
-    phone: "Mobile",
-    email: "Company Email",
-    image: "Image Url",
-    is_mailingaddress_only: true,
-  });
-  const [file, setFile] = useState(null);
-  const [editFormValues, setEditFormValues] = useState(null);
   const [open, setOpen] = useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
-  };
-  const onFinish = async (values) => {
-    console.log(values);
-    const storageRef = projectStorage.ref(`Company-${Math.random()}`);
-    try {
-      storageRef.put(file).on(
-        "state_changed",
-        (snap) => {},
-        (err) => {
-        },
-        async () => {
-          const url = await storageRef.getDownloadURL();
-          if (editFormValues) {
-            Company.DeleteLocation({
-              formValues,
-              location_image: url,
-            }).catch((err) => alert("Please Fill All Fields",err));
-            console.log(formValues.id);
-          } else {
-            await Company.CreateLocation({
-              formValues,
-              location_image: url,
-            }).catch((err) => alert("Please Fill All Fields",err));
-          }
-          setFile("");
-        }
-      );
-    } catch (err) {}
   };
   return (
     <>
@@ -137,7 +92,7 @@ export default function Companies() {
       <Dialog
         fullScreen
         open={open}
-        onClose={handleClose}
+        onClose={handleClose(false)}
         TransitionComponent={Transition}
       >
         <AppBar sx={{ position: "relative" }}>
@@ -155,7 +110,7 @@ export default function Companies() {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <AddCompanyfrom onSubmit={(values) => onFinish(values)} />
+        <AddCompanyfrom/>
       </Dialog>
     </>
   );

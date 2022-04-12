@@ -343,11 +343,13 @@ export default function Locations() {
       {/* Model html */}
       <Dialog
         fullScreen
+        maxWidth="md"
+        sx={{ pl:70 }}
         open={open}
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: "relative" }}>
+        <AppBar sx={{ position: "relative", width: "100%" }}>
           <Toolbar>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               New Business Name

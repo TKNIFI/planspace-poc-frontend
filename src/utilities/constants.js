@@ -13,8 +13,8 @@ const K = {
       // },
 
       // Development
-      Base: "http://ba17-180-178-189-186.ngrok.io/api/companies",
-      BaseAPI: "http://6822-180-178-189-186.ngrok.io/",
+      Base: "https://planspacedev.herokuapp.com/",
+      BaseAPI: "https://planspacedev.herokuapp.com/api",
       Timeout: 1000,
       TenantURL: (domainPrefix = "") => {
         return "http://" + domainPrefix + ".localhost:8080/api";
@@ -32,7 +32,7 @@ const K = {
       // Assignment
       LoginUser: "/user/login",
 
-      CreateLocation: "/addlocation/",
+      CreateLocation: "/addLocation/",
 
       //get Locations
       GetLocations: "/locations/",
