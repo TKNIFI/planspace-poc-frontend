@@ -7,19 +7,19 @@ export default class Company extends BaseModel {
     return await NetworkCall.fetch(Request.CreateCompany(Props));
   }
   // static async GetCompany(Props) {
-  //   return await NetworkCall.fetch(Request.GetLocations());
+  //   return await NetworkCall.fetch(Request.GetCompany());
   // }
 
   // static async UpdateCompany(Props) {
-  //   return await NetworkCall.fetch(Request.UpdateLocation(Props));
+  //   return await NetworkCall.fetch(Request.UpdateCompany(Props));
   // }
 
   // static async DeleteCompany(id) {
-  //   return await NetworkCall.fetch(Request.DeleteLocation(id));
+  //   return await NetworkCall.fetch(Request.DeleteCompany(id));
   // }
 
   // Selectors
 
   // Helpers
 }
-Location.modelName = "company";
+Company.modelName = "company";

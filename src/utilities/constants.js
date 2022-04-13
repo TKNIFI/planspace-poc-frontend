@@ -17,7 +17,7 @@ const K = {
       BaseAPI: "https://planspacedev.herokuapp.com/api",
       Timeout: 1000,
       TenantURL: (domainPrefix = "") => {
-        return "http://" + domainPrefix + ".localhost:8080/api";
+        return "http://" + domainPrefix + "planspacedev.herokuapp.com/api";
       },
       Client: {
         BaseHost: "localhost",
@@ -31,6 +31,8 @@ const K = {
 
       // Assignment
       LoginUser: "/user/login",
+
+      CreatCompany : "/company/",
 
       CreateLocation: "/addLocation/",
 

@@ -21,11 +21,11 @@ function AddCompanyfrom() {
     initialValues: {
       id: Math.floor(Math.random() * 100000),
       bname: "",
-      owner: "",
-      mailingAddressOnly: Boolean,
-      physicalMainLocation: Boolean,
-      virtualLocation: Boolean,
-      AddAsAVenue: Boolean,
+      owner: null,
+      mailingAddressOnly: false,
+      physicalMainLocation: false,
+      virtualLocation: false,
+      AddAsAVenue: false,
       address1: "",
       address2: "",
       city: "",
@@ -36,10 +36,10 @@ function AddCompanyfrom() {
       image: "",
     },
     validationSchema: Yup.object({
+      // owner: Yup.string().required("owner is required"),
       bname: Yup.string()
         .max(15, "Must be 15 characters or less")
         .required("Name is required"),
-      owner: Yup.string().email("Invalid email").required("Email is required"),
       address1: Yup.string().required("Address is required"),
       address2: Yup.string().required("Address is required"),
       city: Yup.string().required("City name is required"),
@@ -57,7 +57,7 @@ function AddCompanyfrom() {
     }),
     onSubmit: (values) => {
       let a = JSON.stringify(values, null, 2);
-      console.log(values)
+      console.log(a)
     },
   });
   return (
@@ -66,6 +66,7 @@ function AddCompanyfrom() {
         <Box
           sx={{
             "& .MuiTextField-root": { m: 1, width: "50ch", marginTop: 3 },
+            maxWidth: 'md'
           }}
         >
           <Box>
@@ -191,24 +192,20 @@ function AddCompanyfrom() {
             }}
           >
             <FormControlLabel
-              control={<Switch defaultChecked />}
+              control={<Switch id="mailingAddressOnly" checked={formik.values.mailingAddressOnly} onChange={formik.handleChange}/>}
               label="Mailing Address Only"
-              value={formik.values.mailingAddressOnly}
             />
             <FormControlLabel
-              control={<Switch />}
+              control={<Switch id="physicalMainLocation" checked={formik.values.physicalMainLocation} onChange={formik.handleChange}/>}
               label="Physical Main Location"
-              value={formik.values.physicalMainLocation}
             />
             <FormControlLabel
-              control={<Switch />}
+              control={<Switch id="virtualLocation" checked={formik.values.virtualLocation} onChange={formik.handleChange}/>}
               label="Virtual Location"
-              value={formik.values.virtualLocation}
             />
             <FormControlLabel
-              control={<Switch defaultChecked />}
+              control={<Switch id="AddAsAVenue" checked={formik.values.AddAsAVenue} onChange={formik.handleChange} />}
               label="Add as a venue"
-              value={formik.values.AddAsAVenue}
             />
           </Box>
           <Box

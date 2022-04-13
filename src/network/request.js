@@ -46,6 +46,32 @@ export default class Request {
       false
     );
   }
+
+  static CreateCompany(requestbody) {
+    const body = {
+      location_name: requestbody.location_name,
+      location_image: requestbody.location_image,
+      address1: requestbody.address1,
+      address2: requestbody.address2,
+      city: requestbody.city,
+      state: requestbody.state,
+      zip_code: requestbody.zip_code,
+      is_physical_main_location: requestbody.is_physical_main_location,
+      define_space: requestbody.define_space,
+      phone: requestbody.phone,
+      email: requestbody.email,
+    };
+    return new Request(
+      K.Network.URL.CreatCompany,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      false
+    );
+  }
+
+
   static CreateLocation(requestbody) {
     const body = {
       location_name: requestbody.location_name,

@@ -46,47 +46,6 @@ export default function Companies() {
           <PlusCircleOutlined /> Add new company
         </Button>
       </div>
-      <div className="site-card-wrapper">
-        <Row gutter={16}>
-          {/* {Locations?.map(({ formValues, location_image, id }) => (
-            <Col span={8} style={{ marginBottom: "10px" }} key={id}>
-              <div id="card-wrapper">
-                <Card
-                  actions={[
-                    <EditOutlined
-                      key="edit"
-                      onClick={() => {
-                        setEditFormValues("");
-                        handleEdit(id);
-                      }}
-                    />,
-                    <DeleteOutlined onClick={() => showDeleteConfirm(id)} />,
-                  ]}
-                  cover={
-                    <div className="image-wrapper">
-                      <img
-                        className="cover"
-                        alt="example"
-                        src={location_image}
-                      />
-                    </div>
-                  }
-                >
-                  <Meta
-                    avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-                    title={formValues?.location_name}
-                    description={
-                      formValues?.address1
-                        ? formValues?.address1
-                        : "description"
-                    }
-                  />
-                </Card>
-              </div>
-            </Col>
-          ))} */}
-        </Row>
-      </div>
 
       {/* Model html */}
       <Dialog
