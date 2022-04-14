@@ -50,8 +50,10 @@ export default function Companies() {
       {/* Model html */}
       <Dialog
         fullScreen
+        maxWidth="md"
+        sx={{ pl:70 }}
         open={open}
-        onClose={handleClose(false)}
+        onClose={handleClose}
         TransitionComponent={Transition}
       >
         <AppBar sx={{ position: "relative" }}>
@@ -69,7 +71,7 @@ export default function Companies() {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <AddCompanyfrom/>
+        <AddCompanyfrom />
       </Dialog>
     </>
   );

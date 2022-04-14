@@ -1,3 +1,4 @@
+import React from "react";
 import Dashboard from "../features/dashboard/dashboard";
 import Login from "../features/login/login";
 import Locations from "../features/Locations/Locations";
@@ -8,6 +9,7 @@ import Users from "../features/users/users";
 import GuestPageLayout from "../layout/guestPageLayout";
 import LoggedInPageLayout from "../layout/loggedInPageLayout";
 import K from "../utilities/constants";
+import Companies from "../features/companies/companies"
 // Template for a route
 // {
 //   path: '/login',
@@ -38,10 +40,18 @@ const routes = [
         layout: GuestPageLayout,
     },
     {
-        path: "/home",
+        path: "/companyprofile/company",
+        name: "companySettings",
+        component: Companies,
+        authenticated: true,
+        roles: [K.Roles.Admin],
+        layout: LoggedInPageLayout,
+    },
+    {
+        path: "/companyprofile/locations",
         name: "Locations",
         component: Locations,
-        authenticated: true,
+        authenticated: false,
         roles: [K.Roles.Admin],
         children: defaultCrudChildren,
         layout: LoggedInPageLayout,
@@ -50,7 +60,7 @@ const routes = [
         path: "/Locations/:id",
         name: "Locations",
         component: Login,
-        authenticated: true,
+        authenticated: false,
         roles: [K.Roles.Admin],
         children: defaultCrudChildren,
         layout: LoggedInPageLayout,
@@ -64,7 +74,7 @@ const routes = [
         path: "/users",
         name: "Users",
         component: Users,
-        authenticated: true,
+        authenticated: false,
         roles: [],
         children: defaultCrudChildren,
         layout: LoggedInPageLayout,
@@ -73,7 +83,7 @@ const routes = [
         path: "/unauthorized",
         name: "Unauthorized",
         component: Unauthorized,
-        authenticated: true,
+        authenticated: false,
         roles: [],
         layout: GuestPageLayout,
     },
@@ -81,7 +91,7 @@ const routes = [
         path: "/",
         name: "Dashboard",
         component: Dashboard,
-        authenticated: true,
+        authenticated: false,
         layout: LoggedInPageLayout,
     },
 ];

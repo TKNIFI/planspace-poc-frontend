@@ -29,7 +29,6 @@ import Slide from "@mui/material/Slide";
 import Location from "../../models/Locations/Location";
 import { projectStorage } from "../../utilities/storage";
 import AddCompanyfrom from "../forms/AddCompanyfrom";
-import Companies from "../companies/companies"
 const { Option } = Select;
 const { TabPane } = Tabs;
 const { Meta } = Card;

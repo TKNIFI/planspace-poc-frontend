@@ -1,7 +1,6 @@
 import React from "react";
 import K from "../utilities/constants";
 import {
-  AndroidOutlined,
   InsertRowLeftOutlined,
   TeamOutlined,
   ContactsOutlined,
@@ -20,18 +19,19 @@ import {
 
 const childrenForCompanyProfile = (basePath) => [
   {
-    path: `${basePath}/companyProfile/companySettings`,
+    path: `${basePath}/company`,
     name: "Company Settings",
   },
-  { path: `${basePath}/companyProfile/location`, name: "Locations" },
+  { path: `${basePath}/locations`, name: "Locations" },
 ];
 
 const navigations = [
   {
     name: "Company Profile",
+    path: "/companyprofile",
     icon: <InsertRowLeftOutlined />,
     roles: [K.Roles.Admin],
-    children: childrenForCompanyProfile("/home"),
+    children: childrenForCompanyProfile("/companyprofile"),
   },
   {
     name: "Service Package",

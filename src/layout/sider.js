@@ -11,7 +11,6 @@ export default function Sider() {
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
   };
-  console.log("navigations", navigations);
 
   return (
     <>
@@ -21,11 +20,15 @@ export default function Sider() {
             if ((navigation.children?.length ?? 0) > 0) {
               return (
                 <SubMenu key={i} icon={navigation.icon} title={navigation.name}>
-                  {navigation.children.map((subNavigation, j) => (
-                    <Menu.Item key={`${i}_${j}`}>
-                      <Link to={subNavigation.path}>{subNavigation.name}</Link>
-                    </Menu.Item>
-                  ))}
+                  {navigation.children.map((subNavigation, j) => {
+                    return <>
+                      <Menu.Item key={`${i}_${j}`}>
+                        <Link to={subNavigation.path}>
+                          {subNavigation.name}
+                        </Link>
+                      </Menu.Item>
+                    </>;
+                  })}
                 </SubMenu>
               );
             } else {

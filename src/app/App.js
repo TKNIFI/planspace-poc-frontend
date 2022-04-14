@@ -1,12 +1,12 @@
 import React from "react";
-import { useLocation, Switch } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./App.scss";
 import routes from "../routes/routes";
 import RouteWithSubRoutes from "../routes/routeWithSubRoutes";
+import { Breadcrumb } from "antd";
 
 function App() {
-  console.log(routes)
   return (
     <div className="App">
       <Switch>
