@@ -34,6 +34,8 @@ const K = {
 
       CreatCompany : "/company/",
 
+      GetCompany : "/company/",
+
       CreateLocation: "/addLocation/",
 
       //get Locations

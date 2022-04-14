@@ -1,306 +1,289 @@
 import React, { useState, useEffect } from "react";
 import "./location.scss";
 import {
-  Form,
-  Modal,
-  Input,
-  Select,
-  Row,
-  Col,
-  Checkbox,
-  Button,
-  Tabs,
-  Card,
-  Avatar,
+    Form,
+    Modal,
+    Input,
+    Select,
+    Row,
+    Col,
+    Checkbox,
+    Button,
+    Switch,
+    Tabs,
+    Card,
+    Avatar,
 } from "antd";
 import "./projects.css";
 import {
-  PlusCircleOutlined,
-  EditOutlined,
-  DeleteOutlined,
+    PlusCircleOutlined,
+    EditOutlined,
+    DeleteOutlined,
 } from "@ant-design/icons";
-import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
-import Slide from "@mui/material/Slide";
 import Location from "../../models/Locations/Location";
 import { projectStorage } from "../../utilities/storage";
-import AddCompanyfrom from "../forms/AddCompanyfrom";
+
 const { Option } = Select;
 const { TabPane } = Tabs;
 const { Meta } = Card;
 const { confirm } = Modal;
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="left" ref={ref} {...props} />;
-});
 
 export default function Locations() {
-  const [formValues, setFormValues] = useState({
-    zip_code: "00000",
-    city: "New York",
-    state: "Alaska",
-    location_name: "Location Name",
-    address1: "Adress 1",
-    address2: "Address 2",
-    phone: "12345",
-    email: "test@gmail.com",
-    define_space: "Gardens",
-    is_mailingaddress_only: true,
-  });
-  const [form] = Form.useForm();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [Locations, setLocations] = useState(null);
-  const [file, setFile] = useState(null);
-  const [editFormValues, setEditFormValues] = useState(null);
-  const plainOptions = ["Resturants", "Gardens", "Beach", "Parks"];
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  useEffect(() => {
-    getLocation();
-  }, []);
-
-  const handleChange = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    console.log(name);
-    setFormValues((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
+    const [formValues, setFormValues] = useState({
+        zip_code: "00000",
+        city: "New York",
+        state: "Alaska",
+        location_name: "Location Name",
+        address1: "Adress 1",
+        address2: "Address 2",
+        phone: "12345",
+        email: "test@gmail.com",
+        define_space: "Gardens",
+        is_mailingaddress_only: true,
     });
-  };
+    const [form] = Form.useForm();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [Locations, setLocations] = useState(null);
+    const [file, setFile] = useState(null);
+    const [editFormValues, setEditFormValues] = useState(null);
+    const plainOptions = ["Resturants", "Gardens", "Beach", "Parks"];
 
-  const getLocation = async () => {
-    let response = Location.GetLocations();
-    console.log(
-      "get api ",
-      response.then((response) => {
-        return response;
-      })
-    );
-    setLocations(response);
-    console.log(Locations);
-  };
-  const showModal = () => {
-    setEditFormValues("");
-    setIsModalVisible(true);
-  };
+    useEffect(() => {
+        getLocation();
+    }, []);
 
-  const showDeleteConfirm = (id) => {
-    confirm({
-      title: "Are you sure delete this location?",
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      onOk() {
-        handleDelete(id);
-      },
-      onCancel() {
-        handleCancel();
-      },
-    });
-  };
+    const handleChange = (e) => {
+        e.preventDefault();
+        const { name, value } = e.target;
+        console.log(name);
+        setFormValues((prev) => {
+            return {
+                ...prev,
+                [name]: value,
+            };
+        });
+    };
 
-  const successMsg = () => {
-    Modal.success({
-      title: "Location added sucessfully",
-    });
-  };
-
-  const updateMesg = () => {
-    Modal.success({
-      title: "Location updated successfully",
-    });
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-
-    form.submit();
-    form.resetFields();
-  };
-  const onFinish = async (values) => {
-    console.log(values);
-    const storageRef = projectStorage.ref(`Location-${Math.random()}`);
-    try {
-      storageRef.put(file).on(
-        "state_changed",
-        (snap) => {},
-        (err) => {
-          Modal.error({
-            title: "Please Select Image",
-          });
-        },
-        async () => {
-          const url = await storageRef.getDownloadURL();
-          if (editFormValues) {
-            Location.DeleteLocation({
-              formValues,
-              location_image: url,
-            }).catch((err) => alert("Please Fill All Fields"));
-            console.log(formValues.id);
-            updateMesg();
-          } else {
-            await Location.CreateLocation({
-              formValues,
-              location_image: url,
-            }).catch((err) => alert("Please Fill All Fields"));
-            successMsg();
-          }
-          setFile("");
-        }
-      );
-    } catch (e) {
-      Modal.error({
-        title: "Please Select Image",
-      });
-    }
-  };
-  function callback(key) {
-    console.log(key);
-  }
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    setFile(e.target.files[0]);
-    return e && e.fileList;
-  };
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-  function onChange(values) {
-    console.log(`checked = ${values}`);
-    setFormValues((prev) => {
-      return {
-        ...prev,
-        define_space: values.toString(),
-      };
-    });
-  }
-
-  const handleSelectCityChange = (value) => {
-    setFormValues((prev) => {
-      return {
-        ...prev,
-        city: value,
-      };
-    });
-  };
-
-  const handleSelectStateChange = (value) => {
-    setFormValues((prev) => {
-      return {
-        ...prev,
-        state: value,
-      };
-    });
-  };
-
-  const handleMail = (value, e) => {
-    e.preventDefault();
-    if (value) {
-      setFormValues((prev) => {
-        return {
-          ...prev,
-          is_mailingaddress_only: true,
-        };
-      });
-    }
-    console.log(value, e.target.name);
-  };
-  const handlePhysical = (value, e) => {
-    e.preventDefault();
-    if (value) {
-      setFormValues((prev) => {
-        return {
-          ...prev,
-          is_physical_main_location: true,
-        };
-      });
-    }
-    console.log(value, e.target.name);
-  };
-  const handleVirtual = (value, e) => {
-    e.preventDefault();
-    if (value) {
-      setFormValues((prev) => {
-        return {
-          ...prev,
-          is_virtual_location: true,
-        };
-      });
-    }
-    console.log(value, e.target.name);
-  };
-
-  //Call to fetch location by Id
-
-  const handleEdit = (id) => {
-    console.log(id);
-    Location.getLocationBy(id)
-      .get()
-      .then((docRef) => {
-        setEditFormValues({ id, ...docRef.data() });
+    const getLocation = async () => {
+        let response = Location.GetLocations();
+        console.log(
+            "get api ",
+            response.then((response) => {
+                return response;
+            })
+        );
+        setLocations(response);
+        console.log(Locations);
+    };
+    const showModal = () => {
+        setEditFormValues("");
         setIsModalVisible(true);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+    };
 
-  const handleDelete = (id) => {
-    try {
-      Location.DeleteLocation(id).then((res) => {
-        if (res.status === 202) {
-          Modal.success({
-            title: "Deleted Successfully",
-          });
+    const showDeleteConfirm = (id) => {
+        confirm({
+            title: "Are you sure delete this location?",
+            okText: "Yes",
+            okType: "danger",
+            cancelText: "No",
+            onOk() {
+                handleDelete(id);
+            },
+            onCancel() {
+                handleCancel();
+            },
+        });
+    };
+
+    const successMsg = () => {
+        Modal.success({
+            title: "Location added sucessfully",
+        });
+    };
+
+    const updateMesg = () => {
+        Modal.success({
+            title: "Location updated successfully",
+        });
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+
+        form.submit();
+        form.resetFields();
+    };
+    const onFinish = async (values) => {
+        console.log(values);
+        const storageRef = projectStorage.ref(`Location-${Math.random()}`);
+        try {
+            storageRef.put(file).on(
+                "state_changed",
+                (snap) => {},
+                (err) => {
+                    Modal.error({
+                        title: "Please Select Image",
+                    });
+                },
+                async () => {
+                    const url = await storageRef.getDownloadURL();
+                    if (editFormValues) {
+                        Location.DeleteLocation({
+                            formValues,
+                            location_image: url,
+                        }).catch((err) => alert("Please Fill All Fields"));
+                        console.log(formValues.id);
+                        updateMesg();
+                    } else {
+                        await Location.CreateLocation({
+                            formValues,
+                            location_image: url,
+                        }).catch((err) => alert("Please Fill All Fields"));
+                        successMsg();
+                    }
+                    setFile("");
+                }
+            );
+        } catch (e) {
+            Modal.error({
+                title: "Please Select Image",
+            });
         }
-      });
-    } catch (e) {
-      console.error("Error removing document: ", e);
+    };
+    function callback(key) {
+        console.log(key);
     }
-  };
+    const normFile = (e) => {
+        console.log("Upload event:", e);
+        if (Array.isArray(e)) {
+            return e;
+        }
+        setFile(e.target.files[0]);
+        return e && e.fileList;
+    };
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+    function onChange(values) {
+        console.log(`checked = ${values}`);
+        setFormValues((prev) => {
+            return {
+                ...prev,
+                define_space: values.toString(),
+            };
+        });
+    }
 
-  return (
-    <>
-      <div
-        style={{
-          marginLeft: "10px",
-          margin: "10px 0px",
-        }}
-      >
-        <Button
-          style={{
-            width: "200px",
-            height: "200px",
-            backgroundColor: "white",
-            color: "#ccc",
-            border: "none",
-          }}
-          type="primary"
-          onClick={handleClickOpen}
-        >
-          {" "}
-          <PlusCircleOutlined /> Add new Location
-        </Button>
-      </div>
-      <div className="site-card-wrapper">
-        <Row gutter={16}>
-          {/* {Locations?.map(({ formValues, location_image, id }) => (
+    const handleSelectCityChange = (value) => {
+        setFormValues((prev) => {
+            return {
+                ...prev,
+                city: value,
+            };
+        });
+    };
+
+    const handleSelectStateChange = (value) => {
+        setFormValues((prev) => {
+            return {
+                ...prev,
+                state: value,
+            };
+        });
+    };
+
+    const handleMail = (value, e) => {
+        e.preventDefault();
+        if (value) {
+            setFormValues((prev) => {
+                return {
+                    ...prev,
+                    is_mailingaddress_only: true,
+                };
+            });
+        }
+        console.log(value, e.target.name);
+    };
+    const handlePhysical = (value, e) => {
+        e.preventDefault();
+        if (value) {
+            setFormValues((prev) => {
+                return {
+                    ...prev,
+                    is_physical_main_location: true,
+                };
+            });
+        }
+        console.log(value, e.target.name);
+    };
+    const handleVirtual = (value, e) => {
+        e.preventDefault();
+        if (value) {
+            setFormValues((prev) => {
+                return {
+                    ...prev,
+                    is_virtual_location: true,
+                };
+            });
+        }
+        console.log(value, e.target.name);
+    };
+
+    //Call to fetch location by Id
+
+    const handleEdit = (id) => {
+        console.log(id);
+        Location.getLocationBy(id)
+            .get()
+            .then((docRef) => {
+                setEditFormValues({ id, ...docRef.data() });
+                setIsModalVisible(true);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const handleDelete = (id) => {
+        try {
+            Location.DeleteLocation(id).then((res) => {
+                if (res.status === 202) {
+                    Modal.success({
+                        title: "Deleted Successfully",
+                    });
+                }
+            });
+        } catch (e) {
+            console.error("Error removing document: ", e);
+        }
+    };
+
+    return (
+        <>
+            <div
+                style={{
+                    marginLeft: "10px",
+                    margin: "10px 0px",
+                }}
+            >
+                <Button
+                    style={{
+                        width: "200px",
+                        height: "200px",
+                        backgroundColor: "white",
+                        color: "#ccc",
+                        border: "none",
+                    }}
+                    type="primary"
+                    onClick={showModal}
+                >
+                    {" "}
+                    <PlusCircleOutlined /> Add new Location
+                </Button>
+            </div>
+            <div className="site-card-wrapper">
+                <Row gutter={16}>
+                    {/* {Locations?.map(({ formValues, location_image, id }) => (
             <Col span={8} style={{ marginBottom: "10px" }} key={id}>
               <div id="card-wrapper">
                 <Card
@@ -337,36 +320,11 @@ export default function Locations() {
               </div>
             </Col>
           ))} */}
-        </Row>
-      </div>
+                </Row>
+            </div>
 
-      {/* Model html */}
-      <Dialog
-        fullScreen
-        maxWidth="md"
-        sx={{ pl:70 }}
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Transition}
-      >
-        <AppBar sx={{ position: "relative", width: "100%" }}>
-          <Toolbar>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              New Business Name
-            </Typography>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <AddCompanyfrom />
-      </Dialog>
-      {/* <Modal
+            {/* Model html */}
+            <Modal
                 title={editFormValues ? "Update Location" : "New location Name"}
                 visible={isModalVisible}
                 onOk={handleOk}
@@ -662,7 +620,7 @@ export default function Locations() {
                         </Row>
                     </div>
                 </Form>
-            </Modal> */}
-    </>
-  );
+            </Modal>
+        </>
+    );
 }

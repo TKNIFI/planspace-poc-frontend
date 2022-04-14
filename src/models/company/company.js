@@ -6,9 +6,9 @@ export default class Company extends BaseModel {
   static async CreateCompany(Props) {
     return await NetworkCall.fetch(Request.CreateCompany(Props));
   }
-  // static async GetCompany(Props) {
-  //   return await NetworkCall.fetch(Request.GetCompany());
-  // }
+  static async GetCompany(Props) {
+    return await NetworkCall.fetch(Request.GetCompany());
+  }
 
   // static async UpdateCompany(Props) {
   //   return await NetworkCall.fetch(Request.UpdateCompany(Props));

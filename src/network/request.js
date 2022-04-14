@@ -48,18 +48,22 @@ export default class Request {
   }
 
   static CreateCompany(requestbody) {
+    console.log("requested body", requestbody);
     const body = {
-      location_name: requestbody.location_name,
-      location_image: requestbody.location_image,
+      bname: requestbody.bname,
+      owner: requestbody.owner,
+      mailingAddressOnly: requestbody.mailingAddressOnly,
+      physicalMainLocation: requestbody.physicalMainLocation,
+      virtualLocation: requestbody.virtualLocation,
+      AddAsAVenue: requestbody.AddAsAVenue,
       address1: requestbody.address1,
       address2: requestbody.address2,
       city: requestbody.city,
       state: requestbody.state,
-      zip_code: requestbody.zip_code,
-      is_physical_main_location: requestbody.is_physical_main_location,
-      define_space: requestbody.define_space,
+      zipcode: requestbody.zipcode,
       phone: requestbody.phone,
       email: requestbody.email,
+      image: requestbody.image,
     };
     return new Request(
       K.Network.URL.CreatCompany,
@@ -70,7 +74,16 @@ export default class Request {
       false
     );
   }
-
+  static GetCompany() {
+    return new Request(
+      K.Network.URL.GetCompany,
+      K.Network.Method.GET,
+      null,
+      K.Network.Header.Type.Json,
+      {},
+      false
+    );
+  }
 
   static CreateLocation(requestbody) {
     const body = {

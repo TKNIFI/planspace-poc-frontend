@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button as Muibtn } from "@mui/material";
@@ -12,6 +12,7 @@ import { styled } from "@mui/material/styles";
 import MuiAlert from "@mui/material/Alert";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import Company from "../../models/company/company"
 const Input = styled("input")({
   display: "none",
 });
@@ -19,7 +20,6 @@ const Input = styled("input")({
 function AddCompanyfrom() {
   const formik = useFormik({
     initialValues: {
-      id: Math.floor(Math.random() * 100000),
       bname: "",
       owner: null,
       mailingAddressOnly: false,
@@ -56,10 +56,16 @@ function AddCompanyfrom() {
       image: Yup.mixed().nullable().required("Company image is required"),
     }),
     onSubmit: (values) => {
-      let a = JSON.stringify(values, null, 2);
-      console.log(a)
+      let formData = JSON.stringify(values, null, 2);
+      Company.CreateCompany(formData)
+      console.log(formData)
     },
   });
+
+  // useEffect(()=>{
+  //   console.log(Company.GetCompany())
+  // },[])
+
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
