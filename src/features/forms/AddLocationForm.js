@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button as Muibtn } from "@mui/material";
@@ -7,25 +7,26 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
+import Checkbox from "@mui/material/Checkbox";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { styled } from "@mui/material/styles";
 import MuiAlert from "@mui/material/Alert";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Company from "../../models/company/company";
+import Location from "../../models/Locations/Location";
 const Input = styled("input")({
   display: "none",
 });
-
-function AddCompanyfrom({sendChildToParent}) {
+const AddLocationForm = ({ sendChildToParent }) => {
+  const [copyIsChecked, setCopyIsChecked] = useState();
+  const [copyAddressandContacts, setCopyAddressandContacts] = useState([{}]);
   const formik = useFormik({
     initialValues: {
-      bname: "",
+      Lname: "",
       owner: null,
       mailingAddressOnly: false,
       physicalMainLocation: false,
       virtualLocation: false,
-      AddAsAVenue: false,
       address1: "",
       address2: "",
       city: "",
@@ -37,9 +38,9 @@ function AddCompanyfrom({sendChildToParent}) {
     },
     validationSchema: Yup.object({
       // owner: Yup.string().required("owner is required"),
-      bname: Yup.string()
+      Lname: Yup.string()
         .max(15, "Must be 15 characters or less")
-        .required("Name is required"),
+        .required("Location Name is required"),
       address1: Yup.string().required("Address is required"),
       address2: Yup.string().required("Address is required"),
       city: Yup.string().required("City name is required"),
@@ -53,42 +54,40 @@ function AddCompanyfrom({sendChildToParent}) {
         .positive()
         .integer(),
       email: Yup.string().email("Invalid email").required("Email is required"),
-      image: Yup.mixed().required("Company image is required"),
+      image: Yup.mixed().required("location image is required"),
     }),
     onSubmit: (values) => {
-      let formData = values;
-      Company.CreateCompany(formData);
-      sendChildToParent(formData);
-      console.log(formData);
-
+      const formValues = values;
+      Location.CreateLocation(formValues);
+      console.log("Locations values", formValues);
+      sendChildToParent(formValues);
     },
   });
-
-  useEffect(() => {
-    console.log(Company.GetCompany());
-  }, []);
-
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
         <Box
           sx={{
             "& .MuiTextField-root": { m: 1, width: "50ch", marginTop: 3 },
-            maxWidth: "md",
           }}
         >
+          <FormControlLabel
+            sx={{ m: 1 }}
+            control={<Checkbox checked={copyIsChecked} />}
+            label="Copy address and contacts from company profile"
+          />
           <Box>
             <TextField
-              id="bname"
-              label="Enter the business name"
+              id="Lname"
+              label="Enter the location name"
               type="text"
-              value={formik.values.bname}
+              value={formik.values.Lname}
               onChange={formik.handleChange}
               // autoComplete="current"
             />
-            {formik.touched.bname && formik.errors.bname ? (
+            {formik.touched.Lname && formik.errors.Lname ? (
               <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <p>{formik.errors.bname}</p>
+                <span>{formik.errors.Lname}</span>
               </MuiAlert>
             ) : null}
             <TextField
@@ -130,18 +129,19 @@ function AddCompanyfrom({sendChildToParent}) {
               </Typography>
               <label htmlFor="image">
                 <Input
-                  accept=".png, .jpg, .jpeg"
+                  accept="image/*"
                   id="image"
                   type="file"
                   value={formik.values.image}
                   onChange={formik.handleChange}
+                  
                 />
                 <IconButton
                   color="primary"
                   aria-label="upload picture"
                   component="span"
                   variant="outlined"
-                  sx={{ display: "flex", flexWrap: "wrap" }}
+                  sx={{display: "flex", flexWrap: 'wrap'}}
                 >
                   <PhotoCamera />
                 </IconButton>
@@ -235,16 +235,6 @@ function AddCompanyfrom({sendChildToParent}) {
               }
               label="Virtual Location"
             />
-            <FormControlLabel
-              control={
-                <Switch
-                  id="AddAsAVenue"
-                  checked={formik.values.AddAsAVenue}
-                  onChange={formik.handleChange}
-                />
-              }
-              label="Add as a venue"
-            />
           </Box>
           <Box
             sx={{
@@ -297,6 +287,6 @@ function AddCompanyfrom({sendChildToParent}) {
       </form>
     </>
   );
-}
+};
 
-export default AddCompanyfrom;
+export default AddLocationForm;

@@ -13,15 +13,15 @@ const K = {
       // },
 
       // Development
-      Base: "https://planspacedev.herokuapp.com/",
-      BaseAPI: "https://planspacedev.herokuapp.com/api",
+      Base: "https://planspace.herokuapp.com/",
+      BaseAPI: "hhttps://planspace.herokuapp.com/api",
       Timeout: 1000,
       TenantURL: (domainPrefix = "") => {
-        return "http://" + domainPrefix + "planspacedev.herokuapp.com/api";
+        return "http://" + domainPrefix + "planspace.herokuapp.com/api";
       },
       Client: {
-        BaseHost: "localhost",
-        BasePort: "3000",
+        BaseHost: "planspace.herokuapp.com",
+        BasePort: "80",
       },
 
       Protocol: "http",
@@ -32,14 +32,17 @@ const K = {
       // Assignment
       LoginUser: "/user/login",
 
-      CreatCompany : "/company/",
+      //create company
+      CreatCompany: "/company/",
 
-      GetCompany : "/company/",
+      //get company
+      GetCompany: "/company/",
 
-      CreateLocation: "/addLocation/",
+      //create Locations
+      CreateLocation: "/location/",
 
       //get Locations
-      GetLocations: "/locations/",
+      GetLocations: "/location/",
 
       //update Location
       UpdateLocation: "/locations/:id/update/",
