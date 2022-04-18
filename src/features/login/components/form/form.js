@@ -1,28 +1,39 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import { useFormik } from "formik";
 import { Box, Grid, Button, Typography, TextField } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
-import { Link } from "react-router-dom";
+import { Link, useHistory
+ } from "react-router-dom";
 import * as Yup from "yup";
 import User from "../../../../models/user/user";
 import { useDispatch } from "react-redux";
 import CircularProgress from '@mui/material/CircularProgress';
+
 const LoginForm = () => {
+  let history = useHistory();
   const dispatch = useDispatch();
   const onFinish = async (values) => {
-    console.log(values.username, values.password);
-    await dispatch(User.loginCall(values.username, values.password));
+    let formData = new FormData()
+    formData.append("email", values.email)
+    formData.append("password", values.password)
+    await axios.post("https://planspace.herokuapp.com/api/auth/login/", formData).then(response => {
+      const data = response.data.data
+      localStorage.setItem("userInfo", JSON.stringify(data))
+      history.push("/companyprofile/company")
+    }).catch(error => alert(error.message))
+    // await dispatch(User.loginCall(formData));
   };
   const formik = useFormik({
     initialValues: {
-      emailId: "",
-      pasword: "",
+      email: "",
+      password: "",
     },
     validationSchema: Yup.object({
-      emailId: Yup.string()
+      email: Yup.string()
         .email("must be valid email")
         .required("Email is required"),
-      pasword: Yup.string()
+      password: Yup.string()
         .required("No password provided.")
         .min(8, "Password is too short - should be 8 chars minimum.")
         .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
@@ -40,29 +51,29 @@ const LoginForm = () => {
           }}
         >
           <TextField
-            id="emailId"
+            id="email"
             label="Enter Your EmailId"
             type="email"
-            value={formik.values.emailId}
+            value={formik.values.email}
             onChange={formik.handleChange}
             sx={{ width: "100%" }}
           />
-          {formik.touched.emailId && formik.errors.emailId ? (
+          {formik.touched.email && formik.errors.email ? (
             <MuiAlert severity="error">
-              <span>{formik.errors.emailId}</span>
+              <span>{formik.errors.email}</span>
             </MuiAlert>
           ) : null}
           <TextField
-            id="pasword"
+            id="password"
             label="Create password"
             type="password"
-            value={formik.values.pasword}
+            value={formik.values.password}
             onChange={formik.handleChange}
             sx={{ width: "100%" }}
           />
-          {formik.touched.pasword && formik.errors.pasword ? (
+          {formik.touched.password && formik.errors.password ? (
             <MuiAlert severity="error">
-              <span>{formik.errors.pasword}</span>
+              <span>{formik.errors.password}</span>
             </MuiAlert>
           ) : null}
         </Box>
