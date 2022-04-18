@@ -29,8 +29,11 @@ const K = {
       // Tenant
       GetTenant: "/tenant/get",
 
+      //register
+      Register: "/auth/register/",
+
       // Assignment
-      LoginUser: "/user/login",
+      LoginUser: "/auth/login/",
 
       //create company
       CreatCompany: "/company/",

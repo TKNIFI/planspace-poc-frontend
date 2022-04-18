@@ -31,6 +31,24 @@ export default class Request {
     return new Request(K.Network.URL.GetTenant, K.Network.Method.GET);
   }
 
+  // registeration call
+  static registerationUser(yname, emailId, phoneNo, YourBname, pasword) {
+    const body = {
+      yname,
+      emailId,
+      phoneNo,
+      YourBname,
+      pasword,
+    };
+    return new Request(
+      K.Network.URL.Register,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      false
+    );
+  }
   // User calls.
   static loginUser(email, password) {
     const body = {

@@ -178,7 +178,12 @@ export default function PrimarySearchAppBar() {
               width={"112px"}
               height={"33px"}
               src={planLogo}
-              style={{ borderRadius: "2px", marginLeft: "5px" }}
+              style={{
+                borderRadius: "2px",
+                marginLeft: "5px",
+                backgroundColor: "lightgray",
+                padding: "3px"
+              }}
               alt="logo"
             />
           </Typography>
