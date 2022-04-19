@@ -25,6 +25,7 @@
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-social-login": "^3.4.15",
     "redux-orm": "^0.16.2",
     "source-map-explorer": "^2.5.0",
     "swiper": "^8.1.1",
