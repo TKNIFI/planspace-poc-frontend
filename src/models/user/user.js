@@ -11,9 +11,8 @@ import { withRouter } from "react-router-dom";
 class User extends BaseModel {
   // Registeration api call by using thunk
   static registerationCall(yname, emailId, phoneNo, YourBname, pasword) {
-    console.log(yname, emailId, phoneNo, YourBname, pasword);
     return async (dispatch) => {
-      const user = await NetworkCall.fetch(
+      const response = await NetworkCall.fetch(
         Request.registerationUser(yname, emailId, phoneNo, YourBname, pasword)
       )
         .then((response) => {
@@ -38,7 +37,8 @@ class User extends BaseModel {
 
   // Helpers
   static isAuthenticated() {
-    return true;
+    const user = localStorage.getItem("userInfo")
+    return user ? true : false;
   }
 
   static roles() {

@@ -1,6 +1,19 @@
 import K from "../utilities/constants";
 import Cookies from "js-cookie";
 
+const getToken = () => {
+    const info = localStorage.getItem("userInfo")
+    if (info) {
+        if (JSON.parse(info).access_token) {
+            return JSON.parse(info).access_token
+        } else if (JSON.parse(info).access) {
+            return JSON.parse(info).access
+        }
+    } else {
+        return ""
+    }
+}
+
 export default class Request {
     constructor(
         relativeURL,
@@ -10,14 +23,16 @@ export default class Request {
         headers = {},
         isTenant = true
     ) {
-        const token = Cookies.get(K.Cookie.Key.Token);
+        // const token = Cookies.get(K.Cookie.Key.Token);
+        this.token = "JWT " + getToken();
         const domainPrefix = Cookies.get(K.Cookie.Key.Tenant);
         headers = {
             ...(defaultHeaderType === K.Network.Header.Type.Json
-                ? K.Network.Header.Default(token)
-                : K.Network.Header.Authorization(token)),
+                ? K.Network.Header.Default(this.token)
+                : K.Network.Header.Authorization(this.token)),
             ...headers,
         };
+        headers.Authorization = this.token
         this.url = isTenant
             ? K.Network.URL.TenantURL(domainPrefix) + relativeURL
             : K.Network.URL.BaseAPI + relativeURL;
@@ -37,7 +52,7 @@ export default class Request {
             first_name: yname,
             last_name: yname,
             email: emailId,
-            phoneNo,
+            mobile: phoneNo,
             YourBname,
             password: pasword,
         };
@@ -69,8 +84,7 @@ export default class Request {
     static CreateCompany(requestbody) {
         console.log("requested body", requestbody);
         const body = {
-            bname: requestbody.bname,
-            owner: requestbody.owner,
+            business: requestbody.bname,
             mailingAddressOnly: requestbody.mailingAddressOnly,
             physicalMainLocation: requestbody.physicalMainLocation,
             virtualLocation: requestbody.virtualLocation,
@@ -89,7 +103,7 @@ export default class Request {
             K.Network.Method.POST,
             body,
             K.Network.Header.Type.Json,
-            {},
+            this.headers,
             false
         );
     }
@@ -124,7 +138,7 @@ export default class Request {
             K.Network.Method.POST,
             body,
             K.Network.Header.Type.Json,
-            {},
+            this.headers,
             false
         );
     }

@@ -1,3 +1,17 @@
+const getToken = () => {
+    const info = localStorage.getItem("userInfo")
+    console.log("info", info)
+    if (info) {
+        if (JSON.parse(info).access_token) {
+            return JSON.parse(info).access_token
+        } else if (JSON.parse(info).access) {
+            return JSON.parse(info).access
+        }
+    } else {
+        return ""
+    }
+}
+
 const K = {
     Network: {
         URL: {
@@ -68,7 +82,7 @@ const K = {
                 Authorization: "Bearer " + token,
             }),
             Authorization: (token = "") => ({
-                Authorization: "Bearer " + token,
+                Authorization: "JWT " + getToken(),
             }),
             Type: {
                 Json: "json",

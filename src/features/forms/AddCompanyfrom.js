@@ -21,7 +21,6 @@ function AddCompanyfrom({sendChildToParent}) {
   const formik = useFormik({
     initialValues: {
       bname: "",
-      owner: null,
       mailingAddressOnly: false,
       physicalMainLocation: false,
       virtualLocation: false,
@@ -37,23 +36,23 @@ function AddCompanyfrom({sendChildToParent}) {
     },
     validationSchema: Yup.object({
       // owner: Yup.string().required("owner is required"),
-      bname: Yup.string()
-        .max(15, "Must be 15 characters or less")
-        .required("Name is required"),
-      address1: Yup.string().required("Address is required"),
-      address2: Yup.string().required("Address is required"),
-      city: Yup.string().required("City name is required"),
-      state: Yup.string().required("State name is required"),
-      zipcode: Yup.number()
-        .required("Zip code is required")
-        .positive()
-        .integer(),
-      phone: Yup.number()
-        .required("Phone number is required")
-        .positive()
-        .integer(),
-      email: Yup.string().email("Invalid email").required("Email is required"),
-      image: Yup.mixed().required("Company image is required"),
+      // bname: Yup.string()
+      //   .max(15, "Must be 15 characters or less")
+      //   .required("Name is required"),
+      // address1: Yup.string().required("Address is required"),
+      // address2: Yup.string().required("Address is required"),
+      // city: Yup.string().required("City name is required"),
+      // state: Yup.string().required("State name is required"),
+      // zipcode: Yup.number()
+      //   .required("Zip code is required")
+      //   .positive()
+      //   .integer(),
+      // phone: Yup.number()
+      //   .required("Phone number is required")
+      //   .positive()
+      //   .integer(),
+      // email: Yup.string().email("Invalid email").required("Email is required"),
+      // image: Yup.mixed().required("Company image is required"),
     }),
     onSubmit: (values) => {
       let formData = values;

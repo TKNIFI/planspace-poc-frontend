@@ -4,6 +4,7 @@ import "./registerationFrom.css";
 import { useFormik } from "formik";
 import { Box, Grid, Button, Typography, TextField } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import { useHistory, useLocation } from "react-router-dom";
 import User from "../../models/user/user";
 import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -15,6 +16,9 @@ const phoneRegExp =
 const RegisterationForm = () => {
   let history = useHistory();
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+
   const onFinish = async (values) => {
     console.log(values);
     // await axios
@@ -34,6 +38,7 @@ const RegisterationForm = () => {
         values.pasword
       )
     );
+    history.push("/")
   };
   const formik = useFormik({
     initialValues: {
