@@ -64,10 +64,6 @@ function AddCompanyfrom({sendChildToParent}) {
     },
   });
 
-  useEffect(() => {
-    console.log(Company.GetCompany());
-  }, []);
-
   return (
     <>
       <form onSubmit={formik.handleSubmit}>

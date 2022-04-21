@@ -1,10 +1,11 @@
 import React from "react";
+import axios from "axios";
 import "./registerationFrom.css";
 import { useFormik } from "formik";
 import { Box, Grid, Button, Typography, TextField } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import User from "../../models/user/user";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -12,11 +13,18 @@ const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const RegisterationForm = () => {
+  let history = useHistory();
   const dispatch = useDispatch();
   const onFinish = async (values) => {
-    console.log(
-      values
-    );
+    console.log(values);
+    // await axios
+    //   .post("https://planspace.herokuapp.com/api/auth/register/", values)
+    //   .then((response) => {
+    //     const data = response.data.data;
+    //     localStorage.setItem("userInfo", JSON.stringify(data));
+    //     history.push("/login");
+    //   })
+    //   .catch((error) => alert(error.message));
     await dispatch(
       User.registerationCall(
         values.yname,

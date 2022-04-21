@@ -18,7 +18,8 @@ import AddLocationIcon from "@mui/icons-material/AddLocation";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import { Button as Muibtn } from "@mui/material";
-import compImage from "../../assets/images/company.jpg"
+import compImage from "../../assets/images/company.jpg";
+import Company from "../../models/company/company";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -35,6 +36,9 @@ export default function Companies() {
   const gettingDataFromChild = (formDataFromParent) => {
     setFormData(formDataFromParent);
   };
+  useEffect(() => {
+    console.log(Company.GetCompany());
+  }, []);
   return (
     <>
       <div

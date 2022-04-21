@@ -42,10 +42,10 @@ const K = {
             GetCompany: "/company/",
 
             //create Locations
-            CreateLocation: "/location/",
+            CreateLocation: "/company/location/",
 
             //get Locations
-            GetLocations: "/location/",
+            GetLocations: "/company/location/",
 
             //update Location
             UpdateLocation: "/locations/:id/update/",

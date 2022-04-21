@@ -93,6 +93,7 @@ export default class Request {
             false
         );
     }
+    
     static GetCompany() {
         return new Request(
             K.Network.URL.GetCompany,

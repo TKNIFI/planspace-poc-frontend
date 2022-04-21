@@ -18,7 +18,8 @@ import AddLocationIcon from "@mui/icons-material/AddLocation";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import { Button as Muibtn } from "@mui/material";
-import locImage from "../../assets/images/location.jpg"
+import locImage from "../../assets/images/location.jpg";
+import Location from "../../models/Locations/Location";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -35,6 +36,9 @@ export default function Locations() {
   const gettingDataFromChild = (formDataFromParent) => {
     setFormData(formDataFromParent);
   };
+  useEffect(() => {
+    console.log(Location.GetLocations());
+  }, []);
   console.log("location form data in parent", formData);
   return (
     <>
