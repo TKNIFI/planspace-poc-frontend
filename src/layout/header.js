@@ -1,6 +1,7 @@
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
+import { Divider } from "@mui/material";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -14,19 +15,19 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import planLogo from "../assets/images/plan.png";
+import "./layout.module.scss";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: alpha(theme.palette.grey[400], 0.15),
   "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha(theme.palette.grey[400], 0.25),
   },
-  marginRight: theme.spacing(2),
-  marginLeft: 3,
+  marginRight: theme.spacing(5),
+  marginLeft: theme.spacing(5),
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(2),
@@ -37,12 +38,12 @@ const Search = styled("div")(({ theme }) => ({
 const StyledSelect = styled(Select)(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: alpha(theme.palette.grey[400], 0.15),
   "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha(theme.palette.grey[400], 0.25),
   },
   marginRight: theme.spacing(2),
-  marginLeft: 3,
+  marginLeft: theme.spacing(2),
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(2),
@@ -58,10 +59,12 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  color: "gray",
+  // backgroundColor: alpha(theme.palette.grey[400], 0.15),
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
+  color: "gray",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -138,11 +141,7 @@ export default function PrimarySearchAppBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
+        <IconButton size="large" aria-label="show 17 new notifications">
           <Badge badgeContent={10} color="error">
             <NotificationsIcon />
           </Badge>
@@ -155,7 +154,6 @@ export default function PrimarySearchAppBar() {
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
-          color="inherit"
         >
           <AccountCircle />
         </IconButton>
@@ -166,7 +164,11 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
-      <AppBar position="static">
+      <AppBar
+        className="appBar"
+        position="static"
+        sx={{ backgroundColor: "white" }}
+      >
         <Toolbar>
           <Typography
             variant="h6"
@@ -180,9 +182,7 @@ export default function PrimarySearchAppBar() {
               src={planLogo}
               style={{
                 borderRadius: "2px",
-                marginLeft: "5px",
-                backgroundColor: "lightgray",
-                padding: "3px"
+                padding: "3px",
               }}
               alt="logo"
             />
@@ -196,11 +196,12 @@ export default function PrimarySearchAppBar() {
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
-          <FormControl sx={{ m: 1, minWidth: 350 }}>
+
+          <Box sx={{ flexGrow: 1 }} />
+          <FormControl sx={{ m: 1, minWidth: 350, width: "40%" }}>
             <StyledSelect
               labelId="select"
               sx={{
-                backgroundColor: "inherit",
                 color: "black",
                 height: "40px",
                 display: { xs: "flex", md: "flex" },
@@ -210,24 +211,19 @@ export default function PrimarySearchAppBar() {
               // onChange={handleChange}
             />
           </FormControl>
-          <Box sx={{ flexGrow: 1 }} />
+
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <AddCircleIcon />
+            <Divider orientation="vertical" flexItem></Divider>
+            <IconButton size="large" aria-label="show 17 new notifications">
+              <AddCircleIcon variant="outlined" />
             </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
+            <Divider orientation="vertical" flexItem></Divider>
+            <IconButton size="large" aria-label="show 17 new notifications">
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            <Divider orientation="vertical" flexItem></Divider>
             <IconButton
               size="large"
               edge="end"
@@ -235,7 +231,6 @@ export default function PrimarySearchAppBar() {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color="inherit"
             >
               <AccountCircle />
             </IconButton>
@@ -249,7 +244,7 @@ export default function PrimarySearchAppBar() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <MoreIcon sx={{ color: "#003399" }} />
             </IconButton>
           </Box>
         </Toolbar>

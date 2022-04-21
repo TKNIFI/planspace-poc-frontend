@@ -11,3 +11,12 @@
 [data-theme="dark"] .site-layout .site-layout-background {
   background: #141414;
 }
+
+.appBar{
+  box-shadow:
+  4.5px 6.3px 12.1px -16px rgba(0, 0, 0, 0.014),
+  12.5px 17.5px 33.6px -16px rgba(0, 0, 0, 0.02),
+  30.1px 42.2px 80.8px -16px rgba(0, 0, 0, 0.026),
+  100px 140px 268px -16px rgba(0, 0, 0, 0.04)
+;
+}
