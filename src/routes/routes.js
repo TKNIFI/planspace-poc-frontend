@@ -9,7 +9,8 @@ import Users from "../features/users/users";
 import GuestPageLayout from "../layout/guestPageLayout";
 import LoggedInPageLayout from "../layout/loggedInPageLayout";
 import K from "../utilities/constants";
-import Companies from "../features/companies/companies"
+import Companies from "../features/companies/companies";
+import ServicePack from "../features/servicePackages/servicePacakges";
 // Template for a route
 // {
 //   path: '/login',
@@ -40,18 +41,18 @@ const routes = [
         layout: GuestPageLayout,
     },
     {
-        path: "/companyprofile/company",
+        path: "/Company Profile/Company Settings",
         name: "companySettings",
         component: Companies,
-        authenticated: true,
+        authenticated: false,
         roles: [K.Roles.Admin],
         layout: LoggedInPageLayout,
     },
     {
-        path: "/companyprofile/locations",
+        path: "/Company Profile/locations",
         name: "Locations",
         component: Locations,
-        authenticated: true,
+        authenticated: false,
         roles: [K.Roles.Admin],
         children: defaultCrudChildren,
         layout: LoggedInPageLayout,
@@ -60,7 +61,7 @@ const routes = [
         path: "/Locations/:id",
         name: "Locations",
         component: Login,
-        authenticated: true,
+        authenticated: false,
         roles: [K.Roles.Admin],
         children: defaultCrudChildren,
         layout: LoggedInPageLayout,
@@ -71,10 +72,16 @@ const routes = [
     //   authenticated: true,
     // },
     {
+        path: "/service Package",
+        name: "Service Package",
+        component: ServicePack,
+        layout: LoggedInPageLayout,
+    },
+    {
         path: "/users",
         name: "Users",
         component: Users,
-        authenticated: true,
+        authenticated: false,
         roles: [],
         children: defaultCrudChildren,
         layout: LoggedInPageLayout,
@@ -91,7 +98,7 @@ const routes = [
         path: "/",
         name: "Dashboard",
         component: Dashboard,
-        authenticated: true,
+        authenticated: false,
         layout: LoggedInPageLayout,
     },
 ];

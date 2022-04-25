@@ -11,14 +11,16 @@ const BreadCrumb = () => {
     const capatilize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
     return (
       <div>
-        <Breadcrumb>
+        <Breadcrumb style={{ marginTop: "10px", marginBottom: "15px" }}>
           {pathnames.length > 0 ? (
             <Breadcrumb.Item>
               <HomeFilled />
               <Link to="/">Home</Link>
             </Breadcrumb.Item>
           ) : (
-            <Breadcrumb.Item><HomeFilled /> Home</Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <HomeFilled /> Home
+            </Breadcrumb.Item>
           )}
           {pathnames.map((name, index) => {
             const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
@@ -26,7 +28,7 @@ const BreadCrumb = () => {
             return isLast ? (
               <Breadcrumb.Item key={index}>{capatilize(name)}</Breadcrumb.Item>
             ) : (
-              <Breadcrumb.Item key={index*2}>
+              <Breadcrumb.Item key={index * 2}>
                 <Link to={`${routeTo}`}>{capatilize(name)}</Link>
               </Breadcrumb.Item>
             );

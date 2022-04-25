@@ -4,7 +4,6 @@ import "antd/dist/antd.css";
 import "./App.scss";
 import routes from "../routes/routes";
 import RouteWithSubRoutes from "../routes/routeWithSubRoutes";
-import { Breadcrumb } from "antd";
 
 function App() {
   return (

@@ -19,25 +19,32 @@ import {
 
 const childrenForCompanyProfile = (basePath) => [
   {
-    path: `${basePath}/company`,
+    path: `${basePath}/Company Settings`,
     name: "Company Settings",
   },
   { path: `${basePath}/locations`, name: "Locations" },
 ];
 
+const childrenForServicePackages = (basePath) =>[
+  {
+    path: `${basePath}/Packages`,
+    name: "Packages",
+  },
+]
 const navigations = [
   {
     name: "Company Profile",
-    path: "/companyprofile",
+    path: "/Company Profile",
     icon: <InsertRowLeftOutlined />,
     roles: [K.Roles.Admin],
-    children: childrenForCompanyProfile("/companyprofile"),
+    children: childrenForCompanyProfile("/Company Profile"),
   },
   {
     name: "Service Package",
     icon: <ShoppingOutlined />,
-    path: "/",
-    // children: defaultChildren("/Location"),
+    path: "/service Package",
+    roles: [K.Roles.Admin],
+    children: childrenForServicePackages("/service Package"),
   },
   {
     name: "Website integration",

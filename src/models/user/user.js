@@ -12,7 +12,7 @@ class User extends BaseModel {
   // Registeration api call by using thunk
   static registerationCall(yname, emailId, phoneNo, YourBname, pasword) {
     return async (dispatch) => {
-      const response = await NetworkCall.fetch(
+      const user = await NetworkCall.fetch(
         Request.registerationUser(yname, emailId, phoneNo, YourBname, pasword)
       )
         .then((response) => {

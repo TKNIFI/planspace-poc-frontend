@@ -19,7 +19,6 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import planLogo from "../assets/images/plan.png";
-
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -99,14 +98,14 @@ export default function PrimarySearchAppBar() {
     handleMobileMenuClose();
   };
 
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("userInfo")
     history.push("/login")
   }
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -127,7 +126,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleLogout}>Log out</MenuItem>
+      <MenuItem onClick={handleLogout}>Log Out</MenuItem>
     </Menu>
   );
 
