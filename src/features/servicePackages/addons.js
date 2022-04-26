@@ -12,11 +12,12 @@ const ButtonStyle = {
   p: 2,
   textTransform: "capitalize",
 };
-const ServicePack = () => {
+
+const Addons = () => {
   return (
     <>
       <Box sx={{ flexGrow: 1, display: "inline" }}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} >
           <Grid item xs={8}>
             <Button sx={ButtonStyle}>
               <Stack spacing={4} direction="row">
@@ -41,22 +42,15 @@ const ServicePack = () => {
             </Button>
           </Grid>
           <Grid item xs={4}>
-            <Button
-              variant="contained"
-              sx={{ textTransform: "capitalize"}}
-            >
+            <Button variant="contained" sx={{ textTransform: "capitalize"}}>
               <AddIcon /> Add new
             </Button>
           </Grid>
         </Grid>
       </Box>
       {/* cards */}
-
-      <Box sx={{ mt: 3 }}>
-        <PremiumPackCard />
-      </Box>
     </>
   );
 };
 
-export default ServicePack;
+export default Addons;

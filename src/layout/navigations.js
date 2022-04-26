@@ -30,6 +30,10 @@ const childrenForServicePackages = (basePath) =>[
     path: `${basePath}/Packages`,
     name: "Packages",
   },
+  {
+    path: `${basePath}/AddOns`,
+    name: "Add-Ons",
+  },
 ]
 const navigations = [
   {
