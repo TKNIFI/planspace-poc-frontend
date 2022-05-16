@@ -11,7 +11,7 @@ export default function LoggedInPageLayout({ children }) {
   return (
     <>
       <AppHeader />
-      <Layout style={{ minHeight: "90vh" }}>
+      <Layout style={{ minHeight: "150vh" }}>
         <Layout className={styles["site-layout"]}>
           <Sider />
           <Content style={{ margin: "0 16px" }}>

@@ -117,7 +117,7 @@ function AddCompanyfrom({sendChildToParent}) {
               sx={{
                 float: "right",
                 borderColor: "lightslategray",
-                borderStyle: "dotted",
+                borderStyle: "solid",
                 padding: "50px",
               }}
             >
