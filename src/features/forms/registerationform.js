@@ -8,7 +8,9 @@ import User from "../../models/user/user";
 import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
+import SocialButton from "../login/components/SocialButton";
 import CircularProgress from "@mui/material/CircularProgress";
+import GoogleIcon from "@mui/icons-material/Google";
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -62,6 +64,22 @@ const RegisterationForm = () => {
       onFinish(values);
     },
   });
+  const handleGoogleLogin = async (user) => {
+    let formData = new FormData();
+    formData.append("access_token", user._token.accessToken);
+    await axios
+      .post("https://planspace.herokuapp.com/api/auth/login/google/", formData)
+      .then((response) => {
+        const data = response.data;
+        localStorage.setItem("userInfo", JSON.stringify(data));
+        history.push("/companyprofile/company");
+      })
+      .catch((error) => alert(error.message));
+  };
+
+  const handleSocialLoginFailure = (err) => {
+    console.error(err);
+  };
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -150,6 +168,19 @@ const RegisterationForm = () => {
           >
             Create Account
           </Button>
+          <Typography sx={{ variant: "body1", color: "gray" }}>
+            Or login using
+          </Typography>
+          <Box>
+            <SocialButton
+              provider="google"
+              appId="252238412999-q66jdhb3c9ne04sosvuqf6laq08gqkld.apps.googleusercontent.com"
+              onLoginSuccess={handleGoogleLogin}
+              onLoginFailure={handleSocialLoginFailure}
+            >
+              <GoogleIcon fontSize="large" />
+            </SocialButton>
+          </Box>
           <Typography sx={{ variant: "body1", color: "gray" }}>
             Already have an account? <Link to="/login">Signin here</Link>
           </Typography>

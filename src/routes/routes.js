@@ -12,6 +12,7 @@ import K from "../utilities/constants";
 import Companies from "../features/companies/companies";
 import ServicePack from "../features/servicePackages/servicePacakges";
 import Addons from "../features/servicePackages/addons";
+import TeamInvitation from "../features/TeamMemberInvitation/teamMemberInvitation";
 // Template for a route
 // {
 //   path: '/login',
@@ -41,16 +42,16 @@ const routes = [
     component: Register,
     layout: GuestPageLayout,
   },
+  // {
+  //   path: "/Company Profile/Company Settings",
+  //   name: "companySettings",
+  //   component: Companies,
+  //   authenticated: false,
+  //   roles: [K.Roles.Admin],
+  //   layout: LoggedInPageLayout,
+  // },
   {
-    path: "/Company Profile/Company Settings",
-    name: "companySettings",
-    component: Companies,
-    authenticated: false,
-    roles: [K.Roles.Admin],
-    layout: LoggedInPageLayout,
-  },
-  {
-    path: "/Company Profile/locations",
+    path: "/Company Settings/locations",
     name: "Locations",
     component: Locations,
     authenticated: false,
@@ -73,15 +74,21 @@ const routes = [
   //   authenticated: true,
   // },
   {
-    path: "/service Package/Packages",
+    path: "/Company Settings/Packages",
     name: "Service Package",
     component: ServicePack,
     layout: LoggedInPageLayout,
   },
   {
-    path: "/service Package/AddOns",
+    path: "/Company Settings/AddOns",
     name: "Service Package",
     component: Addons,
+    layout: LoggedInPageLayout,
+  },
+  {
+    path: "/Company Settings/Team",
+    name: "Service Package",
+    component: TeamInvitation,
     layout: LoggedInPageLayout,
   },
   {

@@ -3,9 +3,10 @@ import K from "../utilities/constants";
 import {
   InsertRowLeftOutlined,
   TeamOutlined,
-  ContactsOutlined,
-  ShoppingOutlined,
+  RetweetOutlined,
   DesktopOutlined,
+  TableOutlined,
+  BookOutlined,
 } from "@ant-design/icons";
 
 // Template a navigation item
@@ -18,14 +19,11 @@ import {
 // }
 
 const childrenForCompanyProfile = (basePath) => [
-  {
-    path: `${basePath}/Company Settings`,
-    name: "Company Settings",
-  },
+  // {
+  //   path: `${basePath}/Company Settings`,
+  //   name: "Company Settings",
+  // },
   { path: `${basePath}/locations`, name: "Locations" },
-];
-
-const childrenForServicePackages = (basePath) =>[
   {
     path: `${basePath}/Packages`,
     name: "Packages",
@@ -34,36 +32,81 @@ const childrenForServicePackages = (basePath) =>[
     path: `${basePath}/AddOns`,
     name: "Add-Ons",
   },
-]
+  {
+    path: `${basePath}/Team`,
+    name: "Invite Team Members",
+  },
+];
+
+// const childrenForServicePackages = (basePath) =>[
+//   {
+//     path: `${basePath}/Packages`,
+//     name: "Packages",
+//   },
+//   {
+//     path: `${basePath}/AddOns`,
+//     name: "Add-Ons",
+//   },
+// ]
+
+const childrenForIntegration = (basePath) => [
+  {
+    path: `${basePath}/website`,
+    name: "Website",
+  },
+  {
+    path: `${basePath}/link Stripe`,
+    name: "Link Stripe",
+  },
+];
+
+const childrenForSubscription = (basePath) => [
+  {
+    path: `${basePath}/PaymentMethod`,
+    name: "Add Payment Method",
+  },
+];
 const navigations = [
   {
-    name: "Company Profile",
-    path: "/Company Profile",
+    name: "Dashboard",
+    path: "/",
+    icon: <TableOutlined />,
+  },
+  {
+    name: "Events",
+    path: "/",
+    icon: <BookOutlined />,
+  },
+  {
+    name: "Company Settings",
+    path: "/Company Settings",
     icon: <InsertRowLeftOutlined />,
     roles: [K.Roles.Admin],
-    children: childrenForCompanyProfile("/Company Profile"),
+    children: childrenForCompanyProfile("/Company Settings"),
   },
+  // {
+  //   name: "Service Package",
+  //   icon: <ShoppingOutlined />,
+  //   path: "/service Package",
+  //   roles: [K.Roles.Admin],
+  //   children: childrenForServicePackages("/service Package"),
+  // },
   {
-    name: "Service Package",
-    icon: <ShoppingOutlined />,
-    path: "/service Package",
-    roles: [K.Roles.Admin],
-    children: childrenForServicePackages("/service Package"),
-  },
-  {
-    name: "Website integration",
+    name: "Integration",
     path: "/",
     icon: <DesktopOutlined />,
+    children: childrenForIntegration("/Integration"),
   },
   {
-    name: "Teams",
+    name: "Subscription",
     path: "/",
     icon: <TeamOutlined />,
+    children: childrenForSubscription("/Subscription"),
   },
   {
-    name: "Contact Us",
+    name: "FAQ",
     path: "/",
-    icon: <ContactsOutlined />,
+    icon: <RetweetOutlined />,
   },
 ];
 
