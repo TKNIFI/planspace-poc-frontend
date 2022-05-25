@@ -1,27 +1,28 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { useFormik } from "formik";
 import { Box, Grid, Button, Typography, TextField } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
-import { Link, useHistory
- } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
-import User from "../../../../models/user/user";
+// import User from "../../../../models/user/user";
 import { useDispatch } from "react-redux";
-import CircularProgress from '@mui/material/CircularProgress';
-
-const LoginForm = () => {
+import CircularProgress from "@mui/material/CircularProgress";
+const PasswordResetForm = () => {
   let history = useHistory();
   const dispatch = useDispatch();
   const onFinish = async (values) => {
-    let formData = new FormData()
-    formData.append("email", values.email)
-    formData.append("password", values.password)
-    await axios.post("https://planspace.herokuapp.com/api/auth/login/", formData).then(response => {
-      const data = response.data.data
-      localStorage.setItem("userInfo", JSON.stringify(data))
-      history.push("/companyprofile/company")
-    }).catch(error => alert(error.message))
+    let formData = new FormData();
+    formData.append("email", values.email);
+    formData.append("password", values.password);
+    await axios
+      .post("https://planspace.herokuapp.com/api/auth/login/", formData)
+      .then((response) => {
+        const data = response.data.data;
+        localStorage.setItem("userInfo", JSON.stringify(data));
+        history.push("/companyprofile/company");
+      })
+      .catch((error) => alert(error.message));
     // await dispatch(User.loginCall(formData));
   };
   const formik = useFormik({
@@ -63,32 +64,27 @@ const LoginForm = () => {
               <span>{formik.errors.email}</span>
             </MuiAlert>
           ) : null}
-          <TextField
-            id="password"
-            label="Create password"
-            type="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            sx={{ width: "100%" }}
-          />
-          {formik.touched.password && formik.errors.password ? (
-            <MuiAlert severity="error">
-              <span>{formik.errors.password}</span>
-            </MuiAlert>
-          ) : null}
         </Box>
         <Box className="container">
-          <Button
-            sx={{ mb: 2, paddingLeft: "50px", paddingRight: "50px",textTransform:"capitalize" }}
+          <Link to="/pwdresetmail"><Button
+            sx={{
+              mb: 2,
+              mt: 3,
+              paddingLeft: "70px",
+              paddingRight: "70px",
+              pt: 2,
+              pb: 2,
+              textTransform: "capitalize",
+            }}
             variant="contained"
             type="submit"
           >
-            Log in
-          </Button>
-          <Typography>
-            <Link to="/forgotpassword">Forgot Username / Password?</Link>
+            Send instructions
+          </Button></Link>
+          <Typography sx={{ mt: 4 }}>
+            <Link to="/login">Remembered your password? login here</Link>
           </Typography>
-          <Typography sx={{ variant: "body1", color: "gray", mt: 2 }}>
+          <Typography sx={{ variant: "body1", color: "gray", mt:7, mb:0 }}>
             Do not have an account? <Link to="/register">Signup here</Link>
           </Typography>
         </Box>
@@ -97,4 +93,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default PasswordResetForm;

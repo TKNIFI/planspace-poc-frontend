@@ -13,6 +13,8 @@ import Companies from "../features/companies/companies";
 import ServicePack from "../features/servicePackages/servicePacakges";
 import Addons from "../features/servicePackages/addons";
 import TeamInvitation from "../features/TeamMemberInvitation/teamMemberInvitation";
+import ResetPassword from "../features/login/resetPassword";
+import PasswordResetMail from "../features/login/passwordResetMail";
 // Template for a route
 // {
 //   path: '/login',
@@ -42,6 +44,18 @@ const routes = [
     component: Register,
     layout: GuestPageLayout,
   },
+  {
+    path: "/forgotpassword",
+    name: "Forgot Password",
+    component: ResetPassword,
+    layout: GuestPageLayout,
+  },
+  // {
+  //   path: "/pwdresetmail",
+  //   name: "Password Reset Mail",
+  //   component: PasswordResetMail,
+  //   layout: GuestPageLayout,
+  // },
   // {
   //   path: "/Company Profile/Company Settings",
   //   name: "companySettings",
