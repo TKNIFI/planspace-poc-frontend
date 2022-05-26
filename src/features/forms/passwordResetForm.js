@@ -8,7 +8,7 @@ import * as Yup from "yup";
 // import User from "../../../../models/user/user";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
-const PasswordResetForm = () => {
+const PasswordResetForm = ({ onSubmiting }) => {
   let history = useHistory();
   const dispatch = useDispatch();
   const onFinish = async (values) => {
@@ -66,7 +66,7 @@ const PasswordResetForm = () => {
           ) : null}
         </Box>
         <Box className="container">
-          <Link to="/pwdresetmail"><Button
+          <Button
             sx={{
               mb: 2,
               mt: 3,
@@ -78,13 +78,17 @@ const PasswordResetForm = () => {
             }}
             variant="contained"
             type="submit"
+            onClick={() => {
+              onSubmiting(true);
+            }}
           >
             Send instructions
-          </Button></Link>
+          </Button>
+
           <Typography sx={{ mt: 4 }}>
             <Link to="/login">Remembered your password? login here</Link>
           </Typography>
-          <Typography sx={{ variant: "body1", color: "gray", mt:7, mb:0 }}>
+          <Typography sx={{ variant: "body1", color: "gray", mt: 7, mb: 0 }}>
             Do not have an account? <Link to="/register">Signup here</Link>
           </Typography>
         </Box>

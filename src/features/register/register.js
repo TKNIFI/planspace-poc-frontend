@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -12,11 +12,12 @@ import "swiper/modules/pagination/pagination.min.css";
 import { Pagination } from "swiper";
 import sliderImage from "../../assets/images/sliderImage.png";
 function Register() {
+  const [check, setCheck] = useState();
   return (
     <Grid container spacing={0} columns={16}>
       {/* carousal  */}
       <Grid item xs={8}>
-        <Paper sx={{height: "100%"}}>
+        <Paper sx={{ height: "100%" }}>
           <Swiper
             pagination={{
               dynamicBullets: true,
@@ -34,25 +35,32 @@ function Register() {
         </Paper>
       </Grid>
       {/* create account formik form  */}
-      {/* <RegisterSuccess/> */}
-      <Grid item xs={8}>
-        <Paper sx={{ height: "100%", p: 5 }}>
-          <Box>
-            <img src={planLogo} height="30px" width="170px" />
-          </Box>
-          <Box sx={{ mt: 3, p: 1 }}>
-            <Typography variant="h5" sx={{ color: "#003399" }}>
-              Welcome To PlanSpace
-            </Typography>
-            <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
-              Create your account by filling out below details
-            </Typography>
-          </Box>
-          <Box sx={{ mt: 2, p: 1 }}>
-            <RegisterationForm />
-          </Box>
-        </Paper>
-      </Grid>
+      {check ? (
+        <RegisterSuccess />
+      ) : (
+        <Grid item xs={8}>
+          <Paper sx={{ height: "100%", p: 5 }}>
+            <Box>
+              <img src={planLogo} height="30px" width="170px" />
+            </Box>
+            <Box sx={{ mt: 3, p: 1 }}>
+              <Typography variant="h5" sx={{ color: "#003399" }}>
+                Welcome To PlanSpace
+              </Typography>
+              <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
+                Create your account by filling out below details
+              </Typography>
+            </Box>
+            <Box sx={{ mt: 2, p: 1 }}>
+              <RegisterationForm
+                onSubmiting={(val) => {
+                  setCheck(val);
+                }}
+              />
+            </Box>
+          </Paper>
+        </Grid>
+      )}
     </Grid>
   );
 }

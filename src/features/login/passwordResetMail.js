@@ -31,6 +31,7 @@ export default function PasswordResetMail() {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
+              ml:15
             }}
           >
             <Typography variant="h5" sx={{ color: "#003399" }}>

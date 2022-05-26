@@ -14,7 +14,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-const RegisterationForm = () => {
+const RegisterationForm = ({onSubmiting}) => {
   let history = useHistory();
   const dispatch = useDispatch();
   const onFinish = async (values) => {
@@ -165,6 +165,7 @@ const RegisterationForm = () => {
             sx={{ mb: 2, paddingLeft: "50px", paddingRight: "50px" }}
             variant="contained"
             type="submit"
+            onClick={()=>{onSubmiting(true)}}
           >
             Create Account
           </Button>
