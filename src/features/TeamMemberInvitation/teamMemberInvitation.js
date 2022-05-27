@@ -17,6 +17,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddMemberForm from "../forms/addMemberForm";
 import { Space, Table, Checkbox } from "antd";
 import { EditOutlined, DeleteFilled } from "@ant-design/icons";
+import axios from "axios"
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -24,14 +25,14 @@ const columns = [
     {
         title: "Active",
         dataIndex: "Active",
-        key: "Active",
-        render: (_, record) => <Checkbox checked={record.Active}></Checkbox>,
+        key: "active",
+        render: (_, record) => <Checkbox checked={record.active}></Checkbox>,
     },
     {
         title: "Name",
         dataIndex: "name",
         key: "name",
-        render: (text) => <p>{text}</p>,
+        render: (_, record) => <p>{record.first_name + " " + record.last_name}</p>,
     },
     {
         title: "Access Location",
@@ -65,6 +66,20 @@ let data = [
 const TeamInvitation = () => {
     const [open, setOpen] = useState(false);
     const [tableRow, setTableRowData] = useState(data);
+
+    const getUsers = () => {
+        try {
+            await axios.get("https://planspace.herokuapp.com/api/auth/user/").then((result) => {
+                setTableRowData(result.response.data.results)
+            })
+        } catch (error) {
+            alert(error.response.data.message)
+        }
+    }
+
+    React.userEffect(() => {
+        getUsers()
+    }, [])
     const handleClickOpen = () => {
         setOpen(true);
     };
