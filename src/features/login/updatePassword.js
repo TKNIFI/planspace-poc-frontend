@@ -10,7 +10,6 @@ import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
 import "swiper/swiper.min.css";
 import "swiper/modules/pagination/pagination.min.css";
 import { Pagination } from "swiper";
-import SocialButton from "./components/SocialButton";
 import sliderImage from "../../assets/images/sliderImage.png";
 import PasswordResetForm from "../forms/passwordResetForm";
 import PasswordResetMail from "../login/passwordResetMail";

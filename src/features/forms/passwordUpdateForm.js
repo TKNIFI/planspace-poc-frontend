@@ -8,7 +8,7 @@ import * as Yup from "yup";
 // import User from "../../../../models/user/user";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
-const PasswordResetForm = ({ onSubmiting }) => {
+const PasswordUpdateForm = ({ onSubmiting }) => {
   let history = useHistory();
   const dispatch = useDispatch();
   const onFinish = async (values) => {
@@ -96,4 +96,4 @@ const PasswordResetForm = ({ onSubmiting }) => {
   );
 };
 
-export default PasswordResetForm;
+export default PasswordUpdateForm;

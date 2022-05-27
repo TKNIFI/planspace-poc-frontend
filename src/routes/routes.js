@@ -100,7 +100,7 @@ const routes = [
     layout: LoggedInPageLayout,
   },
   {
-    path: "/Company Settings/Team",
+    path: "/Company/Settings/Team",
     name: "Service Package",
     component: TeamInvitation,
     layout: LoggedInPageLayout,
