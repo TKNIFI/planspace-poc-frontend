@@ -35,10 +35,10 @@ const RegisterationForm = ({ onSubmiting }) => {
                 localStorage.setItem("userInfo", JSON.stringify(data));
                 onSubmiting(true);
             })
-            .catch((error) => alert(error.message))
-            .finally(() => {
-                onSubmiting(true);
-            });
+            .catch((error) => alert(error.message));
+        // .finally(() => {
+        //     onSubmiting(true);
+        // });
         // await dispatch(
         //     User.registerationCall(
         //         values.yname,

@@ -1,16 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import { useFormik } from "formik";
-import { Box, Grid, Button, Typography, TextField } from "@mui/material";
+import { Box, Button, Typography, TextField } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 // import User from "../../../../models/user/user";
-import { useDispatch } from "react-redux";
-import CircularProgress from "@mui/material/CircularProgress";
 const PasswordResetForm = ({ onSubmiting }) => {
-    let history = useHistory();
-    const dispatch = useDispatch();
     const onFinish = async (values) => {
         console.log(values);
 
@@ -24,12 +20,10 @@ const PasswordResetForm = ({ onSubmiting }) => {
             .then((response) => {
                 const data = response.data.data;
                 localStorage.setItem("userInfo", JSON.stringify(data));
-                history.push("/companyprofile/company");
-            })
-            .catch((error) => alert(error.message))
-            .finally(() => {
+                // history.push("/companyprofile/company");
                 onSubmiting(true);
-            });
+            })
+            .catch((error) => alert(error.message));
         // await dispatch(User.loginCall(formData));
     };
     const formik = useFormik({
