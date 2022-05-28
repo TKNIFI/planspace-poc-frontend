@@ -57,7 +57,6 @@ function Register() {
                         <Box sx={{ mt: 2, p: 1 }}>
                             <RegisterationForm
                                 onSubmiting={(val) => {
-                                    console.log(val);
                                     setCheck(val);
                                 }}
                             />
