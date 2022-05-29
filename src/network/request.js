@@ -53,7 +53,7 @@ export default class Request {
             last_name: yname,
             email: emailId,
             mobile: phoneNo,
-            YourBname,
+            company: YourBname,
             password: pasword,
         };
         return new Request(
