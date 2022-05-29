@@ -19,6 +19,7 @@ import AddMemberForm from "../forms/addMemberForm";
 import { Space, Table, Checkbox, Popconfirm, Typography } from "antd";
 import { EditOutlined, DeleteFilled } from "@ant-design/icons";
 import axios from "axios";
+import myApi from '../../network/axios'
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -32,7 +33,7 @@ let data = [
 ];
 const TeamInvitation = () => {
     const [open, setOpen] = useState(false);
-    const [tableRow, setTableRowData] = useState(data);
+    const [tableRow, setTableRowData] = useState([]);
     const [editRecord, setEditRecord] = useState(null);
     const handleClickOpen = () => {
         setOpen(true);
@@ -40,15 +41,18 @@ const TeamInvitation = () => {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleDelete = (uid) => {
-        const newData = tableRow.filter((item) => item.userId !== uid);
-        setTableRowData(newData);
+    async function handleDelete (uid) {
+        console.log("uid", uid)
+        await myApi.delete(`api/auth/user/${uid}/`).then((result) => {
+            alert(result.data.message)
+            getUsers()
+        })
     };
 
     const columns = [
         {
             title: "Active",
-            dataIndex: "Active",
+            dataIndex: "active",
             key: "active",
             render: (_, record) => (
                 <Checkbox checked={record.active}></Checkbox>
@@ -58,7 +62,12 @@ const TeamInvitation = () => {
             title: "Name",
             dataIndex: "name",
             key: "name",
-            render: (_, record) => <p>{record.name}</p>,
+            render: (_, record) => <p>{record.first_name ? record.first_name : "" + " " + record.last_name ? record.last_name : ""}</p>,
+        },
+        {
+            title: "Email Address",
+            dataIndex: "email",
+            key: "email",
         },
         {
             title: "Access Location",
@@ -84,9 +93,7 @@ const TeamInvitation = () => {
                                 {tableRow.length >= 1 ? (
                                     <Popconfirm
                                         title="Sure to delete?"
-                                        onConfirm={() =>
-                                            handleDelete(record.userId)
-                                        }
+                                        onConfirm={() =>handleDelete(record.id)}
                                     >
                                         <a>
                                             <DeleteFilled />
@@ -103,13 +110,14 @@ const TeamInvitation = () => {
 
     const getUsers = async () => {
         try {
-            await axios
+            await myApi
                 .get("https://planspace.herokuapp.com/api/auth/user/")
                 .then((result) => {
-                    setTableRowData(result.response.data.results);
+                    console.log("result ", result)
+                    setTableRowData(result.data.results)
                 });
         } catch (error) {
-            alert(error.response.data.message);
+            alert(error.response?.data?.message);
         }
     };
 
@@ -135,7 +143,7 @@ const TeamInvitation = () => {
             </Box>
             {/* table */}
             <Box sx={{ marginTop: 2 }}>
-                <Table columns={columns} dataSource={tableRow} />
+                {tableRow ? <Table columns={columns} dataSource={tableRow} /> : "Loading . . . "}
             </Box>
             {/* Model html */}
             <Dialog

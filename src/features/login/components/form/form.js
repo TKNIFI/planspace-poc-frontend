@@ -14,14 +14,6 @@ const LoginForm = () => {
   let history = useHistory();
   const dispatch = useDispatch();
   const onFinish = async (values) => {
-    let formData = new FormData()
-    formData.append("email", values.email)
-    formData.append("password", values.password)
-    await axios.post("https://planspace.herokuapp.com/api/auth/login/", formData).then(response => {
-      const data = response.data.data
-      localStorage.setItem("userInfo", JSON.stringify(data))
-      history.push("/companyprofile/company")
-    }).catch(error => alert(error.message))
     // await dispatch(User.loginCall(formData));
   };
   const formik = useFormik({
@@ -38,8 +30,33 @@ const LoginForm = () => {
         .min(8, "Password is too short - should be 8 chars minimum.")
         .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
     }),
-    onSubmit: (values) => {
-      onFinish(values);
+    onSubmit: async (values, helpers) => {
+    let formData = new FormData()
+    formData.append("email", values.email)
+    formData.append("password", values.password)
+    await axios.post("https://planspace.herokuapp.com/api/auth/login/", formData).then(response => {
+      const data = response.data.data
+      localStorage.setItem("userInfo", JSON.stringify(data))
+      history.push("/")
+    }).catch(error => {
+      if (typeof error.response.data.message === Object) {
+          for (const [key, value] of Object.entries(
+              error.response.data.message
+          )) {
+              formik.setFieldError(key, value[0]);
+
+              formik.setFieldTouched(key, true);
+          }
+      } else if (error.response.data.message.non_field_errors) {
+          error.response.data.message.errors.map((error) =>
+              helpers.setErrors({ submit: error })
+          );
+      } else {
+          helpers.setErrors({ submit: error.response.data.message[0] });
+      }
+      helpers.setStatus({ success: false });
+      helpers.setSubmitting(false);
+    })
     },
   });
   return (
@@ -77,6 +94,13 @@ const LoginForm = () => {
             </MuiAlert>
           ) : null}
         </Box>
+        {formik.errors.submit && (
+        <Box sx={{ mt: 2, mb: 2 }}>
+          <MuiAlert severity="error" style={{ fontSize: 16 }}>
+            {formik.errors.submit}
+          </MuiAlert>
+        </Box>
+      )}
         <Box className="container">
           <Button
             sx={{ mb: 2, paddingLeft: "50px", paddingRight: "50px",textTransform:"capitalize" }}
