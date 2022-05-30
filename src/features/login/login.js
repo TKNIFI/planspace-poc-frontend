@@ -27,29 +27,29 @@ export default function Login() {
     history.replace(from);
   };
 
-  const handleFacebookLogin = async (user) => {
-    let formData = new FormData()
-    formData.append("access_token", user._token.accessToken)
-    await axios.post("https://planspace.herokuapp.com/api/auth/login/facebook/", formData).then(response => {
-      const data = response.data
-      localStorage.setItem("userInfo", JSON.stringify(data))
-      history.push("/companyprofile/company")
-    }).catch(error => alert(error.message))
-  };
+  // const handleFacebookLogin = async (user) => {
+  //   let formData = new FormData()
+  //   formData.append("access_token", user._token.accessToken)
+  //   await axios.post("https://planspace.herokuapp.com/api/auth/login/facebook/", formData).then(response => {
+  //     const data = response.data
+  //     localStorage.setItem("userInfo", JSON.stringify(data))
+  //     history.push("/companyprofile/company")
+  //   }).catch(error => alert(error.message))
+  // };
 
-  const handleGoogleLogin = async (user) => {
-    let formData = new FormData()
-    formData.append("access_token", user._token.accessToken)
-    await axios.post("https://planspace.herokuapp.com/api/auth/login/google/", formData).then(response => {
-      const data = response.data
-      localStorage.setItem("userInfo", JSON.stringify(data))
-      history.push("/companyprofile/company")
-    }).catch(error => alert(error.message))
-  };
+  // const handleGoogleLogin = async (user) => {
+  //   let formData = new FormData()
+  //   formData.append("access_token", user._token.accessToken)
+  //   await axios.post("https://planspace.herokuapp.com/api/auth/login/google/", formData).then(response => {
+  //     const data = response.data
+  //     localStorage.setItem("userInfo", JSON.stringify(data))
+  //     history.push("/companyprofile/company")
+  //   }).catch(error => alert(error.message))
+  // };
 
-  const handleSocialLoginFailure = (err) => {
-    console.error(err);
-  };
+  // const handleSocialLoginFailure = (err) => {
+  //   console.error(err);
+  // };
 
   return (
     <>
@@ -87,7 +87,7 @@ export default function Login() {
                 Login to your account by filling out below details
               </Typography>
             </Box>
-            <SocialButton
+            {/* <SocialButton
               provider="facebook"
               appId="1042967406622137"
               onLoginSuccess={handleFacebookLogin}
@@ -102,7 +102,7 @@ export default function Login() {
               onLoginFailure={handleSocialLoginFailure}
             >
               Login with Google
-            </SocialButton>
+            </SocialButton> */}
             <Box sx={{ mt: 2, p: 1 }}>
               <LoginForm />
             </Box>

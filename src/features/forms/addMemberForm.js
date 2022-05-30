@@ -1,29 +1,20 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Grid, Box } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Button as Muibtn } from "@mui/material";
-import Switch from "@mui/material/Switch";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import { styled } from "@mui/material/styles";
 import MuiAlert from "@mui/material/Alert";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Company from "../../models/company/company";
-const Input = styled("input")({
-  display: "none",
-});
+import myApi from '../../network/axios'
 
-const AddMemberForm = ({ formValues, handleClose }) => {
+const AddMemberForm = ({ editRecordValues, formValues, handleClose }) => {
   const formik = useFormik({
     initialValues: {
       name: "",
       userId: "",
       email: "",
-      phone: "",
+      mobile: "",
       address: "",
     },
     validationSchema: Yup.object({
@@ -39,10 +30,11 @@ const AddMemberForm = ({ formValues, handleClose }) => {
         .integer(),
       address: Yup.string().required("Address is required"),
     }),
-    onSubmit: (values) => {
-      formValues(values);
+    onSubmit: async (values, helpers) => {
+      await myApi.post("api/auth/user/", values)
     },
   });
+  console.log(editRecordValues)
   return (
     <>
       <form onSubmit={formik.handleSubmit} style={{ padding: "2%" }}>
@@ -150,13 +142,31 @@ const AddMemberForm = ({ formValues, handleClose }) => {
               },
             }}
           >
-            <Stack spacing={2} direction="row" sx={{ marginTop: 10, marginLeft: 50 }}>
+            <Stack
+              spacing={2}
+              direction="row"
+              sx={{ marginTop: 10, marginLeft: 50 }}
+            >
               <Muibtn variant="outlined" onClick={() => handleClose(false)}>
                 Cancel
               </Muibtn>
-              <Muibtn variant="contained" type="submit">
-                Submit
-              </Muibtn>
+              {formik.values.name &&
+              formik.values.userId &&
+              formik.values.email &&
+              formik.values.phone &&
+              formik.errors.address !== "" ? (
+                <Muibtn
+                  variant="contained"
+                  onClick={() => handleClose(false)}
+                  type="submit"
+                >
+                  Submit
+                </Muibtn>
+              ) : (
+                <Muibtn variant="contained" type="submit">
+                  Submit
+                </Muibtn>
+              )}
             </Stack>
           </Box>
         </Box>

@@ -15,6 +15,7 @@ import Addons from "../features/servicePackages/addons";
 import TeamInvitation from "../features/TeamMemberInvitation/teamMemberInvitation";
 import ResetPassword from "../features/login/resetPassword";
 import PasswordResetMail from "../features/login/passwordResetMail";
+import ResetingPassword from "../features/resetingPassword/resetingPassword"
 // Template for a route
 // {
 //   path: '/login',
@@ -49,6 +50,12 @@ const routes = [
     name: "Forgot Password",
     component: ResetPassword,
     layout: GuestPageLayout,
+  },
+  {
+    path: "/account/change_password",
+    name: "reset password",
+    component: ResetingPassword,
+    layout: GuestPageLayout
   },
   // {
   //   path: "/pwdresetmail",
@@ -100,7 +107,7 @@ const routes = [
     layout: LoggedInPageLayout,
   },
   {
-    path: "/Company/Settings/Team",
+    path: "/Company Settings/Team",
     name: "Service Package",
     component: TeamInvitation,
     layout: LoggedInPageLayout,
