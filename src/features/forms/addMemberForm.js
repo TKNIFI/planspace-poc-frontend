@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import MuiAlert from "@mui/material/Alert";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import myApi from '../../network/axios'
 
 const AddMemberForm = ({ editRecordValues, formValues, handleClose }) => {
   const formik = useFormik({
@@ -13,7 +14,7 @@ const AddMemberForm = ({ editRecordValues, formValues, handleClose }) => {
       name: "",
       userId: "",
       email: "",
-      phone: "",
+      mobile: "",
       address: "",
     },
     validationSchema: Yup.object({
@@ -29,8 +30,8 @@ const AddMemberForm = ({ editRecordValues, formValues, handleClose }) => {
         .integer(),
       address: Yup.string().required("Address is required"),
     }),
-    onSubmit: (values) => {
-      formValues(values);
+    onSubmit: async (values, helpers) => {
+      await myApi.post("api/auth/user/", values)
     },
   });
   console.log(editRecordValues)
