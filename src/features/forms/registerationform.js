@@ -14,7 +14,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-const RegisterationForm = ({ onSubmiting }) => {
+const RegisterationForm = ({ onSubmiting, uid, token }) => {
     let history = useHistory();
     const dispatch = useDispatch();
     const formik = useFormik({
@@ -43,17 +43,11 @@ const RegisterationForm = ({ onSubmiting }) => {
                 ),
         }),
         onSubmit: async (values, helpers) => {
-            console.log("Val", values)
-            // const requestData = {
-            //     password: values.password,
-            //     email: values.email,
-            //     mobile: values.phoneNo,
-            //     first_name: values.yname,
-            //     company_name: values.YourBname,
-            // };
             let formData = new FormData()
             let name = values.first_name.split(" ")
             formData.append("email", values.email)
+            formData.append("uid", uid)
+            formData.append("token", token)
             formData.append("mobile", values.mobile)
             formData.append("company_name", values.company_name)
             formData.append("password", values.password)

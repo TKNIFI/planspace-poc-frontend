@@ -1,5 +1,5 @@
 import React from "react";
-// import axios from "axios";
+import axios from "axios";
 import { useFormik } from "formik";
 import { Box, Button, TextField } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
@@ -9,7 +9,7 @@ import * as Yup from "yup";
 // import { useDispatch } from "react-redux";
 // import CircularProgress from "@mui/material/CircularProgress";
 
-const ResetingPasswordForm = ({ checkFormValues ,onSubmiting }) => {
+const ResetingPasswordForm = ({ checkFormValues ,onSubmiting, uid, token }) => {
   const formik = useFormik({
     initialValues: {
       newpassword: "",
@@ -25,8 +25,13 @@ const ResetingPasswordForm = ({ checkFormValues ,onSubmiting }) => {
         .min(8, "Password is too short - should be 8 chars minimum.")
         .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      let formData = new FormData()
+      formData.append("uid", uid)
+      formData.append("token", token)
+      formData.append("password", values.newpassword)
+      formData.append("confirm_password", values.confirmpassword)
+      await axios.post("https://planspace.herokuapp.com/api/auth/password_reset/confirm/", formData)
     },
   });
   return (
