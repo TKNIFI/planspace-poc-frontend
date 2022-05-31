@@ -123,6 +123,7 @@ export default function PrimarySearchAppBar() {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      sx={{ml:37,mt:5}}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
@@ -146,6 +147,7 @@ export default function PrimarySearchAppBar() {
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
+      sx={{ml:20,mt:5}}
     >
       <MenuItem>
         <IconButton size="large" aria-label="show 17 new notifications">
