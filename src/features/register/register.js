@@ -26,30 +26,27 @@ function Register() {
   const [userDetails, setUserDetails] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-  function useQuery() {
-    const { search } = useLocation();
-    return React.useMemo(() => new URLSearchParams(search), [search]);
-  }
-  let query = useQuery();
-  const uid = query.get("uid");
-  const token = query.get("token");
-  async function checkToken() {
-    await axios
-      .get(
-        `https://planspance.herokuapp.com/api/auth/user/invited/?uid=${uid}&token=${token}`
-      )
-      .then((result) => {
-        console.log("result", result?.data.data);
-        setIsValid(true);
-        setIsLoading(false);
-        setUserDetails(result?.data.data);
-      })
-      .catch((error) => {
-        setIsValid(false);
-        setIsLoading(false);
-        alert(error.response?.data.message);
-      });
-  }
+    function useQuery() {
+        const { search } = useLocation();
+        return React.useMemo(() => new URLSearchParams(search), [search]);
+    }
+    let query = useQuery();
+    const uid = query.get("uid")
+    const token = query.get("token")
+    async function checkToken() {
+        await axios.get(`https://planspace.herokuapp.com/api/auth/user/invited/?uid=${uid}&token=${token}`)
+            .then((result) => {
+                console.log("result", result.data.data)
+                setIsValid(true)
+                setIsLoading(false)
+                setUserDetails(result.data.data)
+            })
+            .catch((error) => {
+                setIsValid(false)
+                setIsLoading(false)
+                alert(error.response.data.message)
+            })
+    }
 
   useEffect(() => {
     checkToken();

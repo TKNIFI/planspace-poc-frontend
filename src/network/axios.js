@@ -18,7 +18,7 @@ let user_detail = user_data();
 const myApi = axios.create({
     baseURL: 'https://planspace.herokuapp.com/',
     headers: {
-        Authorization: `JWT ${user_detail?.access}`,
+        // Authorization: `JWT ${user_detail?.access}`,
         'content-type': 'application/json',
     },
 });
@@ -26,9 +26,8 @@ const myApi = axios.create({
 myApi.interceptors.request.use(
     (config) => {
         try {
-            const data = JSON.parse(localStorage.getItem('user-Info'));
-
-            config.headers.Authorization = `JWT ${user_detail?.access}`;
+            const data = JSON.parse(localStorage.getItem('userInfo'));
+            config.headers.Authorization = `JWT ${data?.access}`;
             return config;
         } catch {
             console.log('You are not LogIn');

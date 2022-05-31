@@ -7,17 +7,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import myApi from '../../network/axios'
 
-const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-
-const AddMemberForm = ({ handleClose, callBack }) => {
+const EditMemberForm = ({ editRecordValues, handleClose, callBack }) => {
   const formik = useFormik({
     initialValues: {
-      name: "",
-      userId: "",
-      email: "",
-      phone: "",
-      address: "",
+      name: editRecordValues?.first_name ? editRecordValues?.first_name : "" + " " + editRecordValues?.last_name ? editRecordValues?.last_name : "",
+      userId: editRecordValues?.email,
+      email: editRecordValues?.email,
+      mobile: editRecordValues?.mobile,
+      address: editRecordValues?.address,
     },
     validationSchema: Yup.object({
       // owner: Yup.string().required("owner is required"),
@@ -34,13 +31,22 @@ const AddMemberForm = ({ handleClose, callBack }) => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await myApi.post("api/auth/user/", values)
+        let formData = new FormData()
+        let name = values.name.split(" ")
+        formData.append("first_name", name[0])
+        if (name.length > 1) {
+          formData.append("last_name", name[1])
+        }
+        formData.append("email", values.email)
+        formData.append("address", values.address)
+        formData.append("mobile", values.mobile)
+        await myApi.put(`api/auth/user/${editRecordValues?.id}/`, formData)
         handleClose(false)
         callBack()
       } catch (error) {
+        handleClose(true)
         helpers.setErrors({ submit: error.data.message })
         helpers.setSubmitting(false)
-        handleClose(true)
       }
 
     },
@@ -61,10 +67,13 @@ const AddMemberForm = ({ handleClose, callBack }) => {
                 label="Name"
                 type="text"
                 value={formik.values.name}
-                error={Boolean(formik.touched.name && formik.errors.name)}
-                helperText={formik.touched.name && formik.errors.name}
                 onChange={formik.handleChange}
-                autoFocus="true"
+                error={Boolean(
+                  formik.touched.name && formik.errors.name
+                )}
+                helperText={
+                  formik.touched.name && formik.errors.name
+                }
               // autoComplete="current"
               />
             </Grid>
@@ -74,9 +83,13 @@ const AddMemberForm = ({ handleClose, callBack }) => {
                 label="User ID"
                 type="text"
                 value={formik.values.userId}
-                error={Boolean(formik.touched.userId && formik.errors.userId)}
-                helperText={formik.touched.userId && formik.errors.userId}
                 onChange={formik.handleChange}
+                error={Boolean(
+                  formik.touched.userId && formik.errors.userId
+                )}
+                helperText={
+                  formik.touched.userId && formik.errors.userId
+                }
               // autoComplete="current"
               />
             </Grid>
@@ -86,9 +99,13 @@ const AddMemberForm = ({ handleClose, callBack }) => {
                 label="Email"
                 type="text"
                 value={formik.values.email}
-                error={Boolean(formik.touched.email && formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
                 onChange={formik.handleChange}
+                error={Boolean(
+                  formik.touched.email && formik.errors.email
+                )}
+                helperText={
+                  formik.touched.email && formik.errors.email
+                }
               // autoComplete="current"
               />
             </Grid>
@@ -97,7 +114,7 @@ const AddMemberForm = ({ handleClose, callBack }) => {
                 id="mobile"
                 label="Phone Number"
                 type="text"
-                value={formik.values.mobile}
+                value={formik.values.phone}
                 onChange={formik.handleChange}
                 error={Boolean(
                   formik.touched.mobile && formik.errors.mobile
@@ -123,11 +140,13 @@ const AddMemberForm = ({ handleClose, callBack }) => {
                   label="Address"
                   type="text"
                   value={formik.values.address}
+                  onChange={formik.handleChange}
                   error={Boolean(
                     formik.touched.address && formik.errors.address
                   )}
-                  helperText={formik.touched.address && formik.errors.address}
-                  onChange={formik.handleChange}
+                  helperText={
+                    formik.touched.address && formik.errors.address
+                  }
                 // autoComplete="current"
                 />
               </Grid>
@@ -168,4 +187,4 @@ const AddMemberForm = ({ handleClose, callBack }) => {
   );
 };
 
-export default AddMemberForm;
+export default EditMemberForm;
