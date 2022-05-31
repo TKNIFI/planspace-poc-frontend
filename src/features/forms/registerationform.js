@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import SocialButton from "../login/components/SocialButton";
 import CircularProgress from "@mui/material/CircularProgress";
+import gmailLogo from "../../assets/images/gmailLogo.png";
 import GoogleIcon from "@mui/icons-material/Google";
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -232,7 +233,7 @@ const RegisterationForm = ({ onSubmiting, uid, token }) => {
               onLoginSuccess={handleGoogleLogin}
               onLoginFailure={handleSocialLoginFailure}
             >
-              <GoogleIcon fontSize="large" />
+              <img src={gmailLogo} height="45px" width="45px" />
             </SocialButton>
           </Box>
           <Typography sx={{ variant: "body1", color: "gray" }}>

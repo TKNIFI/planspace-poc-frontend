@@ -110,7 +110,7 @@ const LoginForm = () => {
               Forgot Username / Password?
             </Link>
           </Typography>
-          <Typography sx={{ variant: "body1", color: "gray", mt: 28 }}>
+          <Typography sx={{ variant: "body1", color: "gray", mt: 15 }}>
             Do not have an account?{" "}
             <Link to="/register" style={{ textDecoration: "underline" }}>
               Signup here
