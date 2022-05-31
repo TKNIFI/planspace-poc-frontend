@@ -1,0 +1,17 @@
+.ant-table-thead> tr >th{
+  background-color: lightgray;
+  font-weight: bolder;
+  font-size: medium;
+}
+.ant-table{
+  border-bottom: none;
+}
+.ant-table-tbody> tr >td{
+  font-size: 18px;
+}
+.ant-table-tbody> tr:nth-child(2n){
+  background-color: lightgray;
+}
+.ant-table-tbody> tr:nth-child(2n+1){
+  background-color: white;
+}

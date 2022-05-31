@@ -3,18 +3,18 @@ import { Grid, Box } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Button as Muibtn } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import MuiAlert from "@mui/material/Alert";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import myApi from '../../network/axios'
-
+import myApi from "../../network/axios";
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const AddMemberForm = ({ editRecordValues, formValues, handleClose }) => {
   const formik = useFormik({
     initialValues: {
       name: "",
       userId: "",
       email: "",
-      mobile: "",
+      phone: "",
       address: "",
     },
     validationSchema: Yup.object({
@@ -24,17 +24,14 @@ const AddMemberForm = ({ editRecordValues, formValues, handleClose }) => {
         .required("Name is required"),
       userId: Yup.string().required("user id is required"),
       email: Yup.string().email("Invalid email").required("Email is required"),
-      phone: Yup.number()
-        .required("Phone number is required")
-        .positive()
-        .integer(),
+      phone: Yup.string().matches(phoneRegExp, "Phone number is not valid").required("Phone number is required"),
       address: Yup.string().required("Address is required"),
     }),
     onSubmit: async (values, helpers) => {
-      await myApi.post("api/auth/user/", values)
+      await myApi.post("api/auth/user/", values);
     },
   });
-  console.log(editRecordValues)
+  console.log(editRecordValues);
   return (
     <>
       <form onSubmit={formik.handleSubmit} style={{ padding: "2%" }}>
@@ -50,14 +47,11 @@ const AddMemberForm = ({ editRecordValues, formValues, handleClose }) => {
                 label="Name"
                 type="text"
                 value={formik.values.name}
+                error={Boolean(formik.touched.name && formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
                 onChange={formik.handleChange}
-                // autoComplete="current"
+                autoFocus="true"
               />
-              {formik.touched.name && formik.errors.name ? (
-                <MuiAlert severity="error" sx={{ width: "70%" }}>
-                  <span>{formik.errors.name}</span>
-                </MuiAlert>
-              ) : null}
             </Grid>
             <Grid item xs={6}>
               <TextField
@@ -65,14 +59,10 @@ const AddMemberForm = ({ editRecordValues, formValues, handleClose }) => {
                 label="User ID"
                 type="text"
                 value={formik.values.userId}
+                error={Boolean(formik.touched.userId && formik.errors.userId)}
+                helperText={formik.touched.userId && formik.errors.userId}
                 onChange={formik.handleChange}
-                // autoComplete="current"
               />
-              {formik.touched.userId && formik.errors.userId ? (
-                <MuiAlert severity="error" sx={{ width: "70%" }}>
-                  <span>{formik.errors.userId}</span>
-                </MuiAlert>
-              ) : null}
             </Grid>
             <Grid item xs={6}>
               <TextField
@@ -80,14 +70,10 @@ const AddMemberForm = ({ editRecordValues, formValues, handleClose }) => {
                 label="Email"
                 type="text"
                 value={formik.values.email}
+                error={Boolean(formik.touched.email && formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
                 onChange={formik.handleChange}
-                // autoComplete="current"
               />
-              {formik.touched.email && formik.errors.email ? (
-                <MuiAlert severity="error" sx={{ width: "70%" }}>
-                  <span>{formik.errors.email}</span>
-                </MuiAlert>
-              ) : null}
             </Grid>
             <Grid item xs={6}>
               <TextField
@@ -95,14 +81,11 @@ const AddMemberForm = ({ editRecordValues, formValues, handleClose }) => {
                 label="Phone Number"
                 type="text"
                 value={formik.values.phone}
+                error={Boolean(formik.touched.phone && formik.errors.phone)}
+                helperText={formik.touched.phone && formik.errors.phone}
                 onChange={formik.handleChange}
-                // autoComplete="current"
+           
               />
-              {formik.touched.phone && formik.errors.phone ? (
-                <MuiAlert severity="error" sx={{ width: "70%" }}>
-                  <span>{formik.errors.phone}</span>
-                </MuiAlert>
-              ) : null}
             </Grid>
             <Box
               sx={{
@@ -119,14 +102,12 @@ const AddMemberForm = ({ editRecordValues, formValues, handleClose }) => {
                   label="Address"
                   type="text"
                   value={formik.values.address}
+                  error={Boolean(
+                    formik.touched.address && formik.errors.address
+                  )}
+                  helperText={formik.touched.address && formik.errors.address}
                   onChange={formik.handleChange}
-                  // autoComplete="current"
                 />
-                {formik.touched.address && formik.errors.address ? (
-                  <MuiAlert severity="error" sx={{ width: "70%" }}>
-                    <span>{formik.errors.address}</span>
-                  </MuiAlert>
-                ) : null}
               </Grid>
             </Box>
           </Grid>

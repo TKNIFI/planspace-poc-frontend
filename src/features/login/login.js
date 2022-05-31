@@ -77,13 +77,13 @@ export default function Login() {
         <Grid item xs={8}>
           <Paper sx={{ height: "100%", p: 5 }}>
             <Box>
-              <img src={planLogo} height="30px" width="170px" />
+              <img src={planLogo} height="50px" width="220px" />
             </Box>
-            <Box sx={{ mt: 3, p: 1 }}>
-              <Typography variant="h5" sx={{ color: "#003399" }}>
+            <Box sx={{ mt: 7, p: 1 }}>
+              <Typography variant="h4" sx={{ color: "#003399" }}>
                 Welcome To PlanSpace
               </Typography>
-              <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
+              <Typography variant="span" sx={{ mt: 3, color: "gray",fontSize:"18px" }}>
                 Login to your account by filling out below details
               </Typography>
             </Box>
@@ -103,7 +103,7 @@ export default function Login() {
             >
               Login with Google
             </SocialButton> */}
-            <Box sx={{ mt: 2, p: 1 }}>
+            <Box sx={{ mt: 3, p: 1 }}>
               <LoginForm />
             </Box>
           </Paper>

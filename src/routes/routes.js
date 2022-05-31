@@ -46,7 +46,7 @@ const routes = [
     layout: GuestPageLayout,
   },
   {
-    path: "/forgotpassword",
+    path: "/forgot_password",
     name: "Forgot Password",
     component: ResetPassword,
     layout: GuestPageLayout,
@@ -72,7 +72,7 @@ const routes = [
   //   layout: LoggedInPageLayout,
   // },
   {
-    path: "/Company Settings/locations",
+    path: "/company_settings/locations",
     name: "Locations",
     component: Locations,
     authenticated: false,
@@ -95,19 +95,19 @@ const routes = [
   //   authenticated: true,
   // },
   {
-    path: "/Company Settings/Packages",
+    path: "/company_settings/packages",
     name: "Service Package",
     component: ServicePack,
     layout: LoggedInPageLayout,
   },
   {
-    path: "/Company Settings/AddOns",
+    path: "/company_settings/addons",
     name: "Service Package",
     component: Addons,
     layout: LoggedInPageLayout,
   },
   {
-    path: "/Company Settings/Team",
+    path: "/company_settings/team",
     name: "Service Package",
     component: TeamInvitation,
     layout: LoggedInPageLayout,
