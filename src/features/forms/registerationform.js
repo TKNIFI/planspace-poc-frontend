@@ -4,6 +4,7 @@ import "./registerationFrom.css";
 import { useFormik } from "formik";
 import { Box, Grid, Button, Typography, TextField } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import { green } from '@mui/material/colors';
 import User from "../../models/user/user";
 import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -17,6 +18,9 @@ const phoneRegExp =
 const RegisterationForm = ({ onSubmiting, uid, token }) => {
     let history = useHistory();
     const dispatch = useDispatch();
+    const [loading, setLoading] = React.useState(false);
+    const [success, setSuccess] = React.useState(false);
+    const timer = React.useRef();
     const formik = useFormik({
         initialValues: {
             first_name: "",
@@ -43,6 +47,7 @@ const RegisterationForm = ({ onSubmiting, uid, token }) => {
                 ),
         }),
         onSubmit: async (values, helpers) => {
+            setLoading(true)
             let formData = new FormData()
             let name = values.first_name.split(" ")
             formData.append("email", values.email)
@@ -80,9 +85,17 @@ const RegisterationForm = ({ onSubmiting, uid, token }) => {
                     }
                     helpers.setStatus({ success: false });
                     helpers.setSubmitting(false);
+                    setLoading(false)
                 });
         },
     });
+
+    React.useEffect(() => {
+        return () => {
+            clearTimeout(timer.current);
+        };
+    }, []);
+
     const handleGoogleLogin = async (user) => {
         let formData = new FormData();
         formData.append("access_token", user._token.accessToken);
@@ -114,73 +127,78 @@ const RegisterationForm = ({ onSubmiting, uid, token }) => {
                         id="first_name"
                         label="Enter Your name"
                         type="text"
+                        error={Boolean(
+                            formik.touched.first_name && formik.errors.first_name
+                          )}
+                          helperText={
+                            formik.touched.first_name && formik.errors.first_name
+                          }
                         value={formik.values.first_name}
                         onChange={formik.handleChange}
                         sx={{ width: "100%" }}
                     />
-                    {formik.touched.first_name && formik.errors.first_name ? (
-                        <MuiAlert severity="error">
-                            <span>{formik.errors.first_name}</span>
-                        </MuiAlert>
-                    ) : null}
                     <Grid container spacing={4}>
                         <Grid item xs={6}>
                             <TextField
                                 id="email"
                                 label="Enter Your Email Address"
                                 type="email"
+                                error={Boolean(
+                                    formik.touched.email && formik.errors.email
+                                  )}
+                                  helperText={
+                                    formik.touched.email && formik.errors.email
+                                  }
                                 value={formik.values.email}
                                 onChange={formik.handleChange}
                                 sx={{ width: "100%" }}
                             />
-                            {formik.touched.email && formik.errors.email ? (
-                                <MuiAlert severity="error">
-                                    <span>{formik.errors.email}</span>
-                                </MuiAlert>
-                            ) : null}
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
                                 id="mobile"
                                 label="Enter Your phone number"
                                 type="tel"
+                                error={Boolean(
+                                    formik.touched.mobile && formik.errors.mobile
+                                  )}
+                                  helperText={
+                                    formik.touched.mobile && formik.errors.mobile
+                                  }
                                 value={formik.values.mobile}
                                 onChange={formik.handleChange}
                                 sx={{ width: "100%" }}
                             />
-                            {formik.touched.mobile && formik.errors.mobile ? (
-                                <MuiAlert severity="error">
-                                    <span>{formik.errors.mobile}</span>
-                                </MuiAlert>
-                            ) : null}
                         </Grid>
                     </Grid>
                     <TextField
                         id="company_name"
                         label="Enter Your Business name"
                         type="text"
+                        error={Boolean(
+                            formik.touched.company_name && formik.errors.company_name
+                          )}
+                          helperText={
+                            formik.touched.company_name && formik.errors.company_name
+                          }
                         value={formik.values.company_name}
                         onChange={formik.handleChange}
                         sx={{ width: "100%" }}
                     />
-                    {formik.touched.company_name && formik.errors.company_name ? (
-                        <MuiAlert severity="error">
-                            <span>{formik.errors.company_name}</span>
-                        </MuiAlert>
-                    ) : null}
                     <TextField
                         id="password"
                         label="Create password"
                         type="password"
+                        error={Boolean(
+                            formik.touched.password && formik.errors.password
+                          )}
+                          helperText={
+                            formik.touched.password && formik.errors.password
+                          }
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         sx={{ width: "100%" }}
                     />
-                    {formik.touched.password && formik.errors.password ? (
-                        <MuiAlert severity="error">
-                            <span>{formik.errors.password}</span>
-                        </MuiAlert>
-                    ) : null}
                 </Box>
                 {formik.errors.submit && (
                     <Box sx={{ mt: 2, mb: 2 }}>
@@ -190,17 +208,33 @@ const RegisterationForm = ({ onSubmiting, uid, token }) => {
                     </Box>
                 )}
                 <Box className="container">
-                    <Button
-                        sx={{
-                            mb: 2,
-                            paddingLeft: "50px",
-                            paddingRight: "50px",
-                        }}
-                        variant="contained"
-                        type="submit"
-                    >
-                        Create Account
-                    </Button>
+                    <Box sx={{ m: 1, position: 'relative' }}>
+                        <Button
+                            sx={{
+                                mb: 2,
+                                paddingLeft: "50px",
+                                paddingRight: "50px",
+                            }}
+                            variant="contained"
+                            type="submit"
+                            disabled={loading}
+                        >
+                            Create Account
+                        </Button>
+                        {loading && (
+                            <CircularProgress
+                                size={24}
+                                sx={{
+                                    color: green[500],
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    marginTop: '-12px',
+                                    marginLeft: '-12px',
+                                }}
+                            />
+                        )}
+                    </Box>
                     <Typography sx={{ variant: "body1", color: "gray" }}>
                         Or login using
                     </Typography>

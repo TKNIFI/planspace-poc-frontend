@@ -65,31 +65,32 @@ export default function ResetingPassword() {
           </Paper>
         </Grid>
         {/* create account formik form  */}
-
-        {check ? (
-          <ResetingPasswordConfirmation />
-        ) : (
+        {isValid ? (
           <Grid item xs={8}>
-            {isValid ?
-              <Paper sx={{ height: "100%", p: 5 }}>
-                <Box>
-                  <img src={planLogo} height="30px" width="170px" />
-                </Box>
-                <Box sx={{ mt: 3, p: 1 }}>
-                  <Typography variant="h4" sx={{ color: "#003399" }}>
-                    Reset Password
-                  </Typography>
-                  <Typography variant="h6" sx={{ mt: 2, color: "gray" }}>
-                    Please reset your password below
-                  </Typography>
-                </Box>
-                <Box sx={{ mt: 2, p: 1 }}>
-                  <ResetingPasswordForm uid={uid} token={token} checkFormValues={(formval) => setCheckFormVal(formval)} onSubmiting={(val) => setCheck(val)} />
-                </Box>
-              </Paper>
-              : ""}
+            {check ? (
+              <ResetingPasswordConfirmation />
+            ) : (
+              <Grid>
+                  <Paper sx={{ height: "100%", p: 5 }}>
+                    <Box>
+                      <img src={planLogo} height="30px" width="170px" />
+                    </Box>
+                    <Box sx={{ mt: 3, p: 1 }}>
+                      <Typography variant="h4" sx={{ color: "#003399" }}>
+                        Reset Password
+                      </Typography>
+                      <Typography variant="h6" sx={{ mt: 2, color: "gray" }}>
+                        Please reset your password below
+                      </Typography>
+                    </Box>
+                    <Box sx={{ mt: 2, p: 1 }}>
+                      <ResetingPasswordForm uid={uid} token={token} checkFormValues={(formval) => setCheckFormVal(formval)} onSubmiting={(val) => setCheck(val)} />
+                    </Box>
+                  </Paper>
+              </Grid>
+            )}
           </Grid>
-        )}
+        ) : "Link in invalid or expired"}
       </Grid>
     </>
   );

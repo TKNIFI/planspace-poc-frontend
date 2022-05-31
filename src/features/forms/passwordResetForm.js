@@ -2,30 +2,15 @@ import React from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import { Box, Button, Typography, TextField } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import { green } from '@mui/material/colors';
 import MuiAlert from "@mui/material/Alert";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
 // import User from "../../../../models/user/user";
 const PasswordResetForm = ({ onSubmiting }) => {
-    const onFinish = async (values) => {
-        console.log(values);
-
-        let formData = new FormData();
-        formData.append("email", values.email);
-        await axios
-            .post(
-                "https://planspace.herokuapp.com/api/auth/password_reset/request/",
-                formData
-            )
-            .then((response) => {
-                const data = response.data.data;
-                localStorage.setItem("userInfo", JSON.stringify(data));
-                // history.push("/companyprofile/company");
-                onSubmiting(true);
-            })
-            .catch((error) => alert(error.message));
-        // await dispatch(User.loginCall(formData));
-    };
+    const [loading, setLoading] = React.useState(false);
+    const timer = React.useRef();
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -43,10 +28,33 @@ const PasswordResetForm = ({ onSubmiting }) => {
             //         "Password can only contain Latin letters."
             //     ),
         }),
-        onSubmit: (values) => {
-            onFinish(values);
+        onSubmit: async (values, helpers) => {
+            setLoading(true)
+            let formData = new FormData();
+            formData.append("email", values.email);
+            await axios
+                .post(
+                    "https://planspace.herokuapp.com/api/auth/password_reset/request/",
+                    formData
+                )
+                .then((response) => {
+                    setLoading(false)
+                    // history.push("/companyprofile/company");
+                    onSubmiting(true);
+                })
+                .catch((error) => {
+                    setLoading(false)
+                    helpers.setErrors({ submit: error.response.data.message });
+                });
         },
     });
+
+    React.useEffect(() => {
+        return () => {
+            clearTimeout(timer.current);
+        };
+    }, []);
+
     return (
         <>
             <form onSubmit={formik.handleSubmit}>
@@ -62,29 +70,53 @@ const PasswordResetForm = ({ onSubmiting }) => {
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         sx={{ width: "100%" }}
+                        error={Boolean(
+                            formik.touched.email && formik.errors.email
+                        )}
+                        helperText={
+                            formik.touched.email && formik.errors.email
+                        }
                     />
-                    {formik.touched.email && formik.errors.email ? (
-                        <MuiAlert severity="error">
-                            <span>{formik.errors.email}</span>
-                        </MuiAlert>
-                    ) : null}
                 </Box>
+                {formik.errors.submit && (
+                    <Box sx={{ mt: 2, mb: 2 }}>
+                        <MuiAlert severity="error" style={{ fontSize: 16 }}>
+                            {formik.errors.submit}
+                        </MuiAlert>
+                    </Box>
+                )}
                 <Box className="container">
-                    <Button
-                        sx={{
-                            mb: 2,
-                            mt: 3,
-                            paddingLeft: "70px",
-                            paddingRight: "70px",
-                            pt: 2,
-                            pb: 2,
-                            textTransform: "capitalize",
-                        }}
-                        variant="contained"
-                        type="submit"
-                    >
-                        Send instructions
-                    </Button>
+                    <Box sx={{ m: 1, position: 'relative' }}>
+                        <Button
+                            sx={{
+                                mb: 2,
+                                mt: 3,
+                                paddingLeft: "70px",
+                                paddingRight: "70px",
+                                pt: 2,
+                                pb: 2,
+                                textTransform: "capitalize",
+                            }}
+                            variant="contained"
+                            type="submit"
+                            disabled={loading}
+                        >
+                            Send instructions
+                        </Button>
+                        {loading && (
+                            <CircularProgress
+                                size={24}
+                                sx={{
+                                    color: green[500],
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    marginTop: '-12px',
+                                    marginLeft: '-12px',
+                                }}
+                            />
+                        )}
+                    </Box>
 
                     <Typography sx={{ mt: 4 }}>
                         <Link to="/login">

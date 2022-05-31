@@ -23,18 +23,29 @@ import sliderImage from "../../assets/images/sliderImage.png";
 function Register() {
     const [check, setCheck] = useState();
     const [isValid, setIsValid] = useState(true)
-    
+    const [userDetails, setUserDetails] = useState()
+    const [isLoading, setIsLoading] = useState(true)
+
     function useQuery() {
         const { search } = useLocation();
         return React.useMemo(() => new URLSearchParams(search), [search]);
-      }
+    }
     let query = useQuery();
     const uid = query.get("uid")
     const token = query.get("token")
     async function checkToken() {
-        await axios.get(`https://planspance.herokuapp.com/api/auth/user/invited/?uid=${uid}&token=${token}/`)
-            .then(result => setIsValid(true))
-            .catch(error => setIsValid(false))
+        await axios.get(`https://planspance.herokuapp.com/api/auth/user/invited/?uid=${uid}&token=${token}`)
+            .then((result) => {
+                console.log("result", result.data.data)
+                setIsValid(true)
+                setIsLoading(false)
+                setUserDetails(result.data.data)
+            })
+            .catch((error) => {
+                setIsValid(false)
+                setIsLoading(false)
+                alert(error.response.data.message)
+            })
     }
 
     useEffect(() => {
@@ -63,38 +74,41 @@ function Register() {
                 </Paper>
             </Grid>
             {/* create account formik form  */}
-
-            {check ? (
-                <RegisterSuccess />
-            ) : (
+            {!isLoading && userDetails ? (
                 <Grid item xs={8}>
-                    <Paper sx={{ height: "100%", p: 5 }}>
-                        <Box>
-                            <img src={planLogo} height="30px" width="170px" />
-                        </Box>
-                        <Box sx={{ mt: 3, p: 1 }}>
-                            <Typography variant="h5" sx={{ color: "#003399" }}>
-                                Welcome To PlanSpace
-                            </Typography>
-                            <Typography
-                                variant="span"
-                                sx={{ mt: 2, color: "gray" }}
-                            >
-                                Create your account by filling out below details
-                            </Typography>
-                        </Box>
-                        <Box sx={{ mt: 2, p: 1 }}>
-                            <RegisterationForm
-                                onSubmiting={(val) => {
-                                    setCheck(val);
-                                }}
-                                uid={uid}
-                                token={token}
-                            />
-                        </Box>
-                    </Paper>
+                    {check ? (
+                        <RegisterSuccess />
+                    ) : (
+                        <Grid>
+                            <Paper sx={{ height: "100%", p: 5 }}>
+                                <Box>
+                                    <img src={planLogo} height="30px" width="170px" />
+                                </Box>
+                                <Box sx={{ mt: 3, p: 1 }}>
+                                    <Typography variant="h5" sx={{ color: "#003399" }}>
+                                        Welcome To PlanSpace
+                                    </Typography>
+                                    <Typography
+                                        variant="span"
+                                        sx={{ mt: 2, color: "gray" }}
+                                    >
+                                        Create your account by filling out below details
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ mt: 2, p: 1 }}>
+                                    <RegisterationForm
+                                        onSubmiting={(val) => {
+                                            setCheck(val);
+                                        }}
+                                        uid={uid}
+                                        token={token}
+                                    />
+                                </Box>
+                            </Paper>
+                        </Grid>
+                    )}
                 </Grid>
-            )}
+            ) : ""}
         </Grid>
     );
 }
