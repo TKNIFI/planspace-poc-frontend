@@ -6,13 +6,13 @@ export default function GuestPageLayout({ children }) {
   const { Content } = Layout;
   return (
     <Layout>
-        <Layout style={{ padding: "0 24px 24px" }}>
+        <Layout>
           <Content
             className="site-layout-background"
             style={{
-              padding: 24,
-              margin: 0,
+              padding: 50,
               minHeight: 280,
+              marginLeft: 20
             }}
           >
             {children}

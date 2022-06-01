@@ -32,14 +32,14 @@ const LoginForm = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        let formData = new FormData()
-        formData.append("email", values.email)
-        formData.append("password", values.password)
+        let formData = new FormData();
+        formData.append("email", values.email);
+        formData.append("password", values.password);
         await dispatch(login(values.email, values.password));
         // await axios.post("https://planspace.herokuapp.com/api/auth/login/", formData).then(response => {
         //   const data = response.data.data
         //   localStorage.setItem("userInfo", JSON.stringify(data))
-        history.push("/")
+        history.push("/");
       } catch (error) {
         if (typeof error.response.data.message === Object) {
           for (const [key, value] of Object.entries(
@@ -59,8 +59,8 @@ const LoginForm = () => {
         helpers.setStatus({ success: false });
         helpers.setSubmitting(false);
       }
-    }
-  })
+    },
+  });
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -71,7 +71,8 @@ const LoginForm = () => {
         >
           <TextField
             id="email"
-            label="Enter Your Email"
+            label="Enter Your Email *"
+            placeholder="Enter Your Email"
             type="email"
             value={formik.values.email}
             error={Boolean(formik.touched.email && formik.errors.email)}
@@ -82,7 +83,8 @@ const LoginForm = () => {
           />
           <TextField
             id="password"
-            label="Create password"
+            label="Enter Your Password *"
+            placeholder="Enter Your Password"
             type="password"
             value={formik.values.password}
             error={Boolean(formik.touched.password && formik.errors.password)}
@@ -90,11 +92,6 @@ const LoginForm = () => {
             onChange={formik.handleChange}
             sx={{ width: "100%" }}
           />
-          {formik.touched.password && formik.errors.password ? (
-            <MuiAlert severity="error">
-              <span>{formik.errors.password}</span>
-            </MuiAlert>
-          ) : null}
         </Box>
         {formik.errors.submit && (
           <Box sx={{ mt: 2, mb: 2 }}>
@@ -105,20 +102,30 @@ const LoginForm = () => {
         )}
         <Box className="container">
           <Button
-            sx={{ mb: 2, paddingLeft: "50px", paddingRight: "50px", textTransform: "capitalize" }}
+            sx={{
+              mb: 2,
+              paddingLeft: "50px",
+              paddingRight: "50px",
+              textTransform: "capitalize",
+            }}
             variant="contained"
             type="submit"
           >
             Log in
           </Button>
           <Typography>
-            <Link to="/forgot_password" style={{ textDecoration: "underline" }}>
+            <Link
+              to="/forgot_password"
+              style={{ textDecoration: "underline", fontWeight: "bold" }}
+            >
               Forgot Username / Password?
             </Link>
           </Typography>
-          <Typography sx={{ variant: "body1", color: "gray", mt: 15 }}>
+          <Typography
+            sx={{ variant: "body1", color: "gray", mt: 15, }}
+          >
             Do not have an account?{" "}
-            <Link to="/register" style={{ textDecoration: "underline" }}>
+            <Link to="/register" style={{ textDecoration: "underline",fontWeight: "bold"  }}>
               Signup here
             </Link>
           </Typography>

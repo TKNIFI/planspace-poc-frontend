@@ -16,10 +16,57 @@ import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
 import "swiper/swiper.min.css";
 import "swiper/modules/pagination/pagination.min.css";
 import { Pagination } from "swiper";
-import sliderImage from "../../assets/images/sliderImage.png";
 import ResetingPasswordForm from "./resetingPasswordForm";
 import ResetingPasswordConfirmation from "./resetingPasswordConfirmation";
 import CircularProgress from "@mui/material/CircularProgress";
+import sliderImage from "../../assets/images/sliderImage.png";
+import elipseOuter from "../../assets/images/Ellipse125.png";
+import elipseInner from "../../assets/images/Ellipse126.png";
+import circleImage1 from "../../assets/images/sliderCircleImage1.png";
+import circleImage2 from "../../assets/images/sliderCircleImage2.png";
+import circleImage3 from "../../assets/images/sliderCircleImage3.png";
+const SliderContent = () => {
+  return (
+    <>
+      <Box className="container-for-swiper-slide">
+        <img src={sliderImage} height="740px" width="100%" />
+        <Box className="centered-for-content-swiper-slide">
+          <Typography
+            variant="h6"
+            sx={{ color: "white", fontWeight: "bold", fontSize: "30px" }}
+          >
+            Event Planning Made Easy
+          </Typography>
+        </Box>
+        <Box className="centered-for-content-swiper-slide-para">
+          <Typography
+            variant="p"
+            sx={{ color: "lightgray", fontWeight: "bold" }}
+          >
+            Amet minim mollit non deserunt ullamco est sit <br /> aliqua dolor
+            do amet sint. Velit officia consequat duis <br /> enim velit mollit.
+            Exercitation veniam consequat sunt <br /> nostrud amet.
+          </Typography>
+        </Box>
+        <Box className="centered-for-content-swiper-slide-outerEllipse">
+          <img src={elipseOuter} />
+        </Box>
+        <Box className="centered-for-content-swiper-slide-outerEllipse">
+          <img src={elipseInner} />
+        </Box>
+        <Box className="centered-for-content-swiper-slide-outerEllipse">
+          <img src={circleImage1} />
+        </Box>
+        <Box className="centered-for-content-swiper-slide-outerEllipse">
+          <img src={circleImage2} />
+        </Box>
+        <Box className="centered-for-content-swiper-slide-outerEllipse">
+          <img src={circleImage3} />
+        </Box>
+      </Box>
+    </>
+  );
+};
 export default function ResetingPassword() {
   const [check, setCheck] = useState(false);
   const [checkFormVal, setCheckFormVal] = useState(null);
@@ -49,22 +96,22 @@ export default function ResetingPassword() {
 
   return (
     <>
-      <Grid container spacing={0} columns={16}>
+      <Grid container spacing={0} columns={16} sx={{ ml: 12 }}>
         {/* carousal  */}
-        <Grid item xs={8}>
-          <Paper sx={{ height: "100%" }}>
+        <Grid item xs={6}>
+          <Paper>
             <Swiper
+              centeredSlides
               pagination={{
                 dynamicBullets: true,
               }}
               modules={[Pagination]}
-              className="mySwiper"
             >
               <SwiperSlide>
-                <img src={sliderImage} height="100%" width="100%" />
+                <SliderContent />
               </SwiperSlide>
               <SwiperSlide>
-                <img src={sliderImage} height="100%" width="100%" />
+                <SliderContent />
               </SwiperSlide>
             </Swiper>
           </Paper>
@@ -88,7 +135,7 @@ export default function ResetingPassword() {
                       Please reset your password below
                     </Typography>
                   </Box>
-                  <Box sx={{ mt: 2, p: 1 }}>
+                  <Box sx={{ mt: 2, p: 1, height: "445px" }}>
                     <ResetingPasswordForm
                       uid={uid}
                       token={token}

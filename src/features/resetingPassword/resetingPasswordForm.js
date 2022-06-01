@@ -45,7 +45,7 @@ const ResetingPasswordForm = ({ checkFormValues, onSubmiting, uid, token }) => {
         >
           <TextField
             id="newpassword"
-            label="Enter new password"
+            label="Enter new password*"
             placeholder="Enter new password"
             type="password"
             value={formik.values.newpassword}
@@ -59,7 +59,7 @@ const ResetingPasswordForm = ({ checkFormValues, onSubmiting, uid, token }) => {
           />
           <TextField
             id="confirmpassword"
-            label="Confirm new password"
+            label="Confirm new password*"
             placeholder="Confirm new password"
             type="password"
             value={formik.values.confirmpassword}

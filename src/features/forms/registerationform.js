@@ -121,7 +121,7 @@ const RegisterationForm = ({ onSubmiting, uid, token }) => {
         >
           <TextField
             id="first_name"
-            label="Enter Your name"
+            label="Enter Your name*"
             placeholder="Enter Your name"
             type="text"
             error={Boolean(
@@ -130,14 +130,14 @@ const RegisterationForm = ({ onSubmiting, uid, token }) => {
             helperText={formik.touched.first_name && formik.errors.first_name}
             value={formik.values.first_name}
             onChange={formik.handleChange}
-            sx={{ width: "100%", color: "lightgray" }}
+            sx={{ width: "100%" }}
             autoFocus="true"
           />
           <Grid container spacing={4}>
             <Grid item xs={6}>
               <TextField
                 id="email"
-                label="Enter Your Email Address"
+                label="Enter Your Email Address*"
                 placeholder="Enter Your Email Address"
                 type="email"
                 error={Boolean(formik.touched.email && formik.errors.email)}
@@ -150,7 +150,7 @@ const RegisterationForm = ({ onSubmiting, uid, token }) => {
             <Grid item xs={6}>
               <TextField
                 id="mobile"
-                label="Enter Your phone number"
+                label="Enter Your phone number*"
                 placeholder="Enter Your phone number"
                 type="tel"
                 error={Boolean(formik.touched.mobile && formik.errors.mobile)}
@@ -178,7 +178,7 @@ const RegisterationForm = ({ onSubmiting, uid, token }) => {
           />
           <TextField
             id="password"
-            label="Create password"
+            label="Create password*"
             placeholder="Create password"
             type="password"
             error={Boolean(formik.touched.password && formik.errors.password)}
@@ -226,19 +226,20 @@ const RegisterationForm = ({ onSubmiting, uid, token }) => {
           <Typography sx={{ variant: "body1", color: "gray" }}>
             Or login using
           </Typography>
-          <Box>
-            <SocialButton
-              provider="google"
-              appId="252238412999-q66jdhb3c9ne04sosvuqf6laq08gqkld.apps.googleusercontent.com"
-              onLoginSuccess={handleGoogleLogin}
-              onLoginFailure={handleSocialLoginFailure}
-            >
-              <img src={gmailLogo} height="45px" width="45px" />
-            </SocialButton>
-          </Box>
+          <SocialButton
+            provider="google"
+            appId="252238412999-q66jdhb3c9ne04sosvuqf6laq08gqkld.apps.googleusercontent.com"
+            onLoginSuccess={handleGoogleLogin}
+            onLoginFailure={handleSocialLoginFailure}
+          >
+            <img src={gmailLogo} height="45px" width="45px" />
+          </SocialButton>
           <Typography sx={{ variant: "body1", color: "gray" }}>
             Already have an account?{" "}
-            <Link to="/login" style={{ textDecoration: "underline" }}>
+            <Link
+              to="/login"
+              style={{ textDecoration: "underline", fontWeight: "bold" }}
+            >
               Signin here
             </Link>
           </Typography>

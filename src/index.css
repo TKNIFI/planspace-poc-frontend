@@ -20,3 +20,44 @@ code {
   color: white;
   font-weight: bold;
 }
+
+
+/* slider styles*/
+
+.swiper-pagination-bullet-active {
+  background-color: white !important;
+}
+
+.container-for-swiper-slide {
+  position: relative;
+  text-align: center;
+  color: white;
+  
+}
+.centered-for-content-swiper-slide {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+.centered-for-content-swiper-slide-para{
+  position: absolute;
+  top: 25%;
+  left: -50%;
+  z-index: -1;
+  transform: translate(-50%, -50%);
+}
+.centered-for-content-swiper-slide-outerEllipse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.centered-for-content-swiper-slide-innerEllipse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

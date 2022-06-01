@@ -18,8 +18,54 @@ import "swiper/swiper.min.css";
 import "swiper/modules/pagination/pagination.min.css";
 import { Pagination } from "swiper";
 import sliderImage from "../../assets/images/sliderImage.png";
+import elipseOuter from "../../assets/images/Ellipse125.png";
+import elipseInner from "../../assets/images/Ellipse126.png";
+import circleImage1 from "../../assets/images/sliderCircleImage1.png";
+import circleImage2 from "../../assets/images/sliderCircleImage2.png";
+import circleImage3 from "../../assets/images/sliderCircleImage3.png";
 import CircularProgress from "@mui/material/CircularProgress";
-
+const SliderContent = () => {
+  return (
+    <>
+      <Box className="container-for-swiper-slide">
+        <img src={sliderImage} height="800px" width="100%" />
+        <Box className="centered-for-content-swiper-slide">
+          <Typography
+            variant="h6"
+            sx={{ color: "white", fontWeight: "bold", fontSize: "30px" }}
+          >
+            Event Planning Made Easy
+          </Typography>
+        </Box>
+        <Box className="centered-for-content-swiper-slide-para">
+          <Typography
+            variant="p"
+            sx={{ color: "lightgray", fontWeight: "bold" }}
+          >
+            Amet minim mollit non deserunt ullamco est sit <br /> aliqua dolor
+            do amet sint. Velit officia consequat duis <br /> enim velit
+            mollit. Exercitation veniam consequat sunt <br /> nostrud amet.
+          </Typography>
+        </Box>
+        <Box className="centered-for-content-swiper-slide-outerEllipse">
+          <img src={elipseOuter} />
+        </Box>
+        <Box className="centered-for-content-swiper-slide-outerEllipse">
+          <img src={elipseInner} />
+        </Box>
+        <Box className="centered-for-content-swiper-slide-outerEllipse">
+          <img src={circleImage1} />
+        </Box>
+        <Box className="centered-for-content-swiper-slide-outerEllipse">
+          <img src={circleImage2} />
+        </Box>
+        <Box className="centered-for-content-swiper-slide-outerEllipse">
+          <img src={circleImage3} />
+        </Box>
+      </Box>
+    </>
+  );
+};
 function Register() {
   const [check, setCheck] = useState();
   const [isValid, setIsValid] = useState(true);
@@ -53,26 +99,26 @@ function Register() {
   }, []);
 
   return (
-    <Grid container spacing={0} columns={16}>
-      {/* carousal  */}
-      <Grid item xs={8}>
-        <Paper sx={{ height: "100%" }}>
-          <Swiper
-            pagination={{
-              dynamicBullets: true,
-            }}
-            modules={[Pagination]}
-            className="mySwiper"
-          >
-            <SwiperSlide>
-              <img src={sliderImage} height="100%" width="100%" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={sliderImage} height="100%" width="100%" />
-            </SwiperSlide>
-          </Swiper>
-        </Paper>
-      </Grid>
+    <Grid container spacing={0} columns={16} sx={{ ml: 12 }}>
+    {/* carousal  */}
+    <Grid item xs={6}>
+      <Paper>
+        <Swiper
+          centeredSlides
+          pagination={{
+            dynamicBullets: true,
+          }}
+          modules={[Pagination]}
+        >
+          <SwiperSlide>
+            <SliderContent />
+          </SwiperSlide>
+          <SwiperSlide>
+            <SliderContent />
+          </SwiperSlide>
+        </Swiper>
+      </Paper>
+    </Grid>
       {/* create account formik form  */}
       {!isLoading || userDetails ? (
         <Grid item xs={8}>
@@ -92,7 +138,7 @@ function Register() {
                     Create your account by filling out below details
                   </Typography>
                 </Box>
-                <Box sx={{ mt: 2, p: 1 }}>
+                <Box sx={{ mt: 2, p: 1, height:"445px" }}>
                   <RegisterationForm
                     onSubmiting={(val) => {
                       setCheck(val);
