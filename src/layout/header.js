@@ -16,9 +16,9 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import planLogo from "../assets/images/plan.png";
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -30,24 +30,8 @@ const Search = styled("div")(({ theme }) => ({
   marginLeft: theme.spacing(5),
   width: "100%",
   [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(2),
+    marginLeft: 70,
     width: "25%",
-  },
-}));
-
-const StyledSelect = styled(Select)(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.grey[400], 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.grey[400], 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: theme.spacing(2),
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(2),
-    width: "70%",
   },
 }));
 
@@ -103,9 +87,9 @@ export default function PrimarySearchAppBar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("userInfo")
-    history.push("/login")
-  }
+    localStorage.removeItem("userInfo");
+    history.push("/login");
+  };
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -123,7 +107,7 @@ export default function PrimarySearchAppBar() {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
-      sx={{ml:37,mt:5}}
+      sx={{ position: "fixed", ml: 45, mt: 5 }}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
@@ -147,7 +131,7 @@ export default function PrimarySearchAppBar() {
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
-      sx={{ml:20,mt:5}}
+      sx={{ position: "fixed", ml: 20, mt: 5 }}
     >
       <MenuItem>
         <IconButton size="large" aria-label="show 17 new notifications">
@@ -172,7 +156,7 @@ export default function PrimarySearchAppBar() {
   );
 
   return (
-    <Box sx={{ flexGrow: 0 }}>
+    <>
       <AppBar
         className="appBar"
         position="static"
@@ -186,7 +170,7 @@ export default function PrimarySearchAppBar() {
             sx={{ display: { xs: "block", sm: "block" } }}
           >
             <img
-              width={"112px"}
+              width={"130px"}
               height={"33px"}
               src={planLogo}
               style={{
@@ -196,8 +180,9 @@ export default function PrimarySearchAppBar() {
               alt="logo"
             />
           </Typography>
-          <Search>
-            <SearchIconWrapper>
+
+          <Search style={{cursor:"pointer"}}>
+            <SearchIconWrapper style={{ marginLeft: "85%" }}>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
@@ -207,32 +192,52 @@ export default function PrimarySearchAppBar() {
           </Search>
 
           <Box sx={{ flexGrow: 1 }} />
-          <FormControl sx={{ m: 1, minWidth: 350, width: "40%" }}>
-            <StyledSelect
-              labelId="select"
-              sx={{
-                color: "black",
-                height: "40px",
-                display: { xs: "flex", md: "flex" },
-              }}
-              // value="2972 Westheimer Rd. Santa Ana, Illinois 85486"
-              label="locations"
-              // onChange={handleChange}
-            />
-          </FormControl>
+
+          <Select
+            labelId="select"
+            sx={{
+              color: "black",
+              height: "40px",
+              width: "30%",
+              marginRight: "10px",
+              display: { xs: "flex", md: "flex" },
+            }}
+            label="locations"
+            // onChange={handleChange}
+          />
 
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Divider orientation="vertical" flexItem></Divider>
-            <IconButton size="large" aria-label="show 17 new notifications">
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ height: "40px", marginTop: "15px" }}
+            ></Divider>
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              sx={{ p: 3 }}
+            >
               <AddCircleIcon variant="outlined" />
             </IconButton>
-            <Divider orientation="vertical" flexItem></Divider>
-            <IconButton size="large" aria-label="show 17 new notifications">
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ height: "40px", marginTop: "15px" }}
+            ></Divider>
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              sx={{ p: 3 }}
+            >
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <Divider orientation="vertical" flexItem></Divider>
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ height: "40px", marginTop: "15px" }}
+            ></Divider>
             <IconButton
               size="large"
               edge="end"
@@ -240,6 +245,7 @@ export default function PrimarySearchAppBar() {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
+              sx={{ p: 3 }}
             >
               <AccountCircle />
             </IconButton>
@@ -260,6 +266,6 @@ export default function PrimarySearchAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-    </Box>
+    </>
   );
 }
