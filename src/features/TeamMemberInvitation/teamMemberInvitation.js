@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
-  Box,
-  Button,
-  Grid,
-  Dialog,
-  AppBar,
-  Toolbar,
-  Slide,
-  IconButton,
+    Box,
+    Button,
+    Grid,
+    Dialog,
+    AppBar,
+    Toolbar,
+    Slide,
+    IconButton,
 } from "@mui/material";
 import "./inviteMemberStyles.css";
 import { Typography as Muitypography } from "@mui/material";
@@ -16,11 +16,18 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddMemberForm from "../forms/addMemberForm";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import EditMemberForm from "../forms/editMemberForm";
-import { Space, Table, Checkbox, Popconfirm, Typography, Pagination } from "antd";
+import {
+    Space,
+    Table,
+    Checkbox,
+    Popconfirm,
+    Typography,
+    Pagination,
+} from "antd";
 import axios from "axios";
 import myApi from "../../network/axios";
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="left" ref={ref} {...props} />;
+    return <Slide direction="left" ref={ref} {...props} />;
 });
 
 const TeamInvitation = () => {
@@ -37,12 +44,12 @@ const TeamInvitation = () => {
         setOpenEditForm(false);
     };
     async function handleDelete(uid) {
-        console.log("uid", uid)
+        console.log("uid", uid);
         await myApi.delete(`api/auth/user/${uid}/`).then((result) => {
-            alert(result.data.message)
-            getUsers()
-        })
-    };
+            alert(result.data.message);
+            getUsers();
+        });
+    }
 
     const columns = [
         {
@@ -57,13 +64,21 @@ const TeamInvitation = () => {
             title: "Name",
             dataIndex: "name",
             key: "name",
-            render: (_, record) => <p>{record.first_name ? record.first_name : "" + " " + record.last_name ? record.last_name : ""}</p>,
+            render: (_, record) => (
+                <p>
+                    {record.first_name
+                        ? record.first_name
+                        : "" + " " + record.last_name
+                        ? record.last_name
+                        : ""}
+                </p>
+            ),
         },
-        {
-            title: "Email Address",
-            dataIndex: "email",
-            key: "email",
-        },
+        // {
+        //     title: "Email Address",
+        //     dataIndex: "email",
+        //     key: "email",
+        // },
         {
             title: "Access Location",
             dataIndex: "address",
@@ -88,7 +103,9 @@ const TeamInvitation = () => {
                                 {tableRow.length >= 1 ? (
                                     <Popconfirm
                                         title="Sure to delete?"
-                                        onConfirm={() => handleDelete(record.id)}
+                                        onConfirm={() =>
+                                            handleDelete(record.id)
+                                        }
                                     >
                                         <a>
                                             <DeleteOutlined />
@@ -105,29 +122,27 @@ const TeamInvitation = () => {
 
     const getUsers = async (page, pageSize) => {
         try {
-            let url = "https://planspace.herokuapp.com/api/auth/user/"
+            let url = "https://planspace.herokuapp.com/api/auth/user/";
             if (page) {
-                url = `https://planspace.herokuapp.com/api/auth/user/?page=${page}`
+                url = `https://planspace.herokuapp.com/api/auth/user/?page=${page}`;
             }
-            
-            setLoading(true)
-            await myApi
-                .get(url)
-                .then((result) => {
-                    setTableRowData(result.data.results)
-                    setCount(result.data.count)
-                    setLimit(result.data.limit)
-                    setLoading(false)
-                });
+
+            setLoading(true);
+            await myApi.get(url).then((result) => {
+                setTableRowData(result.data.results);
+                setCount(result.data.count);
+                setLimit(result.data.limit);
+                setLoading(false);
+            });
         } catch (error) {
-            setLoading(false)
+            setLoading(false);
             alert(error?.data?.message);
         }
     };
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+    useEffect(() => {
+        getUsers();
+    }, []);
 
     return (
         <>
@@ -137,7 +152,8 @@ const TeamInvitation = () => {
                     <Grid item xs={4}>
                         <Button
                             variant="contained"
-                            sx={{ textTransform: "capitalize", ml: 42 }}
+                            // sx={{ textTransform: "capitalize", ml: 42 }}
+                            style={{ float: "right" }}
                             onClick={() => setOpenAddForm(true)}
                         >
                             <AddIcon /> Add new
@@ -153,12 +169,12 @@ const TeamInvitation = () => {
                     pagination={false}
                     loading={loading}
                 />
-                <Pagination 
-                sx={{ mt: 1 }} 
-                defaultCurrent={1}
-                pageSize={limit}
-                total={count}
-                onChange={(page, pageSize)=>getUsers(page, pageSize)} 
+                <Pagination
+                    sx={{ mt: 1 }}
+                    defaultCurrent={1}
+                    pageSize={limit}
+                    total={count}
+                    onChange={(page, pageSize) => getUsers(page, pageSize)}
                 />
             </Box>
             {/* Model html */}
