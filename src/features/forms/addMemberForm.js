@@ -1,16 +1,21 @@
 import React from "react";
 import { Grid, Box } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { Button as Muibtn } from "@mui/material";
+import { Button as Muibtn, Alert } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
+import { green } from "@mui/material/colors";
+import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import toast, { Toaster } from 'react-hot-toast';
 import myApi from '../../network/axios'
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-const AddMemberForm = ({ handleClose, callBack }) => {
+const AddMemberForm = ({ handleClose, callBack, popUp }) => {
+  const [loading, setLoading] = React.useState(false);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -30,24 +35,43 @@ const AddMemberForm = ({ handleClose, callBack }) => {
         .required("Phone number is required")
         .positive()
         .integer(),
-      address: Yup.string().required("Address is required"),
+      address: Yup.string().nullable()
     }),
     onSubmit: async (values, helpers) => {
-      try {
-        await myApi.post("api/auth/user/", values)
+      setLoading(true)
+      let formData = new FormData()
+      let name = values.name.split(" ")
+      formData.append("first_name", name[0])
+      if (name.length > 1) {
+        formData.append("last_name", name[1])
+      }
+      formData.append("email", values.email)
+      formData.append("address", values.address)
+      formData.append("mobile", values.mobile)
+      await myApi.post("api/auth/user/", formData).then((result) => {
+        setLoading(false)
         handleClose(false)
+        popUp(result.data.message)
         callBack()
-      } catch (error) {
-        helpers.setErrors({ submit: error.data.message })
+      }).catch((error) => {
+        // let message = JSON.parse(error.response.data.message)
+        // console.log("message", message)
+        // for (let key in message) {
+        //   formik.setFieldError(key, message[key][0])
+        //   formik.setFieldTouched(key, true);
+        // }
+        setLoading(false)
+        helpers.setErrors({ submit: error.response.data.message })
         helpers.setSubmitting(false)
         handleClose(true)
-      }
+      })
 
     },
   });
 
   return (
     <>
+
       <form onSubmit={formik.handleSubmit} style={{ padding: "2%" }}>
         <Box
           sx={{
@@ -57,22 +81,20 @@ const AddMemberForm = ({ handleClose, callBack }) => {
           <Grid container spacing={1}>
             <Grid item xs={6}>
               <TextField
-                id="name"
+                name="name"
                 label="Name"
-                type="text"
                 value={formik.values.name}
                 error={Boolean(formik.touched.name && formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
                 onChange={formik.handleChange}
-                autoFocus="true"
+                autoFocus={true}
               // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="userId"
+                name="userId"
                 label="User ID"
-                type="text"
                 value={formik.values.userId}
                 error={Boolean(formik.touched.userId && formik.errors.userId)}
                 helperText={formik.touched.userId && formik.errors.userId}
@@ -82,9 +104,8 @@ const AddMemberForm = ({ handleClose, callBack }) => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="email"
+                name="email"
                 label="Email"
-                type="text"
                 value={formik.values.email}
                 error={Boolean(formik.touched.email && formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
@@ -94,9 +115,8 @@ const AddMemberForm = ({ handleClose, callBack }) => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="mobile"
+                name="mobile"
                 label="Phone Number"
-                type="text"
                 value={formik.values.mobile}
                 onChange={formik.handleChange}
                 error={Boolean(
@@ -119,9 +139,8 @@ const AddMemberForm = ({ handleClose, callBack }) => {
             >
               <Grid item xs={8}>
                 <TextField
-                  id="address"
+                  name="address"
                   label="Address"
-                  type="text"
                   value={formik.values.address}
                   error={Boolean(
                     formik.touched.address && formik.errors.address
@@ -133,6 +152,13 @@ const AddMemberForm = ({ handleClose, callBack }) => {
               </Grid>
             </Box>
           </Grid>
+          {formik.errors.submit && (
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <MuiAlert severity="error" style={{ fontSize: 16 }}>
+                {formik.errors.submit}
+              </MuiAlert>
+            </Box>
+          )}
           <Box
             sx={{
               "& .MuiTextField-root": {
@@ -153,16 +179,34 @@ const AddMemberForm = ({ handleClose, callBack }) => {
               <Muibtn variant="outlined" onClick={() => handleClose(false)}>
                 Cancel
               </Muibtn>
-
-              <Muibtn
-                variant="contained"
-                type="submit"
-              >
-                Submit
-              </Muibtn>
+              <div>
+                <Muibtn
+                  variant="contained"
+                  type="submit"
+                  disabled={loading}
+                >
+                  Submit
+                </Muibtn>
+                {loading && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      color: green[500],
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: "-12px",
+                      marginLeft: "-12px",
+                    }}
+                  />
+                )}
+              </div>
             </Stack>
           </Box>
         </Box>
+        <Toaster
+          position="top-right"
+        />
       </form>
     </>
   );

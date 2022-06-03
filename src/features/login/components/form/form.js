@@ -3,16 +3,18 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { Box, Grid, Button, Typography, TextField } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import CircularProgress from "@mui/material/CircularProgress";
+import { green } from "@mui/material/colors";
 import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import User from "../../../../models/user/user";
 import { login } from "../../../../slices/user";
 import { useDispatch } from "react-redux";
-import CircularProgress from "@mui/material/CircularProgress";
 
 const LoginForm = () => {
   let history = useHistory();
   const dispatch = useDispatch();
+  const [loading, setLoading] = React.useState(false);
   const onFinish = async (values) => {
     // await dispatch(User.loginCall(formData));
   };
@@ -32,6 +34,7 @@ const LoginForm = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
+        setLoading(true)
         let formData = new FormData();
         formData.append("email", values.email);
         formData.append("password", values.password);
@@ -39,6 +42,7 @@ const LoginForm = () => {
         // await axios.post("https://planspace.herokuapp.com/api/auth/login/", formData).then(response => {
         //   const data = response.data.data
         //   localStorage.setItem("userInfo", JSON.stringify(data))
+        setLoading(false)
         history.push("/");
       } catch (error) {
         if (typeof error.response.data.message === Object) {
@@ -56,6 +60,7 @@ const LoginForm = () => {
         } else {
           helpers.setErrors({ submit: error.response.data.message[0] });
         }
+        setLoading(false)
         helpers.setStatus({ success: false });
         helpers.setSubmitting(false);
       }
@@ -110,9 +115,23 @@ const LoginForm = () => {
             }}
             variant="contained"
             type="submit"
+            disabled={loading}
           >
             Log in
           </Button>
+          {loading && (
+            <CircularProgress
+              size={24}
+              sx={{
+                color: green[500],
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                marginTop: "-12px",
+                marginLeft: "-12px",
+              }}
+            />
+          )}
           <Typography>
             <Link
               to="/forgot_password"
@@ -125,7 +144,7 @@ const LoginForm = () => {
             sx={{ variant: "body1", color: "gray", mt: 15, }}
           >
             Do not have an account?{" "}
-            <Link to="/register" style={{ textDecoration: "underline",fontWeight: "bold"  }}>
+            <Link to="/register" style={{ textDecoration: "underline", fontWeight: "bold" }}>
               Signup here
             </Link>
           </Typography>

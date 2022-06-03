@@ -2,12 +2,16 @@ import React from "react";
 import { Grid, Box } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Button as Muibtn } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
+import { green } from "@mui/material/colors";
+import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import myApi from '../../network/axios'
 
-const EditMemberForm = ({ editRecordValues, handleClose, callBack }) => {
+const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
+  const [loading, setLoading] = React.useState(false);
   const formik = useFormik({
     initialValues: {
       name: editRecordValues?.first_name ? editRecordValues?.first_name : "" + " " + editRecordValues?.last_name ? editRecordValues?.last_name : "",
@@ -27,10 +31,11 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack }) => {
         .required("Phone number is required")
         .positive()
         .integer(),
-      address: Yup.string().required("Address is required"),
+      address: Yup.string().nullable()
     }),
     onSubmit: async (values, helpers) => {
       try {
+        setLoading(true)
         let formData = new FormData()
         let name = values.name.split(" ")
         formData.append("first_name", name[0])
@@ -40,13 +45,18 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack }) => {
         formData.append("email", values.email)
         formData.append("address", values.address)
         formData.append("mobile", values.mobile)
-        await myApi.put(`api/auth/user/${editRecordValues?.id}/`, formData)
-        handleClose(false)
-        callBack()
+        await myApi.put(`api/auth/user/${editRecordValues?.id}/`, formData).then((result) => {
+          setLoading(false)
+          handleClose(false)
+          popUp(result.data.message)
+          callBack()
+        })
       } catch (error) {
-        handleClose(true)
-        helpers.setErrors({ submit: error.data.message })
+        setLoading(false)
+        console.log('err', error)
+        helpers.setErrors({ submit: error.response.data.message })
         helpers.setSubmitting(false)
+        handleClose(true)
       }
 
     },
@@ -152,6 +162,13 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack }) => {
               </Grid>
             </Box>
           </Grid>
+          {formik.errors.submit && (
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <MuiAlert severity="error" style={{ fontSize: 16 }}>
+                {formik.errors.submit}
+              </MuiAlert>
+            </Box>
+          )}
           <Box
             sx={{
               "& .MuiTextField-root": {
@@ -172,13 +189,28 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack }) => {
               <Muibtn variant="outlined" onClick={() => handleClose(false)}>
                 Cancel
               </Muibtn>
-
-              <Muibtn
-                variant="contained"
-                type="submit"
-              >
-                Submit
-              </Muibtn>
+              <div>
+                <Muibtn
+                  variant="contained"
+                  type="submit"
+                  disabled={loading}
+                >
+                  Submit
+                </Muibtn>
+                {loading && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      color: green[500],
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: "-12px",
+                      marginLeft: "-12px",
+                    }}
+                  />
+                )}
+              </div>
             </Stack>
           </Box>
         </Box>
