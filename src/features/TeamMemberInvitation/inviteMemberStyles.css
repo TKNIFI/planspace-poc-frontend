@@ -1,17 +1,28 @@
-.ant-table-thead> tr >th{
-  background-color: lightgray;
+.ant-table-thead > tr > th {
+  background-color: #eaecf2;
   font-weight: bolder;
   font-size: medium;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin: 0%;
 }
-.ant-table{
+.ant-table {
   border-bottom: none;
 }
-.ant-table-tbody> tr >td{
+.ant-table-tbody > tr > td {
   font-size: 18px;
 }
-.ant-table-tbody> tr:nth-child(2n){
-  background-color: lightgray;
+.ant-table-tbody > tr:nth-child(2n) {
+  background-color: #eaecf2;
 }
-.ant-table-tbody> tr:nth-child(2n+1){
+.ant-table-tbody > tr:nth-child(2n + 1) {
   background-color: white;
+}
+.ant-drawer-header {
+  background-color: rgb(0,51,153);
+  border-radius: 0;
+}
+
+.ant-drawer-title {
+  color: #fff;
 }

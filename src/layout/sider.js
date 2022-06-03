@@ -16,6 +16,7 @@ export default function Sider() {
     <>
       <Sider
         collapsible
+        width={350}
         collapsed={collapsed}
         onCollapse={onCollapse}
         style={{ backgroundColor: "#003498",  }}
@@ -36,7 +37,7 @@ export default function Sider() {
                       <>
                         <Menu.Item
                           key={`${i}_${j}`}
-                          style={{ backgroundColor: "#003498", margin: "0%" }}
+                          style={{ backgroundColor: "#003498", margin: "-1%" }}
                         >
                           <Link to={subNavigation.path}>
                             {subNavigation.name}
