@@ -92,8 +92,8 @@ export default function PrimarySearchAppBar() {
 
     React.useEffect(() => {
         const userInfo = localStorage.getItem("userInfo");
-        if (userInfo !== undefined) {
-            setLocation(userInfo?.address);
+        if (userInfo) {
+            setLocation(JSON.parse(userInfo)?.address);
         }
     }, []);
 
