@@ -2,14 +2,13 @@ import * as React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
-import { Divider } from "@mui/material";
+import { Divider, MenuItem } from "@mui/material";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -68,7 +67,7 @@ export default function PrimarySearchAppBar() {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+  const [location, setLocation] = React.useState("")
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -90,6 +89,10 @@ export default function PrimarySearchAppBar() {
     localStorage.removeItem("userInfo");
     history.push("/login");
   };
+
+  React.useEffect(()=> {
+    setLocation(JSON.parse(localStorage.getItem("userInfo"))?.address)
+  }, [])
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -180,6 +183,7 @@ export default function PrimarySearchAppBar() {
               alt="logo"
             />
           </Typography>
+          
 
           <Search style={{cursor:"pointer"}}>
             <SearchIconWrapper style={{ marginLeft: "85%" }}>
@@ -202,9 +206,12 @@ export default function PrimarySearchAppBar() {
               marginRight: "10px",
               display: { xs: "flex", md: "flex" },
             }}
-            label="locations"
+            label={location}
+            value={location}
             // onChange={handleChange}
-          />
+          >
+            <MenuItem value={location}>{location}</MenuItem>
+            </Select>
 
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <Divider

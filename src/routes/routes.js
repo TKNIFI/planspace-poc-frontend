@@ -52,7 +52,7 @@ const routes = [
     layout: GuestPageLayout,
   },
   {
-    path: "/account/change_password",
+    path: "/account/password/change",
     name: "reset password",
     component: ResetingPassword,
     layout: GuestPageLayout

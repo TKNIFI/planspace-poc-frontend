@@ -23,7 +23,8 @@ const ResetingPasswordForm = ({ checkFormValues, onSubmiting, uid, token }) => {
         .min(8, "Password is too short - should be 8 chars minimum.")
         .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
     }),
-    onSubmit: async (values) => {
+    onSubmit: async (values, helpers) => {
+      try {
       let formData = new FormData();
       formData.append("uid", uid);
       formData.append("token", token);
@@ -33,6 +34,9 @@ const ResetingPasswordForm = ({ checkFormValues, onSubmiting, uid, token }) => {
         "https://planspace.herokuapp.com/api/auth/password_reset/confirm/",
         formData
       );
+      } catch (error) {
+        helpers.setError({submit: error.response.data.message})
+      }
     },
   });
   return (

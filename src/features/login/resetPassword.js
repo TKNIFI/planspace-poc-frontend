@@ -63,33 +63,14 @@ const SliderContent = () => {
 };
 export default function ResetPassword() {
   const [check, setCheck] = useState();
+  const [email, setEmail] = useState(null)
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
 
-  const onFinish = async (values) => {
-    await dispatch(User.loginCall(values.username, values.password));
-
-    // Logged in.
-    const { from } = location.state || { from: { path: "dashboard" } };
-    history.replace(from);
-  };
-
-  const handlePasswordReset = async (user) => {
-    let formData = new FormData();
-    formData.append("access_token", user._token.accessToken);
-    await axios
-      .post(
-        "https://planspace.herokuapp.com/api/auth/password_reset/request//",
-        formData
-      )
-      .then((response) => {
-        const data = response.data;
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        history.push("/companyprofile/company");
-      })
-      .catch((error) => alert(error.message));
-  };
+  const getEmail = (email) => {
+    setEmail(email)
+  }
 
   return (
     <>
@@ -115,8 +96,10 @@ export default function ResetPassword() {
         </Grid>
         {/* create account formik form  */}
         {/* check required on success */}
-        {check ? (
-          <PasswordResetMail />
+        {check && email ? (
+          <PasswordResetMail
+            email={email}
+          />
         ) : (
           <Grid item xs={8}>
             <Paper sx={{ height: "100%", p: 5 }}>
@@ -136,6 +119,9 @@ export default function ResetPassword() {
                 <PasswordResetForm
                   onSubmiting={(val) => {
                     setCheck(val);
+                  }}
+                  submittedEmail={(email) => {
+                    setEmail(email);
                   }}
                 />
               </Box>

@@ -5,22 +5,9 @@ import planLogo from "../../assets/images/plan.png";
 import { Typography, Grid, Paper, Box, Button, Alert } from "@mui/material";
 import { Link } from "react-router-dom";
 import toast, {Toaster} from "react-hot-toast"
-import emailimage from "../../assets/images/emailSuccessImage.png";
+import emailimage from "../../assets/images/invalid_link.jpg";
 
-const PasswordResetMail = ({email}) => {
-  const [userEmail, setUserEmail] = React.useState(email)
-
-  async function resendEmail() {
-    await axios
-        .post("https://planspace.herokuapp.com/api/auth/password_reset/request/",{email: userEmail}
-        )
-        .then((response) => {
-          toast(<Alert severity="success" variant="filled"> {response.data.message}</Alert>);
-        })
-        .catch((error) => {
-          toast(<Alert severity="error" variant="filled"> {error.response.data.message}</Alert>);
-        });
-  }
+const InvalidLink = () => {
 
   return (
     <>
@@ -55,7 +42,7 @@ const PasswordResetMail = ({email}) => {
             }}
           >
             <Typography variant="h4" sx={{ color: "#003399" }}>
-              Check your email
+              Invalid Or Expired Link
             </Typography>
             <Typography
               variant="p"
@@ -66,10 +53,9 @@ const PasswordResetMail = ({email}) => {
                 fontSize: "18px",
               }}
             >
-              We have sent the password reset instructions to your <br />{" "}
-              registered email id.
+              This link is invalid or expired. Please try again
             </Typography>
-            <Typography
+            {/* <Typography
               variant="span"
               sx={{ mt: 5, color: "gray", fontSize: "18px" }}
             >
@@ -77,18 +63,17 @@ const PasswordResetMail = ({email}) => {
               <Button style={{ textDecoration: "underline", fontWeight: "bold" }} onClick={() => resendEmail()}>
                 Resend
               </Button>
-            </Typography>
+            </Typography> */}
             <Box sx={{ mt: 20, mb: 0 }}>
               <Typography
                 variant="span"
                 sx={{ mt: 2, color: "gray", fontSize: "18px" }}
               >
-                Do not have an account?{" "}
                 <Link
-                  to="/register"
+                  to="/login"
                   style={{ textDecoration: "underline", fontWeight: "bold" }}
                 >
-                  Signup here
+                  Login
                 </Link>
               </Typography>
             </Box>
@@ -99,4 +84,4 @@ const PasswordResetMail = ({email}) => {
   );
 }
 
-export default PasswordResetMail;
+export default InvalidLink;

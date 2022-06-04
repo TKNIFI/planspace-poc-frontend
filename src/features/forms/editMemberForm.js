@@ -47,8 +47,8 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
         formData.append("mobile", values.mobile)
         await myApi.put(`api/auth/user/${editRecordValues?.id}/`, formData).then((result) => {
           setLoading(false)
-          handleClose(false)
           popUp(result.data.message)
+          handleClose(false)
           callBack()
         })
       } catch (error) {

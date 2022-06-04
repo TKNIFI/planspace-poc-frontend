@@ -18,6 +18,7 @@ import "swiper/modules/pagination/pagination.min.css";
 import { Pagination } from "swiper";
 import ResetingPasswordForm from "./resetingPasswordForm";
 import ResetingPasswordConfirmation from "./resetingPasswordConfirmation";
+import InvalidLink from "../login/invalidLink"
 import CircularProgress from "@mui/material/CircularProgress";
 import sliderImage from "../../assets/images/sliderImage.png";
 import elipseOuter from "../../assets/images/Ellipse125.png";
@@ -25,6 +26,7 @@ import elipseInner from "../../assets/images/Ellipse126.png";
 import circleImage1 from "../../assets/images/sliderCircleImage1.png";
 import circleImage2 from "../../assets/images/sliderCircleImage2.png";
 import circleImage3 from "../../assets/images/sliderCircleImage3.png";
+
 const SliderContent = () => {
   return (
     <>
@@ -148,7 +150,7 @@ export default function ResetingPassword() {
             )}
           </Grid>
         ) : (
-          <CircularProgress />
+          <InvalidLink />
         )}
       </Grid>
     </>

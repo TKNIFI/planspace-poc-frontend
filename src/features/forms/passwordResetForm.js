@@ -8,8 +8,9 @@ import MuiAlert from "@mui/material/Alert";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
 // import User from "../../../../models/user/user";
-const PasswordResetForm = ({ onSubmiting }) => {
+const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
   const [loading, setLoading] = React.useState(false);
+  // const [email, setEmail] = React.useState()
   const timer = React.useRef();
   const formik = useFormik({
     initialValues: {
@@ -41,6 +42,7 @@ const PasswordResetForm = ({ onSubmiting }) => {
           setLoading(false);
           // history.push("/companyprofile/company");
           onSubmiting(true);
+          submittedEmail(values.email)
         })
         .catch((error) => {
           setLoading(false);

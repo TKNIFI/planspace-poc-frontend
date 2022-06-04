@@ -10,7 +10,7 @@ import {
   IconButton,
 } from "@mui/material";
 import "./inviteMemberStyles.css";
-import { Typography as Muitypography } from "@mui/material";
+import { Typography as Muitypography, Alert } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import AddMemberForm from "../forms/addMemberForm";
 import {
@@ -121,7 +121,7 @@ const TeamInvitation = () => {
   ];
 
   const makeAToast = (message) => {
-    toast.success(message);
+    toast(<Alert variant="filled">{message}</Alert>);
   };
 
   const getUsers = async (page, pageSize) => {
@@ -150,6 +150,9 @@ const TeamInvitation = () => {
 
   return (
     <>
+    <Toaster
+    position="top-right"
+    />
       <Box sx={{ flexGrow: 1, display: "inline" }}>
         <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
           <Grid item xs={8}></Grid>

@@ -14,6 +14,7 @@ import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
 import RegisterationForm from "../forms/registerationform";
 import RegisterSuccess from "../register/registerSuccess";
+import InvalidLink from "../login/invalidLink"
 import "swiper/swiper.min.css";
 import "swiper/modules/pagination/pagination.min.css";
 import { Pagination } from "swiper";
@@ -24,6 +25,7 @@ import circleImage1 from "../../assets/images/sliderCircleImage1.png";
 import circleImage2 from "../../assets/images/sliderCircleImage2.png";
 import circleImage3 from "../../assets/images/sliderCircleImage3.png";
 import CircularProgress from "@mui/material/CircularProgress";
+
 const SliderContent = () => {
     return (
         <>
@@ -98,7 +100,6 @@ function Register() {
             .catch((error) => {
                 setIsValid(false);
                 setIsLoading(false);
-                alert(error.response.data.message);
             });
     }
 
@@ -107,7 +108,10 @@ function Register() {
     }, []);
 
     return (
+        <>
+        {!isLoading ? (
         <Grid container spacing={0} columns={16} sx={{ ml: 12 }}>
+            
             {/* carousal  */}
             <Grid item xs={6}>
                 <Paper>
@@ -128,7 +132,8 @@ function Register() {
                 </Paper>
             </Grid>
             {/* create account formik form  */}
-            {!isLoading || userDetails ? (
+            {isValid ? (
+                // {isValid? (
                 <Grid item xs={8}>
                     {check ? (
                         <RegisterSuccess />
@@ -170,10 +175,19 @@ function Register() {
                         </>
                     )}
                 </Grid>
+                // ) : <InvalidLink>}
             ) : (
-                <CircularProgress />
+                <InvalidLink />
             )}
         </Grid>
+        ): 
+        <div sx={{mr: 5, ml:5, mt: 5, mb:5}}>
+        <CircularProgress
+        size={60}
+        />
+        </div>
+        }
+        </>
     );
 }
 
