@@ -10,10 +10,28 @@ import { useHistory } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 class User extends BaseModel {
   // Registeration api call by using thunk
-  static registerationCall(yname, emailId, phoneNo, YourBname, pasword) {
+  static registerationCall(
+    first_name,
+    last_name,
+    email,
+    uid,
+    token,
+    mobile,
+    company_name,
+    password
+  ) {
     return async (dispatch) => {
       const user = await NetworkCall.fetch(
-        Request.registerationUser(yname, emailId, phoneNo, YourBname, pasword)
+        Request.registerationUser(
+          first_name,
+          last_name,
+          email,
+          uid,
+          token,
+          mobile,
+          company_name,
+          password
+        )
       )
         .then((response) => {
           const data = response.data.data;
@@ -37,7 +55,7 @@ class User extends BaseModel {
 
   // Helpers
   static isAuthenticated() {
-    const user = localStorage.getItem("userInfo")
+    const user = localStorage.getItem("userInfo");
     return user ? true : false;
   }
 

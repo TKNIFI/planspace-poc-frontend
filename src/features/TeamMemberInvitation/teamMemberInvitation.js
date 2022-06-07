@@ -1,16 +1,7 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-  Box,
-  Button,
-  Grid,
-  Dialog,
-  AppBar,
-  Toolbar,
-  Slide,
-  IconButton,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Button, Grid, IconButton } from "@mui/material";
 import "./inviteMemberStyles.css";
-import { Typography as Muitypography, Alert } from "@mui/material";
+import { Alert } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import AddMemberForm from "../forms/addMemberForm";
 import {
@@ -18,35 +9,51 @@ import {
   DeleteOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
+import { TimelineDot } from '@mui/lab';
 import EditMemberForm from "../forms/editMemberForm";
-import {
-  Space,
-  Table,
-  Checkbox,
-  Popconfirm,
-  Drawer,
-  Typography,
-  Pagination,
-} from "antd";
+import { Space, Table, Checkbox, Popconfirm, Drawer } from "antd";
 import "./inviteMemberStyles.css";
 import axios from "axios";
 import myApi from "../../network/axios";
 import toast, { Toaster } from "react-hot-toast";
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="left" ref={ref} {...props} />;
-});
-
+let data = [
+  {
+    id: "12asd",
+    is_active: true,
+    first_name: "John Brown",
+    mobile: "234234234234",
+    email: "johnbrow@gmail.com",
+    address: "New York No. 1 Lake Park",
+  },
+  {
+    id: "12123",
+    is_active: true,
+    first_name: "irish men",
+    mobile: "234234234234",
+    email: "johnbrow@gmail.com",
+    address: "New York No. 1 Lake Park",
+  },
+  {
+    id: "122355",
+    is_active: true,
+    first_name: "blue men",
+    mobile: "234234234234",
+    email: "johnbrow@gmail.com",
+    address: "New York No. 1 Lake Park",
+  },
+];
 const TeamInvitation = () => {
   const [openEditForm, setOpenEditForm] = useState(false);
   const [openAddForm, setOpenAddForm] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [tableRow, setTableRowData] = useState([]);
+  const [tableRow, setTableRowData] = useState(data);
   const [editRecord, setEditRecord] = useState(null);
   const [count, setCount] = useState(null);
   const [limit, setLimit] = useState(null);
 
   const handleClose = () => {
     setOpenAddForm(false);
+    // setEditRecord(null);
     setOpenEditForm(false);
   };
   async function handleDelete(uid) {
@@ -78,11 +85,6 @@ const TeamInvitation = () => {
         </>
       ),
     },
-    // {
-    //     title: "Email Address",
-    //     dataIndex: "email",
-    //     key: "email",
-    // },
     {
       title: "Access Location",
       dataIndex: "address",
@@ -97,8 +99,8 @@ const TeamInvitation = () => {
             <Space size="middle">
               <a
                 onClick={() => {
-                  setOpenEditForm(true);
                   setEditRecord(record);
+                  setOpenEditForm(true);
                 }}
               >
                 <EditOutlined style={{ color: "gray" }} />
@@ -150,9 +152,7 @@ const TeamInvitation = () => {
 
   return (
     <>
-    <Toaster
-    position="top-right"
-    />
+      <Toaster position="top-right" />
       <Box sx={{ flexGrow: 1, display: "inline" }}>
         <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
           <Grid item xs={8}></Grid>
@@ -181,7 +181,7 @@ const TeamInvitation = () => {
           loading={loading}
         />
       </Box>
-      {/* Model html */}
+      {/* Model to delete html */}
       <Drawer
         className="ant-drawer-title"
         title="Add New Member"
@@ -203,22 +203,6 @@ const TeamInvitation = () => {
           </IconButton>
         }
       >
-        {/* <AppBar sx={{ position: "relative" }}>
-          <Toolbar>
-            <Muitypography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Add New Member
-            </Muitypography>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar> */}
-        {/* form */}
         <AddMemberForm
           formValues={(values) => setTableRowData([...tableRow, values])}
           callBack={() => getUsers()}
@@ -226,8 +210,9 @@ const TeamInvitation = () => {
           popUp={(message) => makeAToast(message)}
         />
       </Drawer>
-
+      {/* Model to edit html */}
       <Drawer
+        className="ant-drawer-title"
         title="Update Member"
         width={1080}
         onClose={handleClose}
@@ -247,26 +232,13 @@ const TeamInvitation = () => {
           </IconButton>
         }
       >
-        {/* <AppBar sx={{ position: "relative" }}>
-          <Toolbar>
-            <Muitypography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Update Member
-            </Muitypography>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar> */}
-        {/* form */}
         <EditMemberForm
           editRecordValues={editRecord}
           callBack={() => getUsers()}
-          handleClose={(close) => setOpenEditForm(close)}
+          handleClose={(close) => {
+            setOpenEditForm(close);
+            // setEditRecord(null);
+          }}
           popUp={(message) => makeAToast(message)}
         />
       </Drawer>

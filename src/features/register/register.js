@@ -75,7 +75,7 @@ const SliderContent = () => {
 };
 function Register() {
     const [check, setCheck] = useState();
-    const [isValid, setIsValid] = useState(true);
+    const [isValid, setIsValid] = useState(false);
     const [userDetails, setUserDetails] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
@@ -132,8 +132,7 @@ function Register() {
                 </Paper>
             </Grid>
             {/* create account formik form  */}
-            {isValid ? (
-                // {isValid? (
+            {!isValid ? (
                 <Grid item xs={8}>
                     {check ? (
                         <RegisterSuccess />
@@ -175,7 +174,6 @@ function Register() {
                         </>
                     )}
                 </Grid>
-                // ) : <InvalidLink>}
             ) : (
                 <InvalidLink />
             )}

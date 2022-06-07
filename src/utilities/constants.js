@@ -44,7 +44,7 @@ const K = {
             GetTenant: "/tenant/get",
 
             //register
-            Register: "/auth/register/",
+            Register: "https://planspace.herokuapp.com/api/auth/register/",
 
             // Assignment
             LoginUser: "/auth/login/",
