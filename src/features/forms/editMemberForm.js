@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Box } from "@mui/material";
-import { TextField } from '@mui/material';
+import { TextField } from "@mui/material";
 import { Button as Muibtn } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { green } from "@mui/material/colors";
@@ -89,7 +89,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 helperText={formik.touched.name && formik.errors.name}
                 onChange={formik.handleChange}
                 autoFocus={true}
-                readOnly={true}
+
                 // autoComplete="current"
               />
             </Grid>
@@ -102,7 +102,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 error={Boolean(formik.touched.userId && formik.errors.userId)}
                 helperText={formik.touched.userId && formik.errors.userId}
                 onChange={formik.handleChange}
-                readOnly={true}
+
                 // autoComplete="current"
               />
             </Grid>
@@ -115,7 +115,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 error={Boolean(formik.touched.email && formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
                 onChange={formik.handleChange}
-                readOnly={true}
+
                 // autoComplete="current"
               />
             </Grid>
@@ -128,7 +128,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 onChange={formik.handleChange}
                 error={Boolean(formik.touched.mobile && formik.errors.mobile)}
                 helperText={formik.touched.mobile && formik.errors.mobile}
-                readOnly={true}
+
                 // autoComplete="current"
               />
             </Grid>
@@ -152,7 +152,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                   )}
                   helperText={formik.touched.address && formik.errors.address}
                   onChange={formik.handleChange}
-                  readOnly={true}
+
                   // autoComplete="current"
                 />
               </Grid>

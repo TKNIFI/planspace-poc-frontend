@@ -1,29 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
-import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
-import Slide from "@mui/material/Slide";
+import { Button, Drawer, Typography } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
+import { Box, Card, CardContent, CardMedia, IconButton } from "@mui/material";
 import { projectStorage } from "../../utilities/storage";
 import AddLocationForm from "../forms/AddLocationForm";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import { Button as Muibtn } from "@mui/material";
 import locImage from "../../assets/images/location.jpg";
 import Location from "../../models/Locations/Location";
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="left" ref={ref} {...props} />;
-});
-
+import addLogoImage from "../../assets/images/iconadd.png";
+import "./location.scss";
 export default function Locations() {
   const [formData, setFormData] = useState();
   const [open, setOpen] = useState(false);
@@ -42,7 +29,7 @@ export default function Locations() {
   console.log("location form data in parent", formData);
   return (
     <>
-      <div
+      <Box
         style={{
           marginLeft: "10px",
           margin: "10px 0px",
@@ -86,7 +73,7 @@ export default function Locations() {
                     <LocalPhoneIcon /> {formData?.phone}
                   </Typography>
                 </CardContent>
-                <Muibtn
+                <Button
                   variant="contained"
                   color="success"
                   sx={{
@@ -100,54 +87,57 @@ export default function Locations() {
                   }}
                 >
                   Physical Main Location
-                </Muibtn>
+                </Button>
               </CardContent>
             </Box>
           </Card>
         ) : null}
         <Button
           style={{
-            width: "200px",
-            height: "200px",
-            backgroundColor: "white",
-            color: "#ccc",
+            width: "250px",
+            height: "207px",
+            color: "gray",
             border: "none",
-            marginLeft: "10px",
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "4px",
+            fontWeight: "bold",
           }}
-          type="primary"
+          icon={<img src={addLogoImage} />}
           onClick={handleClickOpen}
         >
-          {" "}
-          <PlusCircleOutlined /> Add new location
+          <Typography style={{ marginTop: "12px" }}>
+            Add New Location
+          </Typography>
         </Button>
-      </div>
+      </Box>
 
       {/* Model html */}
-      <Dialog
-        fullScreen
-        maxWidth="md"
-        sx={{ pl: 70 }}
-        open={open}
+      <Drawer
+        title="New Location Name"
+        width={900}
         onClose={handleClose}
-        TransitionComponent={Transition}
+        visible={open}
+        closable={false}
+        bodyStyle={{
+          paddingBottom: 80,
+        }}
+        extra={
+          <IconButton
+            edge="start"
+            sx={{ color: "white" }}
+            onClick={handleClose}
+            aria-label="close"
+          >
+            <CloseCircleOutlined />
+          </IconButton>
+        }
       >
-        <AppBar sx={{ position: "relative" }}>
-          <Toolbar>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Enter new location
-            </Typography>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
         <AddLocationForm sendChildToParent={gettingDataFromChild} />
-      </Dialog>
+      </Drawer>
     </>
   );
 }
