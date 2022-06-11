@@ -135,8 +135,7 @@ const TeamInvitation = () => {
           <Grid item xs={4}>
             <Button
               variant="contained"
-              // sx={{ textTransform: "capitalize", ml: 42 }}
-              style={{ float: "right" }}
+              style={{ textTransform: "capitalize" ,float: "right" }}
               onClick={() => setOpenAddForm(true)}
             >
               <AddIcon /> Add new
