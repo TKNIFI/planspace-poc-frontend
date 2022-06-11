@@ -31,23 +31,53 @@ const K = {
             BaseAPI: "https://planspace.herokuapp.com/api",
             Timeout: 1000,
             TenantURL: (domainPrefix = "") => {
-                return "http://" + domainPrefix + "planspace.herokuapp.com/api";
+                return "https://" + domainPrefix + "planspace.herokuapp.com/api";
             },
             Client: {
                 BaseHost: "planspace.herokuapp.com",
                 BasePort: "80",
             },
 
-            Protocol: "http",
+            Protocol: "https",
 
             // Tenant
             GetTenant: "/tenant/get",
 
-            //register
-            Register: "https://planspace.herokuapp.com/api/auth/register/",
+            // Register
+            Register: "/auth/register/",
 
-            // Assignment
+            // Register Invited User
+            RegisterInvited: "/auth/register/invited/",
+
+            // Login User
             LoginUser: "/auth/login/",
+
+            // Login Using Facebook
+            FacebookLogin: "/auth/login/facebook/",
+
+            // Login Using Google
+            GoogleLogin: "/auth/login/google/",
+
+            // Invite User
+            InviteUser: "/auth/user/",
+
+            // Get Invite User
+            GetInvitedUser: "/auth/user/invited/",
+
+            // Delete User
+            DeleteUser: "/auth/user/:id/",
+
+            // Update User
+            UpdateUser: "/auth/user/:id/",
+
+            // Request Reset Password
+            ResetPasswordRequest: "auth/password_reset/request/",
+
+            // Reset Password
+            ResetPassword: "auth/password_reset/confirm/",
+
+            // Validate Reset Password Token
+            ValidatePasswordResetToken: "auth/password_reset/validate_token/",
 
             //create company
             CreatCompany: "/company/",
@@ -85,7 +115,7 @@ const K = {
                 Authorization: "JWT " + getToken(),
             }),
             Type: {
-                Json: "json",
+                Json: "application/json",
                 File: "file",
             },
         },

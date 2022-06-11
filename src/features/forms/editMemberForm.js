@@ -11,8 +11,11 @@ import * as Yup from "yup";
 import myApi from "../../network/axios";
 
 const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
+  console.log("editRecordValues", editRecordValues)
   const [loading, setLoading] = React.useState(false);
+
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
       name: editRecordValues?.first_name,
       userId: editRecordValues?.id,
@@ -64,7 +67,6 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
         console.log("err", error);
         helpers.setErrors({ submit: error.response.data.message });
         helpers.setSubmitting(false);
-
         handleClose(true);
       }
     },
@@ -83,7 +85,6 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
               <TextField
                 name="name"
                 label="Name"
-                defaultValue=""
                 value={formik.values.name}
                 error={Boolean(formik.touched.name && formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
@@ -97,7 +98,6 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
               <TextField
                 name="userId"
                 label="User ID"
-                defaultValue=""
                 value={formik.values.userId}
                 error={Boolean(formik.touched.userId && formik.errors.userId)}
                 helperText={formik.touched.userId && formik.errors.userId}
@@ -110,7 +110,6 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
               <TextField
                 name="email"
                 label="Email"
-                defaultValue=""
                 value={formik.values.email}
                 error={Boolean(formik.touched.email && formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
@@ -123,7 +122,6 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
               <TextField
                 name="mobile"
                 label="Phone Number"
-                defaultValue=""
                 value={formik.values.mobile}
                 onChange={formik.handleChange}
                 error={Boolean(formik.touched.mobile && formik.errors.mobile)}
@@ -145,7 +143,6 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 <TextField
                   name="address"
                   label="Address"
-                  defaultValue=""
                   value={formik.values.address}
                   error={Boolean(
                     formik.touched.address && formik.errors.address

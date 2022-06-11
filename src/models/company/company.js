@@ -1,6 +1,7 @@
 import BaseModel from "../baseModel/baseModel";
 import NetworkCall from "../../network/networkCall";
 import Request from "../../network/request";
+
 export default class Company extends BaseModel {
   // API call using thunk
   static async CreateCompany(Props) {

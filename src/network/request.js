@@ -51,15 +51,11 @@ export default class Request {
     first_name,
     last_name,
     email,
-    uid,
-    token,
     mobile,
     company_name,
     password
   ) {
     const body = {
-      uid: uid,
-      token: token,
       first_name: first_name,
       last_name: last_name,
       email: email,
@@ -70,10 +66,10 @@ export default class Request {
     return new Request(
       K.Network.URL.Register,
       K.Network.Method.POST,
-      body,
-      K.Network.Header.Type.Json,
-      {},
-      false
+      body
+      // K.Network.Header.Type.Json,
+      // {},
+      // false
     );
   }
   // User calls.

@@ -16,44 +16,19 @@ import "./inviteMemberStyles.css";
 import axios from "axios";
 import myApi from "../../network/axios";
 import toast, { Toaster } from "react-hot-toast";
-let data = [
-  {
-    id: "12asd",
-    is_active: true,
-    first_name: "John Brown",
-    mobile: "234234234234",
-    email: "johnbrow@gmail.com",
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    id: "12123",
-    is_active: true,
-    first_name: "irish men",
-    mobile: "234234234234",
-    email: "johnbrow@gmail.com",
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    id: "122355",
-    is_active: true,
-    first_name: "blue men",
-    mobile: "234234234234",
-    email: "johnbrow@gmail.com",
-    address: "New York No. 1 Lake Park",
-  },
-];
+
 const TeamInvitation = () => {
   const [openEditForm, setOpenEditForm] = useState(false);
   const [openAddForm, setOpenAddForm] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [tableRow, setTableRowData] = useState(data);
+  const [tableRow, setTableRowData] = useState();
   const [editRecord, setEditRecord] = useState(null);
   const [count, setCount] = useState(null);
   const [limit, setLimit] = useState(null);
 
   const handleClose = () => {
     setOpenAddForm(false);
-    // setEditRecord(null);
+    setEditRecord(null);
     setOpenEditForm(false);
   };
   async function handleDelete(uid) {
@@ -93,14 +68,15 @@ const TeamInvitation = () => {
     {
       title: "Action",
       key: "action",
-      render: (_, record) => {
+      render: (record) => {
         return (
           <>
-            <Space size="middle">
+            <Space key={record.id} size="middle">
               <a
                 onClick={() => {
-                  setEditRecord(record);
+                  console.log("record", record)
                   setOpenEditForm(true);
+                  setEditRecord(record);
                 }}
               >
                 <EditOutlined style={{ color: "gray" }} />

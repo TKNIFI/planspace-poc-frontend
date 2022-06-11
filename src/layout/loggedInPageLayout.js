@@ -5,9 +5,19 @@ import Sider from "../layout/sider";
 import Breadcrumbs from "../layout/breadcrumbs";
 import "antd/dist/antd.css";
 import styles from "./layout.module.scss";
+import { useHistory } from "react-router-dom";
 
 export default function LoggedInPageLayout({ children }) {
   const { Content } = Layout;
+  const history = useHistory()
+
+  React.useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo")
+    if (!userInfo) {
+      history.push("/login")
+    }
+  }, [])
+
   return (
     <>
       <AppHeader />

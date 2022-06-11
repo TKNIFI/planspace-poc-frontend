@@ -20,11 +20,11 @@ const LoginForm = () => {
   };
   const formik = useFormik({
     initialValues: {
-      email: "",
+      primary_email_id: "",
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string()
+      primary_email_id: Yup.string()
         .email("must be valid email")
         .required("Email is required"),
       password: Yup.string()
@@ -36,9 +36,9 @@ const LoginForm = () => {
       try {
         setLoading(true)
         let formData = new FormData();
-        formData.append("email", values.email);
+        formData.append("primary_email_id", values.primary_email_id);
         formData.append("password", values.password);
-        await dispatch(login(values.email, values.password));
+        await dispatch(login(values.primary_email_id, values.password));
         // await axios.post("https://planspace.herokuapp.com/api/auth/login/", formData).then(response => {
         //   const data = response.data.data
         //   localStorage.setItem("userInfo", JSON.stringify(data))
@@ -75,13 +75,13 @@ const LoginForm = () => {
           }}
         >
           <TextField
-            id="email"
+            id="primary_email_id"
             label="Enter Your Email *"
             placeholder="Enter Your Email"
             type="email"
-            value={formik.values.email}
-            error={Boolean(formik.touched.email && formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            value={formik.values.primary_email_id}
+            error={Boolean(formik.touched.primary_email_id && formik.errors.primary_email_id)}
+            helperText={formik.touched.primary_email_id && formik.errors.primary_email_id}
             onChange={formik.handleChange}
             sx={{ width: "100%" }}
             autoFocus="true"

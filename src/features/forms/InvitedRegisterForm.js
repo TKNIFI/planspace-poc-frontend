@@ -16,23 +16,23 @@ import Request from "../../network/request";
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-const RegisterationForm = ({ onSubmiting, email }) => {
+const InvitedRegisterForm = ({ onSubmiting, uid, token }) => {
   let history = useHistory();
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
-  const [check, setCheck] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
   const timer = React.useRef();
   const formik = useFormik({
     initialValues: {
       first_name: "",
-      primary_email_id: "",
+      email: "",
       mobile: "",
       company_name: "",
       password: "",
     },
     validationSchema: Yup.object({
       first_name: Yup.string().required("Name is required"),
-      primary_email_id: Yup.string()
+      email: Yup.string()
         .email("must be valid email")
         .required("Email is required"),
       mobile: Yup.string()
@@ -48,54 +48,18 @@ const RegisterationForm = ({ onSubmiting, email }) => {
       setLoading(true);
       let formData = new FormData();
       let name = values.first_name.split(" ");
-      formData.append("primary_email_id", values.primary_email_id);
+      formData.append("email", values.email);
+      formData.append("uid", uid);
+      formData.append("token", token);
       formData.append("mobile", values.mobile);
       formData.append("company_name", values.company_name);
       formData.append("password", values.password);
       formData.append("first_name", name[0]);
       if (name.length > 1) {
-          formData.append("last_name", name[1]);
+        formData.append("last_name", name[1]);
       }
-      await axios
-          .post(
-              "https://planspace.herokuapp.com/api/auth/register/",
-              formData
-          )
-          .then((response) => {
-              const data = response.data.data;
-              localStorage.setItem("userInfo", JSON.stringify(data));
-              onSubmiting(true);
-              email(values.primary_email_id)
-              // history.push("/");
-          })
-          .catch((error) => {
-            error.response.data.message.map((error) => {
-              Object.keys(error).map((field) => {
-                formik.setFieldError(field, error[field])
-              })
-            })
-              // if (typeof error.response.data.message === Object) {
-              //     for (const [key, value] of Object.entries(
-              //         error.response.data.message
-              //     )) {
-              //         formik.setFieldError(key, value[0]);
-
-              //         formik.setFieldTouched(key, true);
-              //     }
-              // } else if (error.response.data.message.non_field_errors) {
-              //     error.response.data.message.errors.map((error) =>
-              //         helpers.setErrors({ submit: error })
-              //     );
-              // } else {
-              //     helpers.setErrors({
-              //         submit: error.response.data.message,
-              //     });
-              // }
-              helpers.setStatus({ success: false });
-              helpers.setSubmitting(false);
-              setLoading(false);
-          });
-  },
+      await User.registerationCall(formData)
+    },
   });
 
   React.useEffect(() => {
@@ -145,13 +109,13 @@ const RegisterationForm = ({ onSubmiting, email }) => {
           <Grid container spacing={4}>
             <Grid item xs={6}>
               <TextField
-                id="primary_email_id"
+                id="email"
                 label="Enter your email id*"
                 placeholder="Enter your email id"
                 type="email"
-                error={Boolean(formik.touched.primary_email_id && formik.errors.primary_email_id)}
-                helperText={formik.touched.primary_email_id && formik.errors.primary_email_id}
-                value={formik.values.primary_email_id}
+                error={Boolean(formik.touched.email && formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
+                value={formik.values.email}
                 onChange={formik.handleChange}
                 sx={{ width: "100%" }}
               />
@@ -261,4 +225,4 @@ const RegisterationForm = ({ onSubmiting, email }) => {
   );
 };
 
-export default RegisterationForm;
+export default InvitedRegisterForm;

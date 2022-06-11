@@ -14,7 +14,7 @@ const InvalidLink = () => {
     <Toaster 
     position="top-right"
     />
-      <Grid item xs={8}>
+      {/* <Grid item xs={8}> */}
         <Paper sx={{ height: "100%", p: 5 }}>
           <Box>
             <img src={planLogo} height="30px" width="170px" />
@@ -79,7 +79,7 @@ const InvalidLink = () => {
             </Box>
           </Box>
         </Paper>
-      </Grid>
+      {/* </Grid> */}
     </>
   );
 }

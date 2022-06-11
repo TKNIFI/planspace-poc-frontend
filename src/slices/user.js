@@ -21,11 +21,11 @@ const slice = createSlice({
 
 export const { reducer } = slice;
 
-export const login = (email, password) => async (dispatch) => {
+export const login = (primary_email_id, password) => async (dispatch) => {
   //   console.log(email, password, token);
 
   const { data } = await myApi.post("api/auth/login/", {
-    email,
+    primary_email_id,
     password
   });
   localStorage.setItem("userInfo", JSON.stringify(data.data));

@@ -8,40 +8,28 @@ import { upsertModel } from "../baseModel/baseActions";
 import K from "../../utilities/constants";
 import { useHistory } from "react-router-dom";
 import { withRouter } from "react-router-dom";
+
 class User extends BaseModel {
   // Registeration api call by using thunk
-  static registerationCall(
-    first_name,
-    last_name,
-    email,
-    uid,
-    token,
-    mobile,
-    company_name,
-    password
-  ) {
-    return async (dispatch) => {
-      const user = await NetworkCall.fetch(
+  static async registerationCall(data) {
+    return await NetworkCall.fetch(
         Request.registerationUser(
-          first_name,
-          last_name,
-          email,
-          uid,
-          token,
-          mobile,
-          company_name,
-          password
+          data.first_name,
+          data.last_name,
+          data.email,
+          data.mobile,
+          data.company_name,
+          data.password
         )
       )
         .then((response) => {
           const data = response.data.data;
           localStorage.setItem("userInfo", JSON.stringify(data));
+          // upsertModel(User, response.data.data);
           // useHistory.push("/login");
         })
-        .catch((error) => alert(error.message));
-      dispatch(upsertModel(User, user));
     };
-  }
+  // }
 
   // API call using thunk
   static loginCall(email, password) {
