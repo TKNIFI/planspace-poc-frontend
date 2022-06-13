@@ -69,11 +69,19 @@ const RegisterationForm = ({ onSubmiting, email }) => {
               // history.push("/");
           })
           .catch((error) => {
-            error.response.data.message.map((error) => {
-              Object.keys(error).map((field) => {
-                formik.setFieldError(field, error[field])
+            if (typeof error.response.data.message === Array) {
+              error.response.data.message.map((error) => {
+                Object.keys(error).map((field) => {
+                  if (field == "non_field_error") {
+                    formik.setErrors({submit: error[field]})
+                  } else {
+                    formik.setFieldError(field, error[field])
+                  }
+                })
               })
-            })
+            } else if (typeof error.response.data.message === String) {
+              formik.setErrors({submit: error.response.data.message})
+            }
               // if (typeof error.response.data.message === Object) {
               //     for (const [key, value] of Object.entries(
               //         error.response.data.message

@@ -19,7 +19,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
     initialValues: {
       name: editRecordValues?.first_name,
       userId: editRecordValues?.id,
-      email: editRecordValues?.email,
+      primary_email_id: editRecordValues?.email,
       mobile: editRecordValues?.mobile,
       address: editRecordValues?.address,
     },
@@ -29,7 +29,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
         .max(15, "Must be 15 characters or less")
         .required("Name is required"),
       userId: Yup.string().required("user id is required"),
-      email: Yup.string().email("Invalid email").required("Email is required"),
+      primary_email_id: Yup.string().email("Invalid email").required("Email is required"),
       mobile: Yup.number()
         .required("Phone number is required")
         .positive()
@@ -45,7 +45,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
         if (name.length > 1) {
           formData.append("last_name", name[1]);
         }
-        formData.append("email", values.email);
+        formData.append("primary_email_id", values.primary_email_id);
         formData.append("address", values.address);
         formData.append("mobile", values.mobile);
         // values.name = "";
@@ -108,11 +108,11 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                name="email"
+                name="primary_email_id"
                 label="Email"
-                value={formik.values.email}
-                error={Boolean(formik.touched.email && formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
+                value={formik.values.primary_email_id}
+                error={Boolean(formik.touched.primary_email_id && formik.errors.primary_email_id)}
+                helperText={formik.touched.primary_email_id && formik.errors.primary_email_id}
                 onChange={formik.handleChange}
 
                 // autoComplete="current"

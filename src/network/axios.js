@@ -18,7 +18,7 @@ let user_detail = user_data();
 const myApi = axios.create({
     baseURL: 'https://planspace.herokuapp.com/',
     headers: {
-        // Authorization: `JWT ${user_detail?.access}`,
+        Authorization: `JWT ${user_detail?.access}`,
         'content-type': 'application/json',
     },
 });

@@ -58,7 +58,7 @@ const LoginForm = () => {
             helpers.setErrors({ submit: error })
           );
         } else {
-          helpers.setErrors({ submit: error.response.data.message[0] });
+          helpers.setErrors({ submit: error.response.data.message });
         }
         setLoading(false)
         helpers.setStatus({ success: false });
