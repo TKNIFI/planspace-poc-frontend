@@ -8,28 +8,28 @@ import styles from "./layout.module.scss";
 import { useHistory } from "react-router-dom";
 
 export default function LoggedInPageLayout({ children }) {
-  const { Content } = Layout;
-  const history = useHistory()
+    const { Content } = Layout;
+    const history = useHistory();
 
-  React.useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo")
-    if (!userInfo) {
-      history.push("/login")
-    }
-  }, [])
+    React.useEffect(() => {
+        const userInfo = localStorage.getItem("userInfo");
+        if (!userInfo) {
+            history.push("/login");
+        }
+    }, []);
 
-  return (
-    <>
-      <AppHeader />
-      <Layout style={{ minHeight: "150vh" }}>
-        <Layout className={styles["site-layout"]}>
-          <Sider />
-          <Content style={{ margin: "0 16px" }}>
-            <Breadcrumbs />
-            {children}
-          </Content>
-        </Layout>
-      </Layout>
-    </>
-  );
+    return (
+        <>
+            <AppHeader />
+            <Layout className="layout-design">
+                <Layout className={styles["site-layout"]}>
+                    <Sider />
+                    <Content style={{ margin: "0 16px" }}>
+                        <Breadcrumbs />
+                        {children}
+                    </Content>
+                </Layout>
+            </Layout>
+        </>
+    );
 }

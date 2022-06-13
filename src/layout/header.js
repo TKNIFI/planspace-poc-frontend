@@ -113,7 +113,7 @@ export default function PrimarySearchAppBar() {
             }}
             open={isMenuOpen}
             onClose={handleMenuClose}
-            sx={{ position: "fixed", ml: 45, mt: 5 }}
+            // sx={{ position: "fixed", ml: 45, mt: 5 }}
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem onClick={handleMenuClose}>My account</MenuItem>

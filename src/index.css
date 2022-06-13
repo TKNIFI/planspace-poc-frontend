@@ -61,3 +61,17 @@ code {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper{
+  left: 95% !important;
+  top: 70px !important;
+}
+
+.layout-design{
+  min-height:112vh !important;
+}
+
+@media screen and (max-width: 2000px) {
+  .layout-design {
+    min-height:120vh !important;
+  }
+}
