@@ -17,6 +17,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Select from "@mui/material/Select";
 import planLogo from "../assets/images/plan.png";
+import "../index.css";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
