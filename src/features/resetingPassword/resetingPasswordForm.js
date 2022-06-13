@@ -25,17 +25,20 @@ const ResetingPasswordForm = ({ checkFormValues, onSubmiting, uid, token }) => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-      let formData = new FormData();
-      formData.append("uid", uid);
-      formData.append("token", token);
-      formData.append("password", values.newpassword);
-      formData.append("confirm_password", values.confirmpassword);
-      await axios.post(
-        "https://planspace.herokuapp.com/api/auth/password_reset/confirm/",
-        formData
-      );
+        let formData = new FormData();
+        formData.append("uid", uid);
+        formData.append("token", token);
+        formData.append("password", values.newpassword);
+        formData.append("confirm_password", values.confirmpassword);
+        await axios.post(
+          "https://planspace.herokuapp.com/api/auth/password_reset/confirm/",
+          formData
+        );
+        onSubmiting(true)
       } catch (error) {
-        helpers.setError({submit: error.response.data.message})
+        formik.setErrors({submit: error.response.data.message})
+        helpers.setSubmitting(false)
+        onSubmiting(false)
       }
     },
   });

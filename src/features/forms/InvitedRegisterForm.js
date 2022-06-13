@@ -22,17 +22,18 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token }) => {
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const timer = React.useRef();
+  
   const formik = useFormik({
     initialValues: {
       first_name: "",
-      email: "",
+      primary_email_id: "",
       mobile: "",
       company_name: "",
       password: "",
     },
     validationSchema: Yup.object({
       first_name: Yup.string().required("Name is required"),
-      email: Yup.string()
+      primary_email_id: Yup.string()
         .email("must be valid email")
         .required("Email is required"),
       mobile: Yup.string()
@@ -48,7 +49,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token }) => {
       setLoading(true);
       let formData = new FormData();
       let name = values.first_name.split(" ");
-      formData.append("email", values.email);
+      formData.append("primary_email_id", values.primary_email_id);
       formData.append("uid", uid);
       formData.append("token", token);
       formData.append("mobile", values.mobile);
@@ -58,7 +59,21 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token }) => {
       if (name.length > 1) {
         formData.append("last_name", name[1]);
       }
-      await User.registerationCall(formData)
+      await axios
+      .post("https://planspace.herokuapp.com/api/auth/invite/register/", formData)
+      .then((response) => {
+        const data = response.data.data;
+        localStorage.setItem("userInfo", JSON.stringify(data));
+        history.push("/");
+      })
+      .catch((error) => {
+          for (const [key, value] of Object.entries(error.response.data.message[0])) {
+            formik.setFieldError(key, value[0]);
+          }
+          helpers.setStatus({ success: false });
+          helpers.setSubmitting(false);
+          setLoading(false);
+      });
     },
   });
 
@@ -109,13 +124,13 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token }) => {
           <Grid container spacing={4}>
             <Grid item xs={6}>
               <TextField
-                id="email"
+                id="primary_email_id"
                 label="Enter your email id*"
                 placeholder="Enter your email id"
                 type="email"
-                error={Boolean(formik.touched.email && formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
-                value={formik.values.email}
+                error={Boolean(formik.touched.primary_email_id && formik.errors.primary_email_id)}
+                helperText={formik.touched.primary_email_id && formik.errors.primary_email_id}
+                value={formik.values.primary_email_id}
                 onChange={formik.handleChange}
                 sx={{ width: "100%" }}
               />

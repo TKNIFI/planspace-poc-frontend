@@ -83,10 +83,13 @@ export default function ResetingPassword() {
   const token = query.get("token");
 
   async function checkToken() {
+    let formData = new FormData()
+    formData.append("uid", uid)
+    formData.append("token", token)
     await axios
       .post(
-        `https://planspance.herokuapp.com/api/auth/password_reset/validate_token/`,
-        { uid: uid, token: token }
+        "https://planspance.herokuapp.com/api/auth/password_reset/validate_token/",
+        formData
       )
       .then((result) => setIsValid(true))
       .catch((error) => setIsValid(false));
