@@ -7,7 +7,7 @@ import * as Yup from "yup";
 // import User from "../../../../models/user/user";
 // import { useDispatch } from "react-redux";
 
-const ResetingPasswordForm = ({ checkFormValues, onSubmiting, uid, token }) => {
+const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
   const formik = useFormik({
     initialValues: {
       newpassword: "",
@@ -90,7 +90,6 @@ const ResetingPasswordForm = ({ checkFormValues, onSubmiting, uid, token }) => {
             }}
             variant="contained"
             type="submit"
-            onClick={() => onSubmiting(true)}
           >
             Reset Password
           </Button>

@@ -64,17 +64,16 @@ const RegisterationForm = ({ onSubmiting, email }) => {
           )
           .then((response) => {
               const data = response.data.data;
-              localStorage.setItem("userInfo", JSON.stringify(data));
               onSubmiting(true);
               email(values.primary_email_id)
           })
           .catch((error) => {
+              setLoading(false);
               for (const [key, value] of Object.entries(error.response.data.message[0])) {
                 formik.setFieldError(key, value[0]);
               }
               helpers.setStatus({ success: false });
               helpers.setSubmitting(false);
-              setLoading(false);
           });
   },
   });
