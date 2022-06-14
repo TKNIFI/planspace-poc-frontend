@@ -1,9 +1,10 @@
 import React from "react";
 import axios from "axios";
 import { useFormik } from "formik";
-import { Box, Button, TextField } from "@mui/material";
+import { Alert, Box, Button, TextField } from "@mui/material";
 // import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
+import toast from "react-hot-toast";
 // import User from "../../../../models/user/user";
 // import { useDispatch } from "react-redux";
 
@@ -33,8 +34,10 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
         await axios.post(
           "https://planspace.herokuapp.com/api/auth/password_reset/confirm/",
           formData
-        );
-        onSubmiting(true)
+        ).then((result) => {
+          toast.success(<Alert severity="success" variant="filled">{result.data.data}</Alert>)
+          onSubmiting(true)
+        })
       } catch (error) {
         formik.setErrors({submit: error.response.data.message})
         helpers.setSubmitting(false)

@@ -16,7 +16,7 @@ import Request from "../../network/request";
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-const InvitedRegisterForm = ({ onSubmiting, uid, token }) => {
+const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
   let history = useHistory();
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
@@ -24,10 +24,11 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token }) => {
   const timer = React.useRef();
   
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      first_name: "",
-      primary_email_id: "",
-      mobile: "",
+      first_name: user?.first_name + " " + user?.last_name,
+      primary_email_id: user?.primary_email_id,
+      mobile: user?.mobile,
       company_name: "",
       password: "",
     },
