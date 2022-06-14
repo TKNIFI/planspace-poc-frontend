@@ -97,7 +97,6 @@ export default function PrimarySearchAppBar() {
             setLocation(JSON.parse(userInfo)?.address);
         }
     }, []);
-
     const menuId = "primary-search-account-menu";
     const renderMenu = (
         <Menu
@@ -114,7 +113,7 @@ export default function PrimarySearchAppBar() {
             }}
             open={isMenuOpen}
             onClose={handleMenuClose}
-            // sx={{ position: "fixed", ml: 45, mt: 5 }}
+            sx={{ ml: window.innerWidth > 1900 ? 57 : 40, mt: 5 }}
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem onClick={handleMenuClose}>My account</MenuItem>
@@ -138,7 +137,7 @@ export default function PrimarySearchAppBar() {
             }}
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
-            sx={{ position: "fixed", ml: 20, mt: 5 }}
+            sx={{ ml: 20, mt: 5 }}
         >
             <MenuItem>
                 <IconButton size="large" aria-label="show 17 new notifications">
