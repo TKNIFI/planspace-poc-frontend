@@ -70,7 +70,7 @@ const SliderContent = () => {
     );
 };
 function Verify() {
-    const [isValid, setIsValid] = useState();
+    const [isValid, setIsValid] = useState(true);
     const [email, setEmail] = useState(true);
 
     function useQuery() {
@@ -83,8 +83,12 @@ function Verify() {
 
     const verifyEmail = async () => {
         try {
-            await axios.get(`https://planspace.herokuapp.com/api/auth/user/invited/?uid=${uid}&token=${token}/`)
-            setIsValid(true)
+            let formData = new FormData()
+            formData.append("uid", uid)
+            formData.append("token", token)
+            await axios.post("https://planspace.herokuapp.com/api/auth/register/activate/", formData).then((result) => {
+                setIsValid(true)
+            })
         } catch (error) {
             setIsValid(false)
         }
@@ -119,7 +123,28 @@ function Verify() {
             </Grid>
                 <Grid item xs={8}>
                     {!isValid ? (
-                        <InvalidLink/>
+                        <Paper sx={{ height: "100%", p: 5 }}>
+                        <Box>
+                            <img
+                                src={planLogo}
+                                height="30px"
+                                width="170px"
+                            />
+                        </Box>
+                        <Box sx={{ mt: 3, p: 1 }}>
+                            <Typography
+                                variant="h5"
+                                sx={{ color: "#003399" }}
+                            >
+                                Invalid or Expired link
+                            </Typography>
+                        </Box>
+                        <Box sx={{ mt: 2, p: 1, height: "445px" }}>
+                            <Typography>
+                                <Link href="/login">Login</Link>
+                            </Typography>
+                        </Box>
+                    </Paper>
                     ) : (
                         <>
                             <Paper sx={{ height: "100%", p: 5 }}>
