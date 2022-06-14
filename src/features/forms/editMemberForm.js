@@ -18,7 +18,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
         enableReinitialize: true,
         initialValues: {
             name: editRecordValues?.first_name,
-            userId: editRecordValues?.id,
+            userId: editRecordValues?.primary_email_id,
             primary_email_id: editRecordValues?.primary_email_id,
             mobile: editRecordValues?.mobile,
             address: editRecordValues?.address,
