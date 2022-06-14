@@ -127,7 +127,7 @@ function RegisterInvited() {
                 </Paper>
             </Grid>
             {/* create account formik form  */}
-            {!isValid ? (
+            {isValid ? (
                 <Grid item xs={8}>
                     {check ? "" : (
                         <>

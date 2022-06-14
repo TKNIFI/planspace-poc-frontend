@@ -12,7 +12,7 @@ const PasswordResetMail = ({email}) => {
 
   async function resendEmail() {
     await axios
-        .post("https://planspace.herokuapp.com/api/auth/password_reset/request/",{email: userEmail}
+        .post("https://planspace.herokuapp.com/api/auth/password_reset/request/",{primary_email_id: userEmail}
         )
         .then((response) => {
           toast(<Alert severity="success" variant="filled"> {response.data.message}</Alert>);

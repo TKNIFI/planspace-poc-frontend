@@ -12,13 +12,14 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
   const [loading, setLoading] = React.useState(false);
   // const [email, setEmail] = React.useState()
   const timer = React.useRef();
+  
   const formik = useFormik({
     initialValues: {
-      email: "",
-      // password: "",
+      primary_email_id: ""
     },
+    
     validationSchema: Yup.object({
-      email: Yup.string()
+      primary_email_id: Yup.string()
         .email("must be valid email")
         .required("Email is required"),
       // password: Yup.string()
@@ -32,7 +33,7 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
     onSubmit: async (values, helpers) => {
       setLoading(true);
       let formData = new FormData();
-      formData.append("email", values.email);
+      formData.append("primary_email_id", values.primary_email_id);
       await axios
         .post(
           "https://planspace.herokuapp.com/api/auth/password_reset/request/",
@@ -40,13 +41,19 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
         )
         .then((response) => {
           setLoading(false);
-          // history.push("/companyprofile/company");
           onSubmiting(true);
-          submittedEmail(values.email)
+          submittedEmail(values.primary_email_id)
         })
         .catch((error) => {
           setLoading(false);
-          helpers.setErrors({ submit: error.response.data.message });
+          for (const [key, value] of Object.entries(error.response.data.message[0])) {
+            if (key === "non_field_errors") {
+              formik.setErrors({submit: value[0]})
+            }
+            formik.setFieldError(key, value[0]);
+          }
+          helpers.setSubmitting(false)
+          setLoading(false)
         });
     },
   });
@@ -66,15 +73,16 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
           }}
         >
           <TextField
-            id="email"
+            id="primary_email_id"
             label="Enter Your Email*"
             placeholder="Enter Your Email"
             type="email"
-            value={formik.values.email}
+            value={formik.values.primary_email_id}
             onChange={formik.handleChange}
             sx={{ width: "100%" }}
-            error={Boolean(formik.touched.email && formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            error={Boolean(formik.touched.primary_email_id && formik.errors.primary_email_id)}
+            helperText={formik.touched.primary_email_id && formik.errors.primary_email_id}
+            autoFocus={true}
           />
         </Box>
         {formik.errors.submit && (

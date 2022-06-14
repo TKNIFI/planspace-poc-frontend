@@ -13,6 +13,7 @@ import SocialButton from "../login/components/SocialButton";
 import CircularProgress from "@mui/material/CircularProgress";
 import gmailLogo from "../../assets/images/gmailLogo.png";
 import Request from "../../network/request";
+import toast from "react-hot-toast";
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -66,39 +67,11 @@ const RegisterationForm = ({ onSubmiting, email }) => {
               localStorage.setItem("userInfo", JSON.stringify(data));
               onSubmiting(true);
               email(values.primary_email_id)
-              // history.push("/");
           })
           .catch((error) => {
-            if (typeof error.response.data.message === Array) {
-              error.response.data.message.map((error) => {
-                Object.keys(error).map((field) => {
-                  if (field == "non_field_error") {
-                    formik.setErrors({submit: error[field]})
-                  } else {
-                    formik.setFieldError(field, error[field])
-                  }
-                })
-              })
-            } else if (typeof error.response.data.message === String) {
-              formik.setErrors({submit: error.response.data.message})
-            }
-              // if (typeof error.response.data.message === Object) {
-              //     for (const [key, value] of Object.entries(
-              //         error.response.data.message
-              //     )) {
-              //         formik.setFieldError(key, value[0]);
-
-              //         formik.setFieldTouched(key, true);
-              //     }
-              // } else if (error.response.data.message.non_field_errors) {
-              //     error.response.data.message.errors.map((error) =>
-              //         helpers.setErrors({ submit: error })
-              //     );
-              // } else {
-              //     helpers.setErrors({
-              //         submit: error.response.data.message,
-              //     });
-              // }
+              for (const [key, value] of Object.entries(error.response.data.message[0])) {
+                formik.setFieldError(key, value[0]);
+              }
               helpers.setStatus({ success: false });
               helpers.setSubmitting(false);
               setLoading(false);
@@ -138,6 +111,7 @@ const RegisterationForm = ({ onSubmiting, email }) => {
         >
           <TextField
             id="first_name"
+            name="first_name"
             label="Enter your name*"
             placeholder="Enter your name"
             type="text"
@@ -154,6 +128,7 @@ const RegisterationForm = ({ onSubmiting, email }) => {
             <Grid item xs={6}>
               <TextField
                 id="primary_email_id"
+                name="primary_email_id"
                 label="Enter your email id*"
                 placeholder="Enter your email id"
                 type="email"
@@ -167,6 +142,7 @@ const RegisterationForm = ({ onSubmiting, email }) => {
             <Grid item xs={6}>
               <TextField
                 id="mobile"
+                name="mobile"
                 label="Enter Your phone number*"
                 placeholder="Enter your phone number"
                 type="tel"
@@ -180,6 +156,7 @@ const RegisterationForm = ({ onSubmiting, email }) => {
           </Grid>
           <TextField
             id="company_name"
+            name="company_name"
             label="Enter Your Business name"
             placeholder="Enter Your Business Name"
             type="text"
@@ -195,6 +172,7 @@ const RegisterationForm = ({ onSubmiting, email }) => {
           />
           <TextField
             id="password"
+            name="password"
             label="Create password*"
             placeholder="Create password"
             type="password"
