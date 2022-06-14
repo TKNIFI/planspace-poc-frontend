@@ -34,14 +34,20 @@ const ResetingPasswordForm = ({ checkFormValues, onSubmiting, uid, token }) => {
           "https://planspace.herokuapp.com/api/auth/password_reset/confirm/",
           formData
         );
-        onSubmiting(true)
+        onSubmiting(true);
       } catch (error) {
-        formik.setErrors({submit: error.response.data.message})
-        helpers.setSubmitting(false)
-        onSubmiting(false)
+        formik.setErrors({ submit: error.response.data.message });
+        helpers.setSubmitting(false);
+        onSubmiting(false);
       }
     },
   });
+
+  const checkingFormFields = () =>
+    formik.values.newpassword && formik.values.confirmpassword
+      ? onSubmiting(true)
+      : null;
+
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -90,7 +96,7 @@ const ResetingPasswordForm = ({ checkFormValues, onSubmiting, uid, token }) => {
             }}
             variant="contained"
             type="submit"
-            onClick={() => onSubmiting(true)}
+            onClick={checkingFormFields}
           >
             Reset Password
           </Button>
