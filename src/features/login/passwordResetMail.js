@@ -1,32 +1,43 @@
 import React from "react";
 import "antd/dist/antd.css";
-import axios from "axios"
+import axios from "axios";
 import planLogo from "../../assets/images/plan.png";
 import { Typography, Grid, Paper, Box, Button, Alert } from "@mui/material";
 import { Link } from "react-router-dom";
-import toast, {Toaster} from "react-hot-toast"
+import toast, { Toaster } from "react-hot-toast";
 import emailimage from "../../assets/images/emailSuccessImage.png";
+require("dotenv").config();
 
-const PasswordResetMail = ({email}) => {
-  const [userEmail, setUserEmail] = React.useState(email)
+const PasswordResetMail = ({ email }) => {
+  const [userEmail, setUserEmail] = React.useState(email);
 
   async function resendEmail() {
     await axios
-        .post("https://planspace.herokuapp.com/api/auth/password_reset/request/",{primary_email_id: userEmail}
-        )
-        .then((response) => {
-          toast(<Alert severity="success" variant="filled"> {response.data.message}</Alert>);
-        })
-        .catch((error) => {
-          toast(<Alert severity="error" variant="filled"> {error.response.data.message}</Alert>);
-        });
+      .post(
+        `${process.env.REACT_APP_BASE_URL}api/auth/password_reset/request/`,
+        { primary_email_id: userEmail }
+      )
+      .then((response) => {
+        toast(
+          <Alert severity="success" variant="filled">
+            {" "}
+            {response.data.message}
+          </Alert>
+        );
+      })
+      .catch((error) => {
+        toast(
+          <Alert severity="error" variant="filled">
+            {" "}
+            {error.response.data.message}
+          </Alert>
+        );
+      });
   }
 
   return (
     <>
-    <Toaster 
-    position="top-right"
-    />
+      <Toaster position="top-right" />
       <Grid item xs={8}>
         <Paper sx={{ height: "100%", p: 5 }}>
           <Box>
@@ -74,7 +85,10 @@ const PasswordResetMail = ({email}) => {
               sx={{ mt: 5, color: "gray", fontSize: "18px" }}
             >
               Did not receive the mail?{" "}
-              <Button style={{ textDecoration: "underline", fontWeight: "bold" }} onClick={() => resendEmail()}>
+              <Button
+                style={{ textDecoration: "underline", fontWeight: "bold" }}
+                onClick={() => resendEmail()}
+              >
                 Resend
               </Button>
             </Typography>
@@ -97,6 +111,6 @@ const PasswordResetMail = ({email}) => {
       </Grid>
     </>
   );
-}
+};
 
 export default PasswordResetMail;

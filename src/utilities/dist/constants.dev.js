@@ -1,7 +1,8 @@
 "use strict";
+require("dotenv").config();
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+  value: true,
 });
 exports["default"] = void 0;
 
@@ -34,16 +35,19 @@ var K = {
       //     BasePort: '80',
       // },
       // Development
-      Base: "https://planspace.herokuapp.com/",
-      BaseAPI: "https://planspace.herokuapp.com/api",
+      Base: `${process.env.REACT_APP_BASE_URL}`,
+      BaseAPI: `${process.env.REACT_APP_BASE_URL}api`,
       Timeout: 1000,
       TenantURL: function TenantURL() {
-        var domainPrefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+        var domainPrefix =
+          arguments.length > 0 && arguments[0] !== undefined
+            ? arguments[0]
+            : "";
         return "https://" + domainPrefix + "planspace.herokuapp.com/api";
       },
       Client: {
         BaseHost: "planspace.herokuapp.com",
-        BasePort: "80"
+        BasePort: "80",
       },
       Protocol: "https",
       // Tenant
@@ -83,46 +87,52 @@ var K = {
       //update Location
       UpdateLocation: "/locations/:id/update/",
       // delete Location
-      DeleteLocation: "/locations/:id/delete/"
+      DeleteLocation: "/locations/:id/delete/",
     },
     Method: {
       GET: "GET",
       POST: "POST",
       DELETE: "DELETE",
-      UPDATE: "UPDATE"
+      UPDATE: "UPDATE",
     },
     Header: {
       ContentType: "Content-Type",
       ApplicationJson: "application/json",
       Default: function Default() {
-        var token = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+        var token =
+          arguments.length > 0 && arguments[0] !== undefined
+            ? arguments[0]
+            : "";
         return {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + token
+          Authorization: "Bearer " + token,
         };
       },
       Authorization: function Authorization() {
-        var token = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+        var token =
+          arguments.length > 0 && arguments[0] !== undefined
+            ? arguments[0]
+            : "";
         return {
-          Authorization: "JWT " + getToken()
+          Authorization: "JWT " + getToken(),
         };
       },
       Type: {
         Json: "application/json",
-        File: "file"
-      }
+        File: "file",
+      },
     },
     Default: {
       AssignmentStatusID: 1,
       ResourceAllocationPercentage: 100,
       ResourceAllocationType: "percentage",
       WorkItem: "",
-      Error: "Opps, an error occurred!"
+      Error: "Opps, an error occurred!",
     },
     StatusCode: {
-      Unauthorized: 401
-    }
+      Unauthorized: 401,
+    },
   },
   Actions: {
     // General part of action
@@ -132,20 +142,25 @@ var K = {
     DELETE_ALL: "DELETE_ALL",
     SET: "SET",
     // Settings
-    UPSERT_SETTING: "UPSERT_SETTING"
+    UPSERT_SETTING: "UPSERT_SETTING",
   },
   Cookie: {
     Key: {
       Token: "token",
       Tenant: "tenant",
-      UserId: "user_id"
-    }
+      UserId: "user_id",
+    },
   },
-  GuestPages: ["/login", "/authentication/register", "/authentication/reset-password", "/subscription/plans"],
+  GuestPages: [
+    "/login",
+    "/authentication/register",
+    "/authentication/reset-password",
+    "/subscription/plans",
+  ],
   Roles: {
     Admin: "Admin",
-    User: "User"
-  }
+    User: "User",
+  },
 };
 var _default = K;
 exports["default"] = _default;

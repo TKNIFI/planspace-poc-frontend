@@ -14,6 +14,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import gmailLogo from "../../assets/images/gmailLogo.png";
 import Request from "../../network/request";
 import toast from "react-hot-toast";
+require("dotenv").config();
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -55,27 +56,26 @@ const RegisterationForm = ({ onSubmiting, email }) => {
       formData.append("password", values.password);
       formData.append("first_name", name[0]);
       if (name.length > 1) {
-          formData.append("last_name", name[1]);
+        formData.append("last_name", name[1]);
       }
       await axios
-          .post(
-              "https://planspace.herokuapp.com/api/auth/register/",
-              formData
-          )
-          .then((response) => {
-              const data = response.data.data;
-              onSubmiting(true);
-              email(values.primary_email_id)
-          })
-          .catch((error) => {
-              setLoading(false);
-              for (const [key, value] of Object.entries(error.response.data.message[0])) {
-                formik.setFieldError(key, value[0]);
-              }
-              helpers.setStatus({ success: false });
-              helpers.setSubmitting(false);
-          });
-  },
+        .post(`${process.env.REACT_APP_BASE_URL}api/auth/register/`, formData)
+        .then((response) => {
+          const data = response.data.data;
+          onSubmiting(true);
+          email(values.primary_email_id);
+        })
+        .catch((error) => {
+          setLoading(false);
+          for (const [key, value] of Object.entries(
+            error.response.data.message[0]
+          )) {
+            formik.setFieldError(key, value[0]);
+          }
+          helpers.setStatus({ success: false });
+          helpers.setSubmitting(false);
+        });
+    },
   });
 
   React.useEffect(() => {
@@ -88,7 +88,7 @@ const RegisterationForm = ({ onSubmiting, email }) => {
     let formData = new FormData();
     formData.append("access_token", user._token.accessToken);
     await axios
-      .post("https://planspace.herokuapp.com/api/auth/login/google/", formData)
+      .post(`${process.env.REACT_APP_BASE_URL}api/auth/login/google/`, formData)
       .then((response) => {
         const data = response.data;
         localStorage.setItem("userInfo", JSON.stringify(data));
@@ -131,8 +131,14 @@ const RegisterationForm = ({ onSubmiting, email }) => {
                 label="Enter your email id*"
                 placeholder="Enter your email id"
                 type="email"
-                error={Boolean(formik.touched.primary_email_id && formik.errors.primary_email_id)}
-                helperText={formik.touched.primary_email_id && formik.errors.primary_email_id}
+                error={Boolean(
+                  formik.touched.primary_email_id &&
+                    formik.errors.primary_email_id
+                )}
+                helperText={
+                  formik.touched.primary_email_id &&
+                  formik.errors.primary_email_id
+                }
                 value={formik.values.primary_email_id}
                 onChange={formik.handleChange}
                 sx={{ width: "100%" }}

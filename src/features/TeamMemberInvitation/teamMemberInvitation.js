@@ -9,13 +9,14 @@ import {
   DeleteOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
-import { TimelineDot } from '@mui/lab';
+import { TimelineDot } from "@mui/lab";
 import EditMemberForm from "../forms/editMemberForm";
 import { Space, Table, Checkbox, Popconfirm, Drawer } from "antd";
 import "./inviteMemberStyles.css";
 import axios from "axios";
 import myApi from "../../network/axios";
 import toast, { Toaster } from "react-hot-toast";
+require("dotenv").config();
 
 const TeamInvitation = () => {
   const [openEditForm, setOpenEditForm] = useState(false);
@@ -74,7 +75,7 @@ const TeamInvitation = () => {
             <Space key={record.id} size="middle">
               <a
                 onClick={() => {
-                  console.log("record", record)
+                  console.log("record", record);
                   setOpenEditForm(true);
                   setEditRecord(record);
                 }}
@@ -104,9 +105,9 @@ const TeamInvitation = () => {
 
   const getUsers = async (page, pageSize) => {
     try {
-      let url = "https://planspace.herokuapp.com/api/auth/user/";
+      let url = `${process.env.REACT_APP_BASE_URL}api/auth/user/`;
       if (page) {
-        url = `https://planspace.herokuapp.com/api/auth/user/?page=${page}`;
+        url = `${process.env.REACT_APP_BASE_URL}api/auth/user/?page=${page}`;
       }
 
       setLoading(true);
@@ -135,7 +136,7 @@ const TeamInvitation = () => {
           <Grid item xs={4}>
             <Button
               variant="contained"
-              style={{ textTransform: "capitalize" ,float: "right" }}
+              style={{ textTransform: "capitalize", float: "right" }}
               onClick={() => setOpenAddForm(true)}
             >
               <AddIcon /> Add new

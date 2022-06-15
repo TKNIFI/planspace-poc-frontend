@@ -8,6 +8,7 @@ import * as Yup from "yup";
 // import User from "../../../../models/user/user";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
+require("dotenv").config();
 
 const PasswordUpdateForm = ({ onSubmiting }) => {
   let history = useHistory();
@@ -16,7 +17,10 @@ const PasswordUpdateForm = ({ onSubmiting }) => {
     let formData = new FormData();
     formData.append("primary_email_id", values.email);
     await axios
-      .post("https://planspace.herokuapp.com/api/auth/password_reset/request/", formData)
+      .post(
+        `${process.env.REACT_APP_URL}api/auth/password_reset/request/`,
+        formData
+      )
       .then((response) => {
         const data = response.data.data;
       })

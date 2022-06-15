@@ -1,9 +1,14 @@
 "use strict";
+require("dotenv").config();
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+  value: true,
 });
-exports.setUserDetails = exports.register = exports.login = exports.reducer = void 0;
+exports.setUserDetails =
+  exports.register =
+  exports.login =
+  exports.reducer =
+    void 0;
 
 var _toolkit = require("@reduxjs/toolkit");
 
@@ -11,10 +16,12 @@ var _axios = _interopRequireDefault(require("../network/axios"));
 
 var _axios2 = _interopRequireDefault(require("axios"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 var initialState = {
-  details: {}
+  details: {},
 };
 var slice = (0, _toolkit.createSlice)({
   name: "user",
@@ -25,8 +32,8 @@ var slice = (0, _toolkit.createSlice)({
     },
     setUserDetails: function setUserDetails(state, action) {
       state.details = action.payload;
-    }
-  }
+    },
+  },
 });
 var reducer = slice.reducer;
 exports.reducer = reducer;
@@ -37,13 +44,15 @@ var login = function login(primary_email_id, password) {
 
     return regeneratorRuntime.async(function _callee$(_context) {
       while (1) {
-        switch (_context.prev = _context.next) {
+        switch ((_context.prev = _context.next)) {
           case 0:
             _context.next = 2;
-            return regeneratorRuntime.awrap(_axios["default"].post("api/auth/login/", {
-              primary_email_id: primary_email_id,
-              password: password
-            }));
+            return regeneratorRuntime.awrap(
+              _axios["default"].post("api/auth/login/", {
+                primary_email_id: primary_email_id,
+                password: password,
+              })
+            );
 
           case 2:
             _ref = _context.sent;
@@ -68,10 +77,15 @@ var register = function register(formData) {
 
     return regeneratorRuntime.async(function _callee2$(_context2) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch ((_context2.prev = _context2.next)) {
           case 0:
             _context2.next = 2;
-            return regeneratorRuntime.awrap(_axios2["default"].post("https://planspace.herokuapp.com/api/auth/register/", formData));
+            return regeneratorRuntime.awrap(
+              _axios2["default"].post(
+                `${process.env.REACT_APP_BASE_URL}api/auth/register/`,
+                formData
+              )
+            );
 
           case 2:
             _ref2 = _context2.sent;
@@ -94,7 +108,7 @@ var setUserDetails = function setUserDetails(details) {
   return function _callee3(dispatch) {
     return regeneratorRuntime.async(function _callee3$(_context3) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch ((_context3.prev = _context3.next)) {
           case 0:
           case "end":
             return _context3.stop();

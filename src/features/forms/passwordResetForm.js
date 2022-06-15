@@ -7,17 +7,18 @@ import { green } from "@mui/material/colors";
 import MuiAlert from "@mui/material/Alert";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
+require("dotenv").config();
 // import User from "../../../../models/user/user";
 const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
   const [loading, setLoading] = React.useState(false);
   // const [email, setEmail] = React.useState()
   const timer = React.useRef();
-  
+
   const formik = useFormik({
     initialValues: {
-      primary_email_id: ""
+      primary_email_id: "",
     },
-    
+
     validationSchema: Yup.object({
       primary_email_id: Yup.string()
         .email("must be valid email")
@@ -36,24 +37,26 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
       formData.append("primary_email_id", values.primary_email_id);
       await axios
         .post(
-          "https://planspace.herokuapp.com/api/auth/password_reset/request/",
+          `${process.env.REACT_APP_BASE_URL}api/auth/password_reset/request/`,
           formData
         )
         .then((response) => {
           setLoading(false);
           onSubmiting(true);
-          submittedEmail(values.primary_email_id)
+          submittedEmail(values.primary_email_id);
         })
         .catch((error) => {
           setLoading(false);
-          for (const [key, value] of Object.entries(error.response.data.message[0])) {
+          for (const [key, value] of Object.entries(
+            error.response.data.message[0]
+          )) {
             if (key === "non_field_errors") {
-              formik.setErrors({submit: value[0]})
+              formik.setErrors({ submit: value[0] });
             }
             formik.setFieldError(key, value[0]);
           }
-          helpers.setSubmitting(false)
-          setLoading(false)
+          helpers.setSubmitting(false);
+          setLoading(false);
         });
     },
   });
@@ -80,8 +83,12 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
             value={formik.values.primary_email_id}
             onChange={formik.handleChange}
             sx={{ width: "100%" }}
-            error={Boolean(formik.touched.primary_email_id && formik.errors.primary_email_id)}
-            helperText={formik.touched.primary_email_id && formik.errors.primary_email_id}
+            error={Boolean(
+              formik.touched.primary_email_id && formik.errors.primary_email_id
+            )}
+            helperText={
+              formik.touched.primary_email_id && formik.errors.primary_email_id
+            }
             autoFocus={true}
           />
         </Box>
