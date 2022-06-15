@@ -13,6 +13,7 @@ export default function GuestPageLayout({ children }) {
                     flexDirection: "row",
                     justifyContent: "center",
                     alignItems: "center",
+                    overflowX:"hidden"
                 }}
             >
                 <Content
