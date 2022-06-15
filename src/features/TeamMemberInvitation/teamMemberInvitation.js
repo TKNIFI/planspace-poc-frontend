@@ -40,75 +40,78 @@ const TeamInvitation = () => {
         });
     }
 
-  const columns = [
-    {
-      title: "Active",
-      dataIndex: "active",
-      key: "active",
-      render: (_, record) => <Checkbox checked={record.is_active}></Checkbox>,
-    },
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (_, record) => (
-        <>
-          {record.first_name
-            ? record.first_name
-            : "" + " " + record.last_name
-            ? record.last_name
-            : ""}
-        </>
-      ),
-    },
-    {
-      title: "Access Location",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (record) => {
-        return (
-          <>
-            <Space key={record.id} size="middle">
-              <a
-                onClick={() => {
-                  console.log("record", record);
-                  setOpenEditForm(true);
-                  setEditRecord(record);
-                }}
-              >
-                <EditOutlined style={{ color: "gray" }} />
-              </a>
-              <a>
-                {tableRow.length >= 1 ? (
-                  <Popconfirm
-                    title="Sure to delete?"
-                    onConfirm={() => handleDelete(record.id)}
-                  >
-                    <DeleteOutlined style={{ color: "gray" }} />
-                  </Popconfirm>
-                ) : null}
-              </a>
-            </Space>
-          </>
-        );
-      },
-    },
-  ];
+    const columns = [
+        {
+            title: "Active",
+            dataIndex: "active",
+            key: "active",
+            render: (_, record) => (
+                <Checkbox checked={record.is_active}></Checkbox>
+            ),
+        },
+        {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+            render: (_, record) => (
+                <>
+                    {record.first_name ? record.first_name : ""}{" "}
+                    {record.last_name ? record.last_name : ""}
+                </>
+            ),
+        },
+        {
+            title: "Access Location",
+            dataIndex: "address",
+            key: "address",
+        },
+        {
+            title: "Action",
+            key: "action",
+            render: (record) => {
+                return (
+                    <>
+                        <Space key={record.id} size="middle">
+                            <a
+                                onClick={() => {
+                                    console.log("record", record);
+                                    setOpenEditForm(true);
+                                    setEditRecord(record);
+                                }}
+                            >
+                                <EditOutlined style={{ color: "gray" }} />
+                            </a>
+                            <a>
+                                {tableRow.length >= 1 ? (
+                                    <Popconfirm
+                                        title="Sure to delete?"
+                                        onConfirm={() =>
+                                            handleDelete(record.id)
+                                        }
+                                    >
+                                        <DeleteOutlined
+                                            style={{ color: "gray" }}
+                                        />
+                                    </Popconfirm>
+                                ) : null}
+                            </a>
+                        </Space>
+                    </>
+                );
+            },
+        },
+    ];
 
     const makeAToast = (message) => {
         toast(<Alert variant="filled">{message}</Alert>);
     };
 
-  const getUsers = async (page, pageSize) => {
-    try {
-      let url = `${process.env.REACT_APP_BASE_URL}api/auth/user/`;
-      if (page) {
-        url = `${process.env.REACT_APP_BASE_URL}api/auth/user/?page=${page}`;
-      }
+    const getUsers = async (page, pageSize) => {
+        try {
+            let url = `${process.env.REACT_APP_BASE_URL}api/auth/user/`;
+            if (page) {
+                url = `${process.env.REACT_APP_BASE_URL}api/auth/user/?page=${page}`;
+            }
             setLoading(true);
             await myApi.get(url).then((result) => {
                 setTableRowData(result.data.results);
@@ -126,17 +129,6 @@ const TeamInvitation = () => {
         getUsers();
     }, []);
 
-  return (
-    <>
-      <Toaster position="top-right" />
-      <Box sx={{ flexGrow: 1, display: "inline" }}>
-        <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-          <Grid item xs={8}></Grid>
-          <Grid item xs={4}>
-            <Button
-              variant="contained"
-              style={{ textTransform: "capitalize", float: "right" }}
-              onClick={() => setOpenAddForm(true)}
     return (
         <>
             <Toaster position="top-right" />
