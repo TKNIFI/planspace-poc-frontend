@@ -37,8 +37,8 @@ const SliderContent = () => {
             sx={{ color: "lightgray", fontWeight: "bold" }}
           >
             Amet minim mollit non deserunt ullamco est sit <br /> aliqua dolor
-            do amet sint. Velit officia consequat duis <br /> enim velit
-            mollit. Exercitation veniam consequat sunt <br /> nostrud amet.
+            do amet sint. Velit officia consequat duis <br /> enim velit mollit.
+            Exercitation veniam consequat sunt <br /> nostrud amet.
           </Typography>
         </Box>
         <Box className="centered-for-content-swiper-slide-outerEllipse">
@@ -96,7 +96,7 @@ export default function Login() {
   // const handleSocialLoginFailure = (err) => {
   //   console.error(err);
   // };
-  
+
   return (
     <>
       <Grid container spacing={0} columns={16} sx={{ ml: 12 }}>
@@ -152,7 +152,7 @@ export default function Login() {
             >
               Login with Google
             </SocialButton> */}
-            <Box sx={{ mt: 3, p: 1, height:"445px" }}>
+            <Box sx={{ mt: 3, p: 1, height: "445px" }}>
               <LoginForm />
             </Box>
           </Paper>

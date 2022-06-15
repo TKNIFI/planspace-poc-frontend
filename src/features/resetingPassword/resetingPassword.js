@@ -18,7 +18,7 @@ import "swiper/modules/pagination/pagination.min.css";
 import { Pagination } from "swiper";
 import ResetingPasswordForm from "./resetingPasswordForm";
 import ResetingPasswordConfirmation from "./resetingPasswordConfirmation";
-import InvalidLink from "../login/invalidLink"
+import InvalidLink from "../login/invalidLink";
 import CircularProgress from "@mui/material/CircularProgress";
 import sliderImage from "../../assets/images/sliderImage.png";
 import elipseOuter from "../../assets/images/Ellipse125.png";
@@ -26,7 +26,7 @@ import elipseInner from "../../assets/images/Ellipse126.png";
 import circleImage1 from "../../assets/images/sliderCircleImage1.png";
 import circleImage2 from "../../assets/images/sliderCircleImage2.png";
 import circleImage3 from "../../assets/images/sliderCircleImage3.png";
-
+require("dotenv").config();
 const SliderContent = () => {
   return (
     <>
@@ -83,12 +83,12 @@ export default function ResetingPassword() {
   const token = query.get("token");
 
   async function checkToken() {
-    let formData = new FormData()
-    formData.append("uid", uid)
-    formData.append("token", token)
+    let formData = new FormData();
+    formData.append("uid", uid);
+    formData.append("token", token);
     await axios
       .post(
-        "https://planspace.herokuapp.com/api/auth/password_reset/validate_token/",
+        `${process.env.REACT_APP_BASE_URL}api/auth/password_reset/validate_token/`,
         formData
       )
       .then((result) => setIsValid(true))

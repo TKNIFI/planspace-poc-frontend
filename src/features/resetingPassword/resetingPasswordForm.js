@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 // import User from "../../../../models/user/user";
 // import { useDispatch } from "react-redux";
-
+require("dotenv").config();
 const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
   const formik = useFormik({
     initialValues: {
@@ -31,17 +31,23 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
         formData.append("token", token);
         formData.append("password", values.newpassword);
         formData.append("confirm_password", values.confirmpassword);
-        await axios.post(
-          "https://planspace.herokuapp.com/api/auth/password_reset/confirm/",
-          formData
-        ).then((result) => {
-          toast.success(<Alert severity="success" variant="filled">{result.data.data}</Alert>)
-          onSubmiting(true)
-        })
+        await axios
+          .post(
+            `${process.env.REACT_APP_BASE_URL}api/auth/password_reset/confirm/`,
+            formData
+          )
+          .then((result) => {
+            toast.success(
+              <Alert severity="success" variant="filled">
+                {result.data.data}
+              </Alert>
+            );
+            onSubmiting(true);
+          });
       } catch (error) {
-        formik.setErrors({submit: error.response.data.message})
-        helpers.setSubmitting(false)
-        onSubmiting(false)
+        formik.setErrors({ submit: error.response.data.message });
+        helpers.setSubmitting(false);
+        onSubmiting(false);
       }
     },
   });

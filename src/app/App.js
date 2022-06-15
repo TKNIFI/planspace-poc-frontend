@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <Switch>
         {routes.map((route, i) => (
-            <RouteWithSubRoutes key={i} {...route} />
+          <RouteWithSubRoutes key={i} {...route} />
         ))}
       </Switch>
     </div>
