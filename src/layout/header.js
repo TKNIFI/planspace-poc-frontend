@@ -74,9 +74,9 @@ export default function PrimarySearchAppBar() {
   React.useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
     console.log("userInfo", typeof userInfo);
-    if (userInfo) {
-      let info = JSON.stringify(userInfo);
-      setLocation(JSON.parse(info)?.address);
+    let info = JSON.parse(userInfo);
+    if (info) {
+      setLocation(info?.address);
     }
   }, []);
   const menuId = "primary-search-account-menu";
@@ -127,21 +127,18 @@ export default function PrimarySearchAppBar() {
           <Box sx={{ flexGrow: 1 }} />
 
           <Select
-            labelId="select"
             sx={{
               color: "black",
               height: "40px",
               width: "30%",
               marginRight: "10px",
-              display: { xs: "flex", md: "flex" },
             }}
-            label={location}
+            label="a"
             value={location}
             // onChange={handleChange}
           >
             <MenuItem value={location}>{location}</MenuItem>
           </Select>
-
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <Divider
               orientation="vertical"

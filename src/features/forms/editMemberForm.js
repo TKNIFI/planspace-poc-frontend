@@ -17,7 +17,10 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            name: editRecordValues?.first_name,
+            name:
+                editRecordValues?.first_name +
+                " " +
+                editRecordValues?.last_name,
             userId: editRecordValues?.primary_email_id,
             primary_email_id: editRecordValues?.primary_email_id,
             mobile: editRecordValues?.mobile,
