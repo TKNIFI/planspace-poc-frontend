@@ -45,6 +45,12 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
       }
     },
   });
+
+  const checkingFormFields = () =>
+    formik.values.newpassword && formik.values.confirmpassword
+      ? onSubmiting(true)
+      : null;
+
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -93,6 +99,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
             }}
             variant="contained"
             type="submit"
+            onClick={checkingFormFields}
           >
             Reset Password
           </Button>
