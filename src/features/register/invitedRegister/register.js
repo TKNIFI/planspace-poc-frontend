@@ -159,6 +159,7 @@ function RegisterInvited() {
                                         onSubmiting={(val) => {
                                             setCheck(val);
                                         }}
+                                        user={userDetails}
                                         uid={uid}
                                         token={token}
                                     />

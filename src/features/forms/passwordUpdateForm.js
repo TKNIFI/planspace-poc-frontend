@@ -8,18 +8,17 @@ import * as Yup from "yup";
 // import User from "../../../../models/user/user";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
+
 const PasswordUpdateForm = ({ onSubmiting }) => {
   let history = useHistory();
   const dispatch = useDispatch();
   const onFinish = async (values) => {
     let formData = new FormData();
-    formData.append("email", values.email);
+    formData.append("primary_email_id", values.email);
     await axios
       .post("https://planspace.herokuapp.com/api/auth/password_reset/request/", formData)
       .then((response) => {
         const data = response.data.data;
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        history.push("/companyprofile/company");
       })
       .catch((error) => alert(error.message));
     // await dispatch(User.loginCall(formData));
@@ -51,16 +50,16 @@ const PasswordUpdateForm = ({ onSubmiting }) => {
           }}
         >
           <TextField
-            id="email"
+            id="primary_email_id"
             label="Enter Your Email"
             type="email"
-            value={formik.values.email}
+            value={formik.values.primary_email_id}
             onChange={formik.handleChange}
             sx={{ width: "100%" }}
           />
-          {formik.touched.email && formik.errors.email ? (
+          {formik.touched.primary_email_id && formik.errors.primary_email_id ? (
             <MuiAlert severity="error">
-              <span>{formik.errors.email}</span>
+              <span>{formik.errors.primary_email_id}</span>
             </MuiAlert>
           ) : null}
         </Box>

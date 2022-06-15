@@ -88,7 +88,7 @@ export default function ResetingPassword() {
     formData.append("token", token)
     await axios
       .post(
-        "https://planspance.herokuapp.com/api/auth/password_reset/validate_token/",
+        "https://planspace.herokuapp.com/api/auth/password_reset/validate_token/",
         formData
       )
       .then((result) => setIsValid(true))
@@ -122,7 +122,7 @@ export default function ResetingPassword() {
           </Paper>
         </Grid>
         {/* create account formik form  */}
-        {!isValid ? (
+        {isValid ? (
           <Grid item xs={8}>
             {check ? (
               <ResetingPasswordConfirmation />
@@ -144,7 +144,6 @@ export default function ResetingPassword() {
                     <ResetingPasswordForm
                       uid={uid}
                       token={token}
-                      checkFormValues={(formval) => setCheckFormVal(formval)}
                       onSubmiting={(val) => setCheck(val)}
                     />
                   </Box>
