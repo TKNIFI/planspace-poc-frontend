@@ -73,29 +73,6 @@ export default function Login() {
     history.replace(from);
   };
 
-  // const handleFacebookLogin = async (user) => {
-  //   let formData = new FormData()
-  //   formData.append("access_token", user._token.accessToken)
-  //   await axios.post("https://planspace.herokuapp.com/api/auth/login/facebook/", formData).then(response => {
-  //     const data = response.data
-  //     localStorage.setItem("userInfo", JSON.stringify(data))
-  //     history.push("/companyprofile/company")
-  //   }).catch(error => alert(error.message))
-  // };
-
-  // const handleGoogleLogin = async (user) => {
-  //   let formData = new FormData()
-  //   formData.append("access_token", user._token.accessToken)
-  //   await axios.post("https://planspace.herokuapp.com/api/auth/login/google/", formData).then(response => {
-  //     const data = response.data
-  //     localStorage.setItem("userInfo", JSON.stringify(data))
-  //     history.push("/companyprofile/company")
-  //   }).catch(error => alert(error.message))
-  // };
-
-  // const handleSocialLoginFailure = (err) => {
-  //   console.error(err);
-  // };
 
   return (
     <>
@@ -136,22 +113,6 @@ export default function Login() {
                 Login to your account by filling out below details
               </Typography>
             </Box>
-            {/* <SocialButton
-              provider="facebook"
-              appId="1042967406622137"
-              onLoginSuccess={handleFacebookLogin}
-              onLoginFailure={handleSocialLoginFailure}
-            >
-              Login with Facebook
-            </SocialButton>
-            <SocialButton
-              provider="google"
-              appId="252238412999-q66jdhb3c9ne04sosvuqf6laq08gqkld.apps.googleusercontent.com"
-              onLoginSuccess={handleGoogleLogin}
-              onLoginFailure={handleSocialLoginFailure}
-            >
-              Login with Google
-            </SocialButton> */}
             <Box sx={{ mt: 3, p: 1, height: "445px" }}>
               <LoginForm />
             </Box>

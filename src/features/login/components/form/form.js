@@ -39,9 +39,6 @@ const LoginForm = () => {
         formData.append("primary_email_id", values.primary_email_id);
         formData.append("password", values.password);
         await dispatch(login(values.primary_email_id, values.password));
-        // await axios.post("https://planspace.herokuapp.com/api/auth/login/", formData).then(response => {
-        //   const data = response.data.data
-        //   localStorage.setItem("userInfo", JSON.stringify(data))
         setLoading(false)
         history.push("/");
       } catch (error) {
