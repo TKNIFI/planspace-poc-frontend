@@ -39,7 +39,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 .required("Phone number is required")
                 .positive()
                 .integer(),
-            address: Yup.string().required("Address is required"),
+            address: Yup.string().nullable(),
         }),
         onSubmit: async (values, helpers) => {
             try {

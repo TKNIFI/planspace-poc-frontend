@@ -34,7 +34,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
       mobile: Yup.string()
         .required("Phone number is required")
         .matches(phoneRegExp, "Phone number is not valid"),
-      address: Yup.string().required("Address is required"),
+      address: Yup.string().nullable(),
     }),
     onSubmit: async (values, helpers) => {
       setLoading(true);
