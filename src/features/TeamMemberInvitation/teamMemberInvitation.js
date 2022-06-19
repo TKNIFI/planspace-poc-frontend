@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons";
 import { TimelineDot } from "@mui/lab";
 import EditMemberForm from "../forms/editMemberForm";
-import { Space, Table, Checkbox, Popconfirm, Drawer } from "antd";
+import { Space, Table, Checkbox, Popconfirm, Drawer, Pagination } from "antd";
 import "./inviteMemberStyles.css";
 import axios from "axios";
 import myApi from "../../network/axios";
@@ -39,6 +39,13 @@ const TeamInvitation = () => {
             getUsers();
         });
     }
+    
+    async function updateUser(is_active, uid) {
+        await myApi.put(`api/auth/user/${uid}/`, {is_active: !is_active}).then((result) => {
+            toast.success(`User ${is_active? "deactivated": "activated"} successfully`);
+            getUsers();
+        });
+    }
 
     const columns = [
         {
@@ -46,7 +53,7 @@ const TeamInvitation = () => {
             dataIndex: "active",
             key: "active",
             render: (_, record) => (
-                <Checkbox checked={record.is_active}></Checkbox>
+                <Checkbox onChange={() => updateUser(record.is_active, record.id)} checked={record.is_active}></Checkbox>
             ),
         },
         {
@@ -81,6 +88,7 @@ const TeamInvitation = () => {
                             >
                                 <EditOutlined style={{ color: "gray" }} />
                             </a>
+                            {!record.is_logged_in? (
                             <a>
                                 {tableRow.length >= 1 ? (
                                     <Popconfirm
@@ -95,6 +103,7 @@ const TeamInvitation = () => {
                                     </Popconfirm>
                                 ) : null}
                             </a>
+                            ): ""}
                         </Space>
                     </>
                 );
@@ -158,8 +167,14 @@ const TeamInvitation = () => {
                     ellipsis={true}
                     columns={columns}
                     dataSource={tableRow}
-                    pagination={true}
+                    pagination={false}
                     loading={loading}
+                />
+                <Pagination 
+                sx={{marginTop: 2, float: "right"}}
+                defaultCurrent={limit} 
+                total={count} 
+                onChange={(page, pageSize) => getUsers(page, pageSize)}
                 />
             </Box>
             {/* Model to delete html */}
