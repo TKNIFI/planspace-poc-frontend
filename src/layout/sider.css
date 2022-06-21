@@ -1,0 +1,22 @@
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+background: rgba(204, 229, 255, 0.2) ;
+}
+
+
+.ant-menu-submenu-selected {
+    background: rgba(204, 229, 255, 0.2);
+}
+
+
+.ant-menu-dark .ant-menu-item:hover,
+.ant-menu-dark .ant-menu-item-active,
+.ant-menu-dark .ant-menu-submenu-active,
+.ant-menu-dark .ant-menu-submenu-open,
+.ant-menu-dark .ant-menu-submenu-selected,
+.ant-menu-dark .ant-menu-submenu-title:hover {
+    color: #fff;
+    /* background-color: black; */
+
+    background: rgba(204, 229, 255, 0.2);
+}
+
