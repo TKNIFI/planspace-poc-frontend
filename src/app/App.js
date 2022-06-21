@@ -12,7 +12,7 @@ function App() {
       <Toaster position="top-right" />
       <Switch>
         {routes.map((route, i) => (
-            <RouteWithSubRoutes key={i} {...route} />
+          <RouteWithSubRoutes key={i} {...route} />
         ))}
       </Switch>
     </div>

@@ -13,6 +13,7 @@ import { Pagination } from "swiper";
 import sliderImage from "../../assets/images/sliderImage.png";
 import PasswordResetForm from "../forms/passwordResetForm";
 import PasswordResetMail from "../login/passwordResetMail";
+
 export default function ResetPassword() {
   const [check, setCheck] = useState();
   const dispatch = useDispatch();
@@ -25,22 +26,6 @@ export default function ResetPassword() {
     // Logged in.
     const { from } = location.state || { from: { path: "dashboard" } };
     history.replace(from);
-  };
-
-  const handlePasswordReset = async (user) => {
-    let formData = new FormData();
-    formData.append("access_token", user._token.accessToken);
-    await axios
-      .post(
-        "https://planspace.herokuapp.com/api/auth/password_reset/request//",
-        formData
-      )
-      .then((response) => {
-        const data = response.data;
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        history.push("/companyprofile/company");
-      })
-      .catch((error) => alert(error.message));
   };
 
   return (

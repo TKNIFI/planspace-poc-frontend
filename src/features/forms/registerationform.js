@@ -88,11 +88,27 @@ const RegisterationForm = ({ onSubmiting, email }) => {
         },
     });
 
-  React.useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
+    React.useEffect(() => {
+        return () => {
+            clearTimeout(timer.current);
+        };
+    }, []);
+
+    const handleGoogleLogin = async (user) => {
+        let formData = new FormData();
+        formData.append("access_token", user._token.accessToken);
+        await axios
+            .post(
+                `${process.env.REACT_APP_BASE_URL}api/auth/login/google/`,
+                formData
+            )
+            .then((response) => {
+                const data = response.data;
+                localStorage.setItem("userInfo", JSON.stringify(data));
+                history.push("/");
+            })
+            .catch((error) => alert(error.message));
     };
-  }, []);
 
     const handleSocialLoginFailure = (err) => {
         console.error(err);

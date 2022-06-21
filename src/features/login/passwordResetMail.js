@@ -1,7 +1,8 @@
 import React from "react";
 import "antd/dist/antd.css";
+import axios from "axios";
 import planLogo from "../../assets/images/plan.png";
-import { Typography, Grid, Paper, Box } from "@mui/material";
+import { Typography, Grid, Paper, Box, Button, Alert } from "@mui/material";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import emailimage from "../../assets/images/emailSuccessImage.png";
@@ -27,6 +28,7 @@ const PasswordResetMail = ({ email }) => {
 
   return (
     <>
+      <Toaster position="top-right" />
       <Grid item xs={8}>
         <Paper sx={{ height: "100%", p: 5 }}>
           <Box>
@@ -51,24 +53,48 @@ const PasswordResetMail = ({ email }) => {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              ml:15
+              ml: 15,
             }}
           >
-            <Typography variant="h5" sx={{ color: "#003399" }}>
+            <Typography variant="h4" sx={{ color: "#003399" }}>
               Check your email
             </Typography>
             <Typography
-              variant="span"
-              sx={{ mt: 2, color: "gray", textAlign: "center" }}
+              variant="p"
+              sx={{
+                mt: 2,
+                color: "#696969",
+                textAlign: "center",
+                fontSize: "18px",
+              }}
             >
-              We have sent the password reset instructions to your registered email id
+              We have sent the password reset instructions to your <br />{" "}
+              registered email id.
             </Typography>
-            <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
-              Did not receive the mail? <Link>Resend</Link>
+            <Typography
+              variant="span"
+              sx={{ mt: 5, color: "gray", fontSize: "18px" }}
+            >
+              Did not receive the mail?{" "}
+              <Button
+                style={{ textDecoration: "underline", fontWeight: "bold" }}
+                onClick={() => resendEmail()}
+              >
+                Resend
+              </Button>
             </Typography>
-            <Box sx={{mt: 20, mb: 0}}>
-              <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
-                Do not have an account? <Link to="/register">Signup here</Link>
+            <Box sx={{ mt: 20, mb: 0 }}>
+              <Typography
+                variant="span"
+                sx={{ mt: 2, color: "gray", fontSize: "18px" }}
+              >
+                Do not have an account?{" "}
+                <Link
+                  to="/register"
+                  style={{ textDecoration: "underline", fontWeight: "bold" }}
+                >
+                  Signup here
+                </Link>
               </Typography>
             </Box>
           </Box>
@@ -76,4 +102,6 @@ const PasswordResetMail = ({ email }) => {
       </Grid>
     </>
   );
-}
+};
+
+export default PasswordResetMail;

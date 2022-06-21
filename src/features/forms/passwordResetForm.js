@@ -3,51 +3,16 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { Box, Button, Typography, TextField } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import { green } from '@mui/material/colors';
+import { green } from "@mui/material/colors";
 import MuiAlert from "@mui/material/Alert";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
+require("dotenv").config();
 // import User from "../../../../models/user/user";
-const PasswordResetForm = ({ onSubmiting }) => {
-    const [loading, setLoading] = React.useState(false);
-    const timer = React.useRef();
-    const formik = useFormik({
-        initialValues: {
-            email: "",
-            // password: "",
-        },
-        validationSchema: Yup.object({
-            email: Yup.string()
-                .email("must be valid email")
-                .required("Email is required"),
-            // password: Yup.string()
-            //     .required("No password provided.")
-            //     .min(8, "Password is too short - should be 8 chars minimum.")
-            //     .matches(
-            //         /[a-zA-Z]/,
-            //         "Password can only contain Latin letters."
-            //     ),
-        }),
-        onSubmit: async (values, helpers) => {
-            setLoading(true)
-            let formData = new FormData();
-            formData.append("email", values.email);
-            await axios
-                .post(
-                    "https://planspace.herokuapp.com/api/auth/password_reset/request/",
-                    formData
-                )
-                .then((response) => {
-                    setLoading(false)
-                    // history.push("/companyprofile/company");
-                    onSubmiting(true);
-                })
-                .catch((error) => {
-                    setLoading(false)
-                    helpers.setErrors({ submit: error.response.data.message });
-                });
-        },
-    });
+const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
+  const [loading, setLoading] = React.useState(false);
+  // const [email, setEmail] = React.useState()
+  const timer = React.useRef();
 
   const formik = useFormik({
     initialValues: {

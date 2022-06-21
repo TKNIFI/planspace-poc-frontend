@@ -1,24 +1,26 @@
 import * as React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import { Divider } from "@mui/material";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+import {
+  AppBar,
+  Divider,
+  MenuItem,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  InputBase,
+  Badge,
+  Select,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import planLogo from "../assets/images/plan.png";
+import "../index.css";
+import { Popover } from "antd";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -30,24 +32,8 @@ const Search = styled("div")(({ theme }) => ({
   marginLeft: theme.spacing(5),
   width: "100%",
   [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(2),
+    marginLeft: 70,
     width: "25%",
-  },
-}));
-
-const StyledSelect = styled(Select)(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.grey[400], 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.grey[400], 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: theme.spacing(2),
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(2),
-    width: "70%",
   },
 }));
 
@@ -79,98 +65,31 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar() {
   const history = useHistory();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
+  const [location, setLocation] = React.useState("");
   const handleLogout = () => {
-    localStorage.removeItem("userInfo")
-    history.push("/login")
-  }
+    localStorage.removeItem("userInfo");
+    history.push("/login");
+  };
 
+  React.useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo");
+    console.log("userInfo", typeof userInfo);
+    let info = JSON.parse(userInfo);
+    if (info) {
+      setLocation(info?.address);
+    }
+  }, []);
   const menuId = "primary-search-account-menu";
   const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+    <>
+      <MenuItem>Profile</MenuItem>
+      <MenuItem>My account</MenuItem>
       <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 17 new notifications">
-          <Badge badgeContent={10} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
+    </>
   );
 
   return (
-    <Box sx={{ flexGrow: 0 }}>
+    <>
       <AppBar
         className="appBar"
         position="static"
@@ -184,7 +103,7 @@ export default function PrimarySearchAppBar() {
             sx={{ display: { xs: "block", sm: "block" } }}
           >
             <img
-              width={"112px"}
+              width={"130px"}
               height={"33px"}
               src={planLogo}
               style={{
@@ -194,8 +113,9 @@ export default function PrimarySearchAppBar() {
               alt="logo"
             />
           </Typography>
-          <Search>
-            <SearchIconWrapper>
+
+          <Search style={{ cursor: "pointer" }}>
+            <SearchIconWrapper style={{ marginLeft: "85%" }}>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
@@ -205,59 +125,88 @@ export default function PrimarySearchAppBar() {
           </Search>
 
           <Box sx={{ flexGrow: 1 }} />
-          <FormControl sx={{ m: 1, minWidth: 350, width: "40%" }}>
-            <StyledSelect
-              labelId="select"
-              sx={{
-                color: "black",
-                height: "40px",
-                display: { xs: "flex", md: "flex" },
-              }}
-              // value="2972 Westheimer Rd. Santa Ana, Illinois 85486"
-              label="locations"
-              // onChange={handleChange}
-            />
-          </FormControl>
 
+          <Select
+            sx={{
+              color: "black",
+              height: "40px",
+              width: "30%",
+              marginRight: "10px",
+            }}
+            label="a"
+            value={location}
+            // onChange={handleChange}
+          >
+            <MenuItem value={location}>{location}</MenuItem>
+          </Select>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Divider orientation="vertical" flexItem></Divider>
-            <IconButton size="large" aria-label="show 17 new notifications">
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ height: "40px", marginTop: "15px" }}
+            ></Divider>
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              sx={{ p: 3 }}
+            >
               <AddCircleIcon variant="outlined" />
             </IconButton>
-            <Divider orientation="vertical" flexItem></Divider>
-            <IconButton size="large" aria-label="show 17 new notifications">
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ height: "40px", marginTop: "15px" }}
+            ></Divider>
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              sx={{ p: 3 }}
+            >
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <Divider orientation="vertical" flexItem></Divider>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ height: "40px", marginTop: "15px" }}
+            ></Divider>
+            <Popover
+              placement="bottomRight"
+              content={renderMenu}
+              trigger="click"
             >
-              <AccountCircle />
-            </IconButton>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                sx={{ p: 3 }}
+              >
+                <AccountCircle />
+              </IconButton>
+            </Popover>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
+            <Popover
+              placement="bottomRight"
+              content={renderMenu}
+              trigger="click"
             >
-              <MoreIcon sx={{ color: "#003399" }} />
-            </IconButton>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <MoreIcon sx={{ color: "#003399" }} />
+              </IconButton>
+            </Popover>
           </Box>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </Box>
+    </>
   );
 }

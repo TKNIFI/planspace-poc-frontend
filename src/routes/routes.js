@@ -3,7 +3,8 @@ import Dashboard from "../features/dashboard/dashboard";
 import Login from "../features/login/login";
 import Locations from "../features/Locations/Locations";
 // import EditLocation from "../features/Locations/EditLocation";
-import Register from "../features/register/register";
+import RegisterInvited from "../features/register/invitedRegister/register";
+import Register from "../features/register/Register/register";
 import Unauthorized from "../features/unauthorized/unauthorized";
 import Users from "../features/users/users";
 import GuestPageLayout from "../layout/guestPageLayout";
@@ -16,6 +17,7 @@ import TeamInvitation from "../features/TeamMemberInvitation/teamMemberInvitatio
 import ResetPassword from "../features/login/resetPassword";
 import PasswordResetMail from "../features/login/passwordResetMail";
 import ResetingPassword from "../features/resetingPassword/resetingPassword"
+import Verifiy from "../features/register/Register/verify"
 // Template for a route
 // {
 //   path: '/login',
@@ -40,6 +42,18 @@ const routes = [
     layout: GuestPageLayout,
   },
   {
+    path: "/register/invited",
+    name: "Register",
+    component: RegisterInvited,
+    layout: GuestPageLayout,
+  },
+  {
+    path: "/register/activate",
+    name: "Activate",
+    component: Verifiy,
+    layout: GuestPageLayout,
+  },
+  {
     path: "/register",
     name: "Register",
     component: Register,
@@ -52,7 +66,7 @@ const routes = [
     layout: GuestPageLayout,
   },
   {
-    path: "/account/change_password",
+    path: "/account/password/change",
     name: "reset password",
     component: ResetingPassword,
     layout: GuestPageLayout

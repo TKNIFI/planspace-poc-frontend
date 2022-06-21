@@ -3,22 +3,24 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { Box, Grid, Button, Typography, TextField } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import CircularProgress from "@mui/material/CircularProgress";
+import { green } from "@mui/material/colors";
 import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import User from "../../../../models/user/user";
 import { login } from "../../../../slices/user";
 import { useDispatch } from "react-redux";
-import CircularProgress from "@mui/material/CircularProgress";
 
 const LoginForm = () => {
   let history = useHistory();
   const dispatch = useDispatch();
+  const [loading, setLoading] = React.useState(false);
   const onFinish = async (values) => {
     // await dispatch(User.loginCall(formData));
   };
   const formik = useFormik({
     initialValues: {
-      email: "",
+      primary_email_id: "",
       password: "",
     },
     validationSchema: Yup.object({
@@ -26,9 +28,7 @@ const LoginForm = () => {
         .email("must be valid email")
         .required("Email is required"),
       password: Yup.string()
-        .required("No password provided.")
-        .min(8, "Password is too short - should be 8 chars minimum.")
-        .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
+        .required("Password is required")
     }),
     onSubmit: async (values, helpers) => {
       try {
@@ -53,13 +53,14 @@ const LoginForm = () => {
             helpers.setErrors({ submit: error })
           );
         } else {
-          helpers.setErrors({ submit: error.response.data.message[0] });
+          helpers.setErrors({ submit: error.response.data.message });
         }
+        setLoading(false)
         helpers.setStatus({ success: false });
         helpers.setSubmitting(false);
       }
-    }
-  })
+    },
+  });
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -82,7 +83,8 @@ const LoginForm = () => {
           />
           <TextField
             id="password"
-            label="Create password"
+            label="Enter Your Password *"
+            placeholder="Enter Your Password"
             type="password"
             value={formik.values.password}
             error={Boolean(formik.touched.password && formik.errors.password)}
@@ -90,11 +92,6 @@ const LoginForm = () => {
             onChange={formik.handleChange}
             sx={{ width: "100%" }}
           />
-          {formik.touched.password && formik.errors.password ? (
-            <MuiAlert severity="error">
-              <span>{formik.errors.password}</span>
-            </MuiAlert>
-          ) : null}
         </Box>
         {formik.errors.submit && (
           <Box sx={{ mt: 2, mb: 2 }}>
@@ -105,20 +102,44 @@ const LoginForm = () => {
         )}
         <Box className="container">
           <Button
-            sx={{ mb: 2, paddingLeft: "50px", paddingRight: "50px", textTransform: "capitalize" }}
+            sx={{
+              mb: 2,
+              paddingLeft: "50px",
+              paddingRight: "50px",
+              textTransform: "capitalize",
+            }}
             variant="contained"
             type="submit"
+            disabled={loading}
           >
             Log in
           </Button>
+          {loading && (
+            <CircularProgress
+              size={24}
+              sx={{
+                color: green[500],
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                marginTop: "-12px",
+                marginLeft: "-12px",
+              }}
+            />
+          )}
           <Typography>
-            <Link to="/forgot_password" style={{ textDecoration: "underline" }}>
+            <Link
+              to="/forgot_password"
+              style={{ textDecoration: "underline", fontWeight: "bold" }}
+            >
               Forgot Username / Password?
             </Link>
           </Typography>
-          <Typography sx={{ variant: "body1", color: "gray", mt: 28 }}>
+          <Typography
+            sx={{ variant: "body1", color: "gray", mt: 15, }}
+          >
             Do not have an account?{" "}
-            <Link to="/register" style={{ textDecoration: "underline" }}>
+            <Link to="/register" style={{ textDecoration: "underline", fontWeight: "bold" }}>
               Signup here
             </Link>
           </Typography>

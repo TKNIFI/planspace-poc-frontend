@@ -8,22 +8,28 @@ import { upsertModel } from "../baseModel/baseActions";
 import K from "../../utilities/constants";
 import { useHistory } from "react-router-dom";
 import { withRouter } from "react-router-dom";
+
 class User extends BaseModel {
   // Registeration api call by using thunk
-  static registerationCall(yname, emailId, phoneNo, YourBname, pasword) {
-    return async (dispatch) => {
-      const user = await NetworkCall.fetch(
-        Request.registerationUser(yname, emailId, phoneNo, YourBname, pasword)
+  static async registerationCall(data) {
+    return await NetworkCall.fetch(
+        Request.registerationUser(
+          data.first_name,
+          data.last_name,
+          data.email,
+          data.mobile,
+          data.company_name,
+          data.password
+        )
       )
         .then((response) => {
           const data = response.data.data;
           localStorage.setItem("userInfo", JSON.stringify(data));
+          // upsertModel(User, response.data.data);
           // useHistory.push("/login");
         })
-        .catch((error) => alert(error.message));
-      dispatch(upsertModel(User, user));
     };
-  }
+  // }
 
   // API call using thunk
   static loginCall(email, password) {
@@ -37,7 +43,7 @@ class User extends BaseModel {
 
   // Helpers
   static isAuthenticated() {
-    const user = localStorage.getItem("userInfo")
+    const user = localStorage.getItem("userInfo");
     return user ? true : false;
   }
 

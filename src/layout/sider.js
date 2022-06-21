@@ -14,20 +14,37 @@ export default function Sider() {
 
   return (
     <>
-      <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+      <Sider
+        collapsible
+        width={350}
+        collapsed={collapsed}
+        onCollapse={onCollapse}
+        style={{ backgroundColor: "#003498",  }}
+      >
+        <Menu
+          theme="dark"
+          defaultSelectedKeys={["0"]}
+          defaultOpenKeys={['0']}
+          mode="inline"
+          style={{ backgroundColor: "#003498", }}
+        >
           {navigations.map((navigation, i) => {
             if ((navigation.children?.length ?? 0) > 0) {
               return (
                 <SubMenu key={i} icon={navigation.icon} title={navigation.name}>
                   {navigation.children.map((subNavigation, j) => {
-                    return <>
-                      <Menu.Item key={`${i}_${j}`}>
-                        <Link to={subNavigation.path}>
-                          {subNavigation.name}
-                        </Link>
-                      </Menu.Item>
-                    </>;
+                    return (
+                      <>
+                        <Menu.Item
+                          key={`${i}_${j}`}
+                          style={{ backgroundColor: "#003498", margin: "-1%" }}
+                        >
+                          <Link to={subNavigation.path}>
+                            {subNavigation.name}
+                          </Link>
+                        </Menu.Item>
+                      </>
+                    );
                   })}
                 </SubMenu>
               );

@@ -4,10 +4,11 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import planLogo from "../../../assets/images/plan.png";
-import { Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
-import InvitedRegisterForm from "../../forms/InvitedRegisterForm";
+import RegisterationForm from "../../forms/registerationform";
+import RegisterSuccess from "./registerSuccess";
 // import RegisterSuccess from "../../register/registerSuccess";
 import InvalidLink from "../../login/invalidLink";
 import "swiper/swiper.min.css";
@@ -68,11 +69,9 @@ const SliderContent = () => {
     </>
   );
 };
-function RegisterInvited() {
-  const [check, setCheck] = useState();
-  const [isValid, setIsValid] = useState(false);
-  const [userDetails, setUserDetails] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+function Verify() {
+  const [isValid, setIsValid] = useState(true);
+  const [email, setEmail] = useState(true);
 
   function useQuery() {
     const { search } = useLocation();
@@ -81,94 +80,94 @@ function RegisterInvited() {
   let query = useQuery();
   const uid = query.get("uid");
   const token = query.get("token");
-  async function checkToken() {
-    await axios
-      .get(
-        `${process.env.REACT_APP_BASE_URL}api/auth/user/invited/?uid=${uid}&token=${token}`
-      )
-      .then((result) => {
-        console.log("result", result.data.data);
-        setIsValid(true);
-        setIsLoading(false);
-        setUserDetails(result.data.data);
-      })
-      .catch((error) => {
-        setIsValid(false);
-        setIsLoading(false);
-      });
-  }
 
-  useEffect(() => {
-    checkToken();
+  const verifyEmail = async () => {
+    try {
+      let formData = new FormData();
+      formData.append("uid", uid);
+      formData.append("token", token);
+      await axios
+        .post(
+          `${process.env.REACT_APP_BASE_URL}api/auth/register/activate/`,
+          formData
+        )
+        .then((result) => {
+          setIsValid(true);
+        });
+    } catch (error) {
+      setIsValid(false);
+    }
+  };
+
+  React.useEffect(() => {
+    verifyEmail();
   }, []);
 
   return (
     <>
-      {!isLoading ? (
-        <Grid container spacing={0} columns={16} sx={{ ml: 12 }}>
-          {/* carousal  */}
-          <Grid item xs={6}>
-            <Paper>
-              <Swiper
-                centeredSlides
-                pagination={{
-                  dynamicBullets: true,
-                }}
-                modules={[Pagination]}
-              >
-                <SwiperSlide>
-                  <SliderContent />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <SliderContent />
-                </SwiperSlide>
-              </Swiper>
+      <Grid container spacing={0} columns={16} sx={{ ml: 12 }}>
+        {/* carousal  */}
+        <Grid item xs={6}>
+          <Paper>
+            <Swiper
+              centeredSlides
+              pagination={{
+                dynamicBullets: true,
+              }}
+              modules={[Pagination]}
+            >
+              <SwiperSlide>
+                <SliderContent />
+              </SwiperSlide>
+              <SwiperSlide>
+                <SliderContent />
+              </SwiperSlide>
+            </Swiper>
+          </Paper>
+        </Grid>
+        <Grid item xs={8}>
+          {!isValid ? (
+            <Paper sx={{ height: "100%", p: 5 }}>
+              <Box>
+                <img src={planLogo} height="30px" width="170px" />
+              </Box>
+              <Box sx={{ mt: 3, p: 1 }}>
+                <Typography variant="h5" sx={{ color: "#003399" }}>
+                  Invalid or Expired link
+                </Typography>
+              </Box>
+              <Box sx={{ mt: 2, p: 1, height: "445px" }}>
+                <Typography>
+                  <Link href="/login">Login</Link>
+                </Typography>
+              </Box>
             </Paper>
-          </Grid>
-          {/* create account formik form  */}
-          {isValid ? (
-            <Grid item xs={8}>
-              {check ? (
-                ""
-              ) : (
-                <>
-                  <Paper sx={{ height: "100%", p: 5 }}>
-                    <Box>
-                      <img src={planLogo} height="30px" width="170px" />
-                    </Box>
-                    <Box sx={{ mt: 3, p: 1 }}>
-                      <Typography variant="h5" sx={{ color: "#003399" }}>
-                        Welcome To PlanSpace
-                      </Typography>
-                      <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
-                        Create your account by filling out below details
-                      </Typography>
-                    </Box>
-                    <Box sx={{ mt: 2, p: 1, height: "445px" }}>
-                      <InvitedRegisterForm
-                        onSubmiting={(val) => {
-                          setCheck(val);
-                        }}
-                        user={userDetails}
-                        uid={uid}
-                        token={token}
-                      />
-                    </Box>
-                  </Paper>
-                </>
-              )}
-            </Grid>
           ) : (
-            <InvalidLink />
+            <>
+              <Paper sx={{ height: "100%", p: 5 }}>
+                <Box>
+                  <img src={planLogo} height="30px" width="170px" />
+                </Box>
+                <Box sx={{ mt: 3, p: 1 }}>
+                  <Typography variant="h5" sx={{ color: "#003399" }}>
+                    Welcome To PlanSpace
+                  </Typography>
+                  <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
+                    Your account has been verified successfully
+                  </Typography>
+                </Box>
+                <Box sx={{ mt: 2, p: 1, height: "445px" }}>
+                  <Typography>
+                    <Link href="/login">Login</Link>
+                  </Typography>
+                </Box>
+              </Paper>
+            </>
           )}
         </Grid>
-      ) : (
-        <div sx={{ mr: 5, ml: 5, mt: 5, mb: 5 }}>
-          <CircularProgress size={60} />
-        </div>
-      )}
+      </Grid>
     </>
   );
 }
 
-export default RegisterInvited;
+export default Verify;
