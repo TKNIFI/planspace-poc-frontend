@@ -1,0 +1,39 @@
+.ant-drawer-content-wrapper{
+width: 760px !important;
+}
+
+
+
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root{
+    margin-right: 141px;
+}
+
+.css-ra13a9-MuiStack-root{
+
+    justify-content: center;
+    margin-left: 0 !important;
+}
+.ant-drawer-body{
+    overflow: hidden !important;
+}
+
+
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+    background: #F4F6F9 !important;
+    border: 1px solid #C5C7D0 !important;
+}
+
+/* css-1rwt2y5-MuiButtonBase-root-MuiButton-root{
+
+} */
+
+.cancelBtn{
+background: rgba(17, 17, 17, 0.04);
+/* background: #676879; */
+border: 1px solid #676879 !important;
+color: #676879 !important;
+}
+.submitBtn{
+    background: #0073EA !important;
+    border-radius: 4px;
+}

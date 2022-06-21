@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
 import myApi from "../../network/axios";
-
+import "./addMemberForm.css";
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -20,7 +20,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
     initialValues: {
       name: "",
       userId: "",
-      primary_email_id: "",
+      username: "",
       mobile: "",
       address: "",
     },
@@ -30,7 +30,9 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
         .max(15, "Must be 15 characters or less")
         .required("Name is required"),
       userId: Yup.string().required("user id is required"),
-      primary_email_id: Yup.string().email("Invalid email").required("Email is required"),
+      username: Yup.string()
+        .email("Invalid email")
+        .required("Email is required"),
       mobile: Yup.string()
         .required("Phone number is required")
         .matches(phoneRegExp, "Phone number is not valid"),
@@ -44,7 +46,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
       if (name.length > 1) {
         formData.append("last_name", name[1]);
       }
-      formData.append("primary_email_id", values.primary_email_id);
+      formData.append("username", values.username);
       formData.append("address", values.address);
       formData.append("mobile", values.mobile);
       await myApi
@@ -104,11 +106,13 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                name="primary_email_id"
+                name="username"
                 label="Email"
-                value={formik.values.primary_email_id}
-                error={Boolean(formik.touched.primary_email_id && formik.errors.primary_email_id)}
-                helperText={formik.touched.primary_email_id && formik.errors.primary_email_id}
+                value={formik.values.username}
+                error={Boolean(
+                  formik.touched.username && formik.errors.username
+                )}
+                helperText={formik.touched.username && formik.errors.username}
                 onChange={formik.handleChange}
                 // autoComplete="current"
               />
@@ -127,7 +131,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
             <Box
               sx={{
                 "& .MuiTextField-root": {
-                  width: "125ch",
+                  width: "813px",
                   marginTop: 3,
                   marginLeft: 0.7,
                 },
@@ -172,11 +176,20 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
               direction="row"
               sx={{ marginTop: 10, marginLeft: 50 }}
             >
-              <Muibtn variant="outlined" onClick={() => handleClose(false)}>
+              <Muibtn
+                variant="outlined"
+                className="cancelBtn"
+                onClick={() => handleClose(false)}
+              >
                 Cancel
               </Muibtn>
               <div>
-                <Muibtn variant="contained" type="submit" disabled={loading}>
+                <Muibtn
+                  variant="contained"
+                  className="submitBtn"
+                  type="submit"
+                  disabled={loading}
+                >
                   Submit
                 </Muibtn>
                 {loading && (

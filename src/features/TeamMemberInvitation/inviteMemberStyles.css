@@ -4,6 +4,7 @@
   font-size: medium;
   padding-top: 20px;
   padding-bottom: 20px;
+  border-right: 1px solid #C5C7D0 !important;
   margin: 0%;
 }
 .ant-table {
@@ -25,4 +26,31 @@
 
 .ant-drawer-title {
   color: #fff;
+}
+
+.ant-breadcrumb-link{
+
+
+}
+
+.ant-breadcrumb li:last-child {
+ 
+
+  background: #E3F2FD;
+  border-radius: 9.5px;
+  width: 44px;
+  height: 19px;
+  padding: 2px 9px;
+  display: flex;
+  color: #1E88E5;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1px;
+
+}
+
+
+
+.addNewBtn{
+  background: #0073EA !important;
 }
