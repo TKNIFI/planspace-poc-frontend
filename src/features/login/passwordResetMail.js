@@ -3,8 +3,28 @@ import "antd/dist/antd.css";
 import planLogo from "../../assets/images/plan.png";
 import { Typography, Grid, Paper, Box } from "@mui/material";
 import { Link } from "react-router-dom";
-import emailimage from "../../assets/images/sendemail.png";
-export default function PasswordResetMail() {
+import toast from "react-hot-toast";
+import emailimage from "../../assets/images/emailSuccessImage.png";
+require("dotenv").config();
+
+const PasswordResetMail = ({ email }) => {
+  const [userEmail, setUserEmail] = React.useState(email);
+
+  async function resendEmail() {
+    await axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}api/auth/password_reset/request/`,
+        { username: userEmail }
+      )
+      .then((response) => {
+        toast.success(response.data.message);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message
+        );
+      });
+  }
+
   return (
     <>
       <Grid item xs={8}>

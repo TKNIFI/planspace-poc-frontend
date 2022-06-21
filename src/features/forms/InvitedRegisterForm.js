@@ -17,20 +17,20 @@ import PhoneInput from "../../common/phoneNumber";
 require("dotenv").config();
 
 const phoneRegExp =
-    /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-const RegisterationForm = ({ onSubmiting, email }) => {
+const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
     let history = useHistory();
     const dispatch = useDispatch();
     const [loading, setLoading] = React.useState(false);
-    const [check, setCheck] = React.useState(false);
     const timer = React.useRef();
-    
+
     const formik = useFormik({
+        enableReinitialize: true,
         initialValues: {
-            first_name: "",
-            username: "",
-            mobile: "",
+            first_name: user?.first_name + " " + user?.last_name,
+            primary_email_id: user?.primary_email_id,
+            mobile: user?.mobile,
             company_name: "",
             password: "",
         },
@@ -58,6 +58,8 @@ const RegisterationForm = ({ onSubmiting, email }) => {
             let formData = new FormData();
             let name = values.first_name.split(" ");
             formData.append("username", values.username);
+            formData.append("uid", uid);
+            formData.append("token", token);
             formData.append("mobile", values.mobile.replaceAll('-', ''));
             formData.append("company_name", values.company_name);
             formData.append("password", values.password);
@@ -67,16 +69,15 @@ const RegisterationForm = ({ onSubmiting, email }) => {
             }
             await axios
                 .post(
-                    `${process.env.REACT_APP_BASE_URL}api/auth/register/`,
+                    `${process.env.REACT_APP_BASE_URL}api/auth/invite/register/`,
                     formData
                 )
                 .then((response) => {
                     const data = response.data.data;
-                    onSubmiting(true);
-                    email(values.username);
+                    localStorage.setItem("userInfo", JSON.stringify(data));
+                    history.push("/");
                 })
                 .catch((error) => {
-                    setLoading(false);
                     for (const [key, value] of Object.entries(
                         error.response.data.message[0]
                     )) {
@@ -84,15 +85,32 @@ const RegisterationForm = ({ onSubmiting, email }) => {
                     }
                     helpers.setStatus({ success: false });
                     helpers.setSubmitting(false);
+                    setLoading(false);
                 });
         },
     });
 
-  React.useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
+    React.useEffect(() => {
+        return () => {
+            clearTimeout(timer.current);
+        };
+    }, []);
+
+    const handleGoogleLogin = async (user) => {
+        let formData = new FormData();
+        formData.append("access_token", user._token.accessToken);
+        await axios
+            .post(
+                `${process.env.REACT_APP_BASE_URL}api/auth/login/google/`,
+                formData
+            )
+            .then((response) => {
+                const data = response.data;
+                localStorage.setItem("userInfo", JSON.stringify(data));
+                history.push("/");
+            })
+            .catch((error) => alert(error.message));
     };
-  }, []);
 
     const handleSocialLoginFailure = (err) => {
         console.error(err);
@@ -151,7 +169,6 @@ const RegisterationForm = ({ onSubmiting, email }) => {
                                 {() => (
                                     <TextField
                                         id="mobile"
-                                        name="mobile"
                                         label="Enter Your phone number*"
                                         placeholder="Enter your phone number"
                                         type="tel"
@@ -165,14 +182,12 @@ const RegisterationForm = ({ onSubmiting, email }) => {
                                         }
                                         sx={{ width: "100%" }}
                                     />
-                                )
-                                }
+                                )}
                             </PhoneInput>
                         </Grid>
                     </Grid>
                     <TextField
                         id="company_name"
-                        name="company_name"
                         label="Enter Your Business name"
                         placeholder="Enter Your Business Name"
                         type="text"
@@ -190,7 +205,6 @@ const RegisterationForm = ({ onSubmiting, email }) => {
                     />
                     <TextField
                         id="password"
-                        name="password"
                         label="Create password*"
                         placeholder="Create password"
                         type="password"
@@ -269,4 +283,4 @@ const RegisterationForm = ({ onSubmiting, email }) => {
     );
 };
 
-export default RegisterationForm;
+export default InvitedRegisterForm;

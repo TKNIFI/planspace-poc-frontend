@@ -22,7 +22,7 @@ const LoginForm = () => {
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string()
+      username: Yup.string()
         .email("must be valid email")
         .required("Email is required"),
       password: Yup.string()
@@ -32,14 +32,13 @@ const LoginForm = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        let formData = new FormData()
-        formData.append("email", values.email)
-        formData.append("password", values.password)
-        await dispatch(login(values.email, values.password));
-        // await axios.post("https://planspace.herokuapp.com/api/auth/login/", formData).then(response => {
-        //   const data = response.data.data
-        //   localStorage.setItem("userInfo", JSON.stringify(data))
-        history.push("/")
+        setLoading(true)
+        let formData = new FormData();
+        formData.append("username", values.username);
+        formData.append("password", values.password);
+        await dispatch(login(values.username, values.password));
+        setLoading(false)
+        history.push("/");
       } catch (error) {
         if (typeof error.response.data.message === Object) {
           for (const [key, value] of Object.entries(
@@ -70,12 +69,13 @@ const LoginForm = () => {
           }}
         >
           <TextField
-            id="email"
-            label="Enter Your Email"
+            id="username"
+            label="Enter Your Email *"
+            placeholder="Enter Your Email"
             type="email"
-            value={formik.values.email}
-            error={Boolean(formik.touched.email && formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            value={formik.values.username}
+            error={Boolean(formik.touched.username && formik.errors.username)}
+            helperText={formik.touched.username && formik.errors.username}
             onChange={formik.handleChange}
             sx={{ width: "100%" }}
             autoFocus="true"
