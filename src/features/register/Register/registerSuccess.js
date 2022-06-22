@@ -3,7 +3,7 @@ import { Box, Paper, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import planLogo from "../../../assets/images/plan.png";
+import planLogo from "../../../assets/images/plan.svg";
 import successCircle from "../../../assets/images/checkCircle.png";
 import { Button } from "antd";
 import CircularProgress from "@mui/material/CircularProgress";
