@@ -12,8 +12,10 @@ import { useDispatch } from "react-redux";
 import SocialButton from "../login/components/SocialButton";
 import CircularProgress from "@mui/material/CircularProgress";
 import gmailLogo from "../../assets/images/gmailLogo.png";
-import Request from "../../network/request";
+import PhoneInput from "../../common/phoneNumber";
+
 require("dotenv").config();
+
 const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -21,7 +23,6 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
     let history = useHistory();
     const dispatch = useDispatch();
     const [loading, setLoading] = React.useState(false);
-    const [success, setSuccess] = React.useState(false);
     const timer = React.useRef();
 
     const formik = useFormik({
@@ -35,7 +36,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
         },
         validationSchema: Yup.object({
             first_name: Yup.string().required("Name is required"),
-            primary_email_id: Yup.string()
+            username: Yup.string()
                 .email("must be valid email")
                 .required("Email is required"),
             mobile: Yup.string()
@@ -56,10 +57,10 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
             setLoading(true);
             let formData = new FormData();
             let name = values.first_name.split(" ");
-            formData.append("primary_email_id", values.primary_email_id);
+            formData.append("username", values.username);
             formData.append("uid", uid);
             formData.append("token", token);
-            formData.append("mobile", values.mobile);
+            formData.append("mobile", values.mobile.replaceAll('-', ''));
             formData.append("company_name", values.company_name);
             formData.append("password", values.password);
             formData.append("first_name", name[0]);
@@ -80,7 +81,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                     for (const [key, value] of Object.entries(
                         error.response.data.message[0]
                     )) {
-                        formik.setFieldError(key, value[0]);
+                        formik.setFieldError(key, value[0].replace("username", "email"));
                     }
                     helpers.setStatus({ success: false });
                     helpers.setSubmitting(false);
@@ -129,7 +130,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                         type="text"
                         error={Boolean(
                             formik.touched.first_name &&
-                                formik.errors.first_name
+                            formik.errors.first_name
                         )}
                         helperText={
                             formik.touched.first_name &&
@@ -143,41 +144,46 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                     <Grid container spacing={4}>
                         <Grid item xs={6}>
                             <TextField
-                                id="primary_email_id"
+                                id="username"
                                 label="Enter your email id*"
                                 placeholder="Enter your email id"
                                 type="email"
                                 error={Boolean(
-                                    formik.touched.primary_email_id &&
-                                        formik.errors.primary_email_id
+                                    formik.touched.username &&
+                                    formik.errors.username
                                 )}
                                 helperText={
-                                    formik.touched.primary_email_id &&
-                                    formik.errors.primary_email_id
+                                    formik.touched.username &&
+                                    formik.errors.username
                                 }
-                                value={formik.values.primary_email_id}
+                                value={formik.values.username}
                                 onChange={formik.handleChange}
                                 sx={{ width: "100%" }}
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                id="mobile"
-                                label="Enter Your phone number*"
-                                placeholder="Enter your phone number"
-                                type="tel"
-                                error={Boolean(
-                                    formik.touched.mobile &&
-                                        formik.errors.mobile
-                                )}
-                                helperText={
-                                    formik.touched.mobile &&
-                                    formik.errors.mobile
-                                }
+                            <PhoneInput
                                 value={formik.values.mobile}
                                 onChange={formik.handleChange}
-                                sx={{ width: "100%" }}
-                            />
+                            >
+                                {() => (
+                                    <TextField
+                                        id="mobile"
+                                        label="Enter Your phone number*"
+                                        placeholder="Enter your phone number"
+                                        type="tel"
+                                        error={Boolean(
+                                            formik.touched.mobile &&
+                                            formik.errors.mobile
+                                        )}
+                                        helperText={
+                                            formik.touched.mobile &&
+                                            formik.errors.mobile
+                                        }
+                                        sx={{ width: "100%" }}
+                                    />
+                                )}
+                            </PhoneInput>
                         </Grid>
                     </Grid>
                     <TextField
@@ -187,7 +193,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                         type="text"
                         error={Boolean(
                             formik.touched.company_name &&
-                                formik.errors.company_name
+                            formik.errors.company_name
                         )}
                         helperText={
                             formik.touched.company_name &&

@@ -4,36 +4,27 @@ import axios from "axios";
 import planLogo from "../../assets/images/plan.svg";
 import { Typography, Grid, Paper, Box, Button, Alert } from "@mui/material";
 import { Link } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import emailimage from "../../assets/images/emailSuccessImage.png";
 require("dotenv").config();
 
 const PasswordResetMail = ({ email }) => {
     const [userEmail, setUserEmail] = React.useState(email);
 
-    async function resendEmail() {
-        await axios
-            .post(
-                `${process.env.REACT_APP_BASE_URL}api/auth/password_reset/request/`,
-                { primary_email_id: userEmail }
-            )
-            .then((response) => {
-                toast(
-                    <Alert severity="success" variant="filled">
-                        {" "}
-                        {response.data.message}
-                    </Alert>
-                );
-            })
-            .catch((error) => {
-                toast(
-                    <Alert severity="error" variant="filled">
-                        {" "}
-                        {error.response.data.message}
-                    </Alert>
-                );
-            });
-    }
+  async function resendEmail() {
+    await axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}api/auth/password_reset/request/`,
+        { username: userEmail }
+      )
+      .then((response) => {
+        toast.success(response.data.message);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message
+        );
+      });
+  }
 
     return (
         <>

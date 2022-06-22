@@ -16,11 +16,11 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
 
   const formik = useFormik({
     initialValues: {
-      primary_email_id: "",
+      username: "",
     },
 
     validationSchema: Yup.object({
-      primary_email_id: Yup.string()
+      username: Yup.string()
         .email("must be valid email")
         .required("Email is required"),
       // password: Yup.string()
@@ -34,7 +34,7 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
     onSubmit: async (values, helpers) => {
       setLoading(true);
       let formData = new FormData();
-      formData.append("primary_email_id", values.primary_email_id);
+      formData.append("username", values.username);
       await axios
         .post(
           `${process.env.REACT_APP_BASE_URL}api/auth/password_reset/request/`,
@@ -43,7 +43,7 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
         .then((response) => {
           setLoading(false);
           onSubmiting(true);
-          submittedEmail(values.primary_email_id);
+          submittedEmail(values.username);
         })
         .catch((error) => {
           setLoading(false);
@@ -53,7 +53,7 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
             if (key === "non_field_errors") {
               formik.setErrors({ submit: value[0] });
             }
-            formik.setFieldError(key, value[0]);
+            formik.setFieldError(key, value[0].replace("username", "email"));
           }
           helpers.setSubmitting(false);
           setLoading(false);
@@ -76,18 +76,18 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
           }}
         >
           <TextField
-            id="primary_email_id"
+            id="username"
             label="Enter Your Email*"
             placeholder="Enter Your Email"
             type="email"
-            value={formik.values.primary_email_id}
+            value={formik.values.username}
             onChange={formik.handleChange}
             sx={{ width: "100%" }}
             error={Boolean(
-              formik.touched.primary_email_id && formik.errors.primary_email_id
+              formik.touched.username && formik.errors.username
             )}
             helperText={
-              formik.touched.primary_email_id && formik.errors.primary_email_id
+              formik.touched.username && formik.errors.username
             }
             autoFocus={true}
           />

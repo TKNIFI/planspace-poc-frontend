@@ -24,7 +24,7 @@ const LoginForm = () => {
       password: "",
     },
     validationSchema: Yup.object({
-      primary_email_id: Yup.string()
+      username: Yup.string()
         .email("must be valid email")
         .required("Email is required"),
       password: Yup.string()
@@ -34,9 +34,9 @@ const LoginForm = () => {
       try {
         setLoading(true)
         let formData = new FormData();
-        formData.append("primary_email_id", values.primary_email_id);
+        formData.append("username", values.username);
         formData.append("password", values.password);
-        await dispatch(login(values.primary_email_id, values.password));
+        await dispatch(login(values.username, values.password));
         setLoading(false)
         history.push("/");
       } catch (error) {
@@ -70,13 +70,13 @@ const LoginForm = () => {
           }}
         >
           <TextField
-            id="primary_email_id"
+            id="username"
             label="Enter Your Email *"
             placeholder="Enter Your Email"
             type="email"
-            value={formik.values.primary_email_id}
-            error={Boolean(formik.touched.primary_email_id && formik.errors.primary_email_id)}
-            helperText={formik.touched.primary_email_id && formik.errors.primary_email_id}
+            value={formik.values.username}
+            error={Boolean(formik.touched.username && formik.errors.username)}
+            helperText={formik.touched.username && formik.errors.username}
             onChange={formik.handleChange}
             sx={{ width: "100%" }}
             autoFocus="true"
