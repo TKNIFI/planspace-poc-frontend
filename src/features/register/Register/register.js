@@ -8,14 +8,14 @@ import {
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import planLogo from "../../../assets/images/plan.png";
+import planLogo from "../../../assets/images/plan.svg";
 import { Typography } from "@mui/material";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
 import RegisterationForm from "../../forms/registerationform";
-import RegisterSuccess from "./registerSuccess"
+import RegisterSuccess from "./registerSuccess";
 // import RegisterSuccess from "../../register/registerSuccess";
-import InvalidLink from "../../login/invalidLink"
+import InvalidLink from "../../login/invalidLink";
 import "swiper/swiper.min.css";
 import "swiper/modules/pagination/pagination.min.css";
 import { Pagination } from "swiper";
@@ -47,7 +47,14 @@ const SliderContent = () => {
                 <Box className="centered-for-content-swiper-slide-para">
                     <Typography
                         variant="p"
-                        sx={{ color: "lightgray", fontWeight: "bold" }}
+                        style={{
+                            fontStyle: "normal",
+                            fontWeight: "400",
+                            fontSize: "14px",
+                            lineHeight: "14px",
+                            textAlign: "center",
+                            color: "#FFFFFF",
+                        }}
                     >
                         Amet minim mollit non deserunt ullamco est sit <br />{" "}
                         aliqua dolor do amet sint. Velit officia consequat duis{" "}
@@ -80,28 +87,27 @@ function Register() {
 
     return (
         <>
-        <Grid container spacing={0} columns={16} sx={{ ml: 12 }}>
-            
-            {/* carousal  */}
-            <Grid item xs={6}>
-                <Paper>
-                    <Swiper
-                        centeredSlides
-                        pagination={{
-                            dynamicBullets: true,
-                        }}
-                        modules={[Pagination]}
-                    >
-                        <SwiperSlide>
-                            <SliderContent />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <SliderContent />
-                        </SwiperSlide>
-                    </Swiper>
-                </Paper>
-            </Grid>
-            {/* create account formik form  */}
+            <Grid container spacing={0} columns={16} sx={{ ml: 12 }}>
+                {/* carousal  */}
+                <Grid item xs={6}>
+                    <Paper>
+                        <Swiper
+                            centeredSlides
+                            pagination={{
+                                dynamicBullets: true,
+                            }}
+                            modules={[Pagination]}
+                        >
+                            <SwiperSlide>
+                                <SliderContent />
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <SliderContent />
+                            </SwiperSlide>
+                        </Swiper>
+                    </Paper>
+                </Grid>
+                {/* create account formik form  */}
                 <Grid item xs={8}>
                     {check ? (
                         <RegisterSuccess email={email} />
@@ -142,7 +148,7 @@ function Register() {
                         </>
                     )}
                 </Grid>
-        </Grid>
+            </Grid>
         </>
     );
 }
