@@ -54,3 +54,15 @@
 .addNewBtn{
   background: #0073EA !important;
 }
+
+
+
+.ant-table.ant-table-middle .ant-table-title,
+.ant-table.ant-table-middle .ant-table-footer,
+.ant-table.ant-table-middle .ant-table-thead>tr>th,
+.ant-table.ant-table-middle .ant-table-tbody>tr>td,
+.ant-table.ant-table-middle tfoot>tr>th,
+.ant-table.ant-table-middle tfoot>tr>td {
+  padding: 0 16px;
+  height: 64px;
+}

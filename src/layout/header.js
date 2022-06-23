@@ -164,7 +164,7 @@ export default function PrimarySearchAppBar() {
             </svg>
           </Typography>
 
-          <Search style={{ cursor: "pointer" }}>
+          <Search style={{ cursor: "pointer", border: "1px solid #C5C7D0" }}>
             <SearchIconWrapper style={{ marginLeft: "85%" }}>
               <SearchIcon />
             </SearchIconWrapper>
@@ -184,10 +184,10 @@ export default function PrimarySearchAppBar() {
               marginRight: "10px",
             }}
             label="a"
-            value={location}
+            value={"hello"}
             // onChange={handleChange}
           >
-            <MenuItem value={location}>{location}</MenuItem>
+            <MenuItem value="ehll">Hello</MenuItem>
           </Select>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <Divider

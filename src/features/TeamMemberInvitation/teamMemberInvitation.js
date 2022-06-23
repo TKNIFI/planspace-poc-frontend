@@ -16,6 +16,7 @@ import "./inviteMemberStyles.css";
 import axios from "axios";
 import myApi from "../../network/axios";
 import toast, { Toaster } from "react-hot-toast";
+import TeamMemberTable from "./TeamMemberTable";
 require("dotenv").config();
 
 const TeamInvitation = () => {
@@ -156,6 +157,10 @@ const TeamInvitation = () => {
               style={{
                 textTransform: "capitalize",
                 float: "right",
+                fontFamily: "Fira Sans",
+                fontSize: "15px",
+                width: "124px",
+                height: "44px",
               }}
               onClick={() => setOpenAddForm(true)}
             >
@@ -165,25 +170,9 @@ const TeamInvitation = () => {
         </Grid>
       </Box>
       {/* table */}
-      <Box sx={{ marginTop: 2, height: "50%" }}>
-        <Table
-          className="ant-table ant-table-thead ant-table-tbody"
-          bordered={true}
-          size="middle"
-          ellipsis={true}
-          columns={columns}
-          dataSource={tableRow}
-          pagination={false}
-          border="1"
-          loading={loading}
-        />
-        <Pagination
-          sx={{ marginTop: 2, float: "right" }}
-          defaultCurrent={limit}
-          total={count}
-          onChange={(page, pageSize) => getUsers(page, pageSize)}
-        />
-      </Box>
+
+      <TeamMemberTable setOpenEditForm={setOpenEditForm} />
+
       {/* Model to delete html */}
       <Drawer
         className="ant-drawer-title"

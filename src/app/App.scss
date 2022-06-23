@@ -33,3 +33,17 @@
     transform: translateY(0px);
   }
 }
+
+
+
+
+.help-div{
+  display: flex;
+  justify-content: end;
+}
+
+.help-svg{
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+}
