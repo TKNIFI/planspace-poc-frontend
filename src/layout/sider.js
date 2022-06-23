@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Menu, Layout } from "antd";
 import { Link } from "react-router-dom";
 import navigations from "./navigations";
+import "./sider.css";
 
 export default function Sider() {
   const { Sider } = Layout;
@@ -16,17 +17,17 @@ export default function Sider() {
     <>
       <Sider
         collapsible
-        width={350}
+        width={236}
         collapsed={collapsed}
         onCollapse={onCollapse}
-        style={{ backgroundColor: "#003498",  }}
+        style={{ backgroundColor: "#003399" }}
       >
         <Menu
           theme="dark"
           defaultSelectedKeys={["0"]}
-          defaultOpenKeys={['0']}
+          defaultOpenKeys={["0"]}
           mode="inline"
-          style={{ backgroundColor: "#003498", }}
+          style={{ backgroundColor: "#003498" }}
         >
           {navigations.map((navigation, i) => {
             if ((navigation.children?.length ?? 0) > 0) {
