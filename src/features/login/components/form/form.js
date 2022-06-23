@@ -27,17 +27,16 @@ const LoginForm = () => {
       username: Yup.string()
         .email("must be valid email")
         .required("Email is required"),
-      password: Yup.string()
-        .required("Password is required")
+      password: Yup.string().required("Password is required"),
     }),
     onSubmit: async (values, helpers) => {
       try {
-        setLoading(true)
+        setLoading(true);
         let formData = new FormData();
         formData.append("username", values.username);
         formData.append("password", values.password);
         await dispatch(login(values.username, values.password));
-        setLoading(false)
+        setLoading(false);
         history.push("/");
       } catch (error) {
         if (typeof error.response.data.message === Object) {
@@ -55,7 +54,7 @@ const LoginForm = () => {
         } else {
           helpers.setErrors({ submit: error.response.data.message });
         }
-        setLoading(false)
+        setLoading(false);
         helpers.setStatus({ success: false });
         helpers.setSubmitting(false);
       }
@@ -107,6 +106,7 @@ const LoginForm = () => {
               paddingLeft: "50px",
               paddingRight: "50px",
               textTransform: "capitalize",
+              marginRight: "8rem",
             }}
             variant="contained"
             type="submit"
@@ -127,7 +127,7 @@ const LoginForm = () => {
               }}
             />
           )}
-          <Typography>
+          <Typography style={{ marginRight: "8rem" }}>
             <Link
               to="/forgot_password"
               style={{ textDecoration: "underline", fontWeight: "bold" }}
@@ -136,10 +136,18 @@ const LoginForm = () => {
             </Link>
           </Typography>
           <Typography
-            sx={{ variant: "body1", color: "gray", mt: 15, }}
+            sx={{
+              variant: "body1",
+              color: "gray",
+              marginRight: "8rem",
+              mt: 15,
+            }}
           >
             Do not have an account?{" "}
-            <Link to="/register" style={{ textDecoration: "underline", fontWeight: "bold" }}>
+            <Link
+              to="/register"
+              style={{ textDecoration: "underline", fontWeight: "bold" }}
+            >
               Signup here
             </Link>
           </Typography>
