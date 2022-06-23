@@ -4,6 +4,8 @@ import "./TeamMemberTable.css";
 import { Checkbox } from "antd";
 import { TableRow } from "@mui/material";
 import { TableRows } from "@mui/icons-material";
+import toast, { Toaster } from "react-hot-toast";
+import myApi from "../../network/axios";
 const EditableContext = React.createContext(null);
 
 const EditableRow = ({ index, ...props }) => {
@@ -86,7 +88,7 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const TeamMemberTable = ({ tableRow, setOpenEditForm }) => {
+const TeamMemberTable = ({ tableRow, setOpenEditForm, getUsers }) => {
   const [dataSource, setDataSource] = useState([
     {
       key: "0",
@@ -128,7 +130,7 @@ const TeamMemberTable = ({ tableRow, setOpenEditForm }) => {
     setOpenEditForm(true);
   };
 
-  const handleDelete = (key) => {
+  const handleDelete = async (key, uid) => {
     await myApi.delete(`api/auth/user/${uid}/`).then((result) => {
       toast.success(result.data.message);
       getUsers();
@@ -141,9 +143,9 @@ const TeamMemberTable = ({ tableRow, setOpenEditForm }) => {
       // dataIndex: "is_active",
       render: (record) => (
         <>
-        <Checkbox checked={record.is_active}></Checkbox>
+          <Checkbox checked={record.is_active}></Checkbox>
         </>
-      )
+      ),
     },
 
     {
@@ -153,9 +155,13 @@ const TeamMemberTable = ({ tableRow, setOpenEditForm }) => {
       editable: false,
       render: (record) => (
         <>
-        {record.first_name? record.first_name: "" + " " + record.last_name? record.last_name: ""}
+          {record.first_name
+            ? record.first_name
+            : "" + " " + record.last_name
+            ? record.last_name
+            : ""}
         </>
-      ) 
+      ),
     },
 
     {
