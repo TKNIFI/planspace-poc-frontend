@@ -29,7 +29,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
         enableReinitialize: true,
         initialValues: {
             first_name: user?.first_name + " " + user?.last_name,
-            primary_email_id: user?.primary_email_id,
+            username: user?.username,
             mobile: user?.mobile,
             company_name: "",
             password: "",
@@ -170,7 +170,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                                     <TextField
                                         id="mobile"
                                         label="Enter Your phone number*"
-                                        placeholder="Enter your phone number"
+                                        placeholder="E.g 212-456-7890"
                                         type="tel"
                                         error={Boolean(
                                             formik.touched.mobile &&

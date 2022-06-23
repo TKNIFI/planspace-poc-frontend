@@ -58,7 +58,7 @@ const TeamInvitation = () => {
   }
 
   const makeAToast = (message) => {
-    toast(<Alert variant="filled">{message}</Alert>);
+    toast.success(message);
   };
 
   const getUsers = async (page, pageSize) => {
@@ -118,6 +118,8 @@ const TeamInvitation = () => {
         getUsers={getUsers}
         setOpenEditForm={setOpenEditForm}
         callBack={getUsers}
+        editValues={(record) => setEditRecord(record)}
+        loading={loading}
       />
 
       {/* Model to delete html */}

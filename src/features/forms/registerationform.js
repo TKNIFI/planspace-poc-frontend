@@ -149,7 +149,7 @@ const RegisterationForm = ({ onSubmiting, email }) => {
                     id="mobile"
                     name="mobile"
                     label="Enter Your phone number*"
-                    placeholder="Enter your phone number"
+                    placeholder="E.g 212-456-7890"
                     type="tel"
                     error={Boolean(
                       formik.touched.mobile && formik.errors.mobile
