@@ -88,7 +88,12 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const TeamMemberTable = ({ tableRow, setOpenEditForm, getUsers }) => {
+const TeamMemberTable = ({
+  tableRow,
+  setOpenEditForm,
+  handleDelete,
+  getUsers,
+}) => {
   const [dataSource, setDataSource] = useState([
     {
       key: "0",
@@ -130,12 +135,14 @@ const TeamMemberTable = ({ tableRow, setOpenEditForm, getUsers }) => {
     setOpenEditForm(true);
   };
 
-  const handleDelete = async (key, uid) => {
-    await myApi.delete(`api/auth/user/${uid}/`).then((result) => {
-      toast.success(result.data.message);
-      getUsers();
-    });
-  };
+  // const handleDelete = async (uid) => {
+  //   await myApi
+  //     .delete(`${process.env.REACT_APP_BASE_URL}api/auth/user/${uid}/`)
+  //     .then((result) => {
+  //       toast.success(result.data.message);
+  //       getUsers();
+  //     });
+  // };
 
   const defaultColumns = [
     {

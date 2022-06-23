@@ -36,15 +36,19 @@ const TeamInvitation = () => {
   };
   async function handleDelete(uid) {
     console.log("uid", uid);
-    await myApi.delete(`api/auth/user/${uid}/`).then((result) => {
-      toast.success(result.data.message);
-      getUsers();
-    });
+    await myApi
+      .delete(`${process.env.REACT_APP_BASE_URL}api/auth/user/${uid}/`)
+      .then((result) => {
+        toast.success(result.data.message);
+        getUsers();
+      });
   }
 
   async function updateUser(is_active, uid) {
     await myApi
-      .put(`api/auth/user/${uid}/`, { is_active: !is_active })
+      .put(`${process.env.REACT_APP_BASE_URL}api/auth/user/${uid}/`, {
+        is_active: !is_active,
+      })
       .then((result) => {
         toast.success(
           `User ${is_active ? "deactivated" : "activated"} successfully`
@@ -111,6 +115,7 @@ const TeamInvitation = () => {
         tableRow={tableRow ? tableRow : []}
         handleDelete={handleDelete}
         updateUser={updateUser}
+        getUsers={getUsers}
         setOpenEditForm={setOpenEditForm}
         callBack={getUsers}
       />
