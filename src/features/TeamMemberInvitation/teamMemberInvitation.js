@@ -76,7 +76,6 @@ const TeamInvitation = () => {
     }
   };
 
-  console.log("table row in invite", tableRow);
   useEffect(() => {
     getUsers();
   }, []);

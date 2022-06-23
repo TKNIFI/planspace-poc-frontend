@@ -103,12 +103,15 @@ const TeamMemberTable = ({ tableRow, setOpenEditForm }) => {
   ]);
   const [count, setCount] = useState(2);
 
-  // const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
 
   // console.log("table Row : ", data, TableRow);
 
+  if (tableRow) {
+    console.log("table in row otus", tableRow[0]);
+    // setDataSource(tableRow);
+  }
   useEffect(() => {
-    setDataSource(tableRow);
     // setData(tableRow);
     // let obj;
     // for (let i = 0; i < props.tableRow.length(); i++) {
