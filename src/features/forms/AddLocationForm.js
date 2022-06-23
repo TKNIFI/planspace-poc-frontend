@@ -3,12 +3,11 @@ import { Upload } from "antd";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button as Muibtn, Paper, Grid } from "@mui/material";
-import Switch from "@mui/material/Switch";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { styled } from "@mui/material/styles";
+import toast, { Toaster } from "react-hot-toast";
 import clarityimageline from "../../assets/images/clarity_image-line.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -57,8 +56,8 @@ const AddLocationForm = ({ sendChildToParent, setOpen }) => {
             const formValues = values;
             Location.CreateLocation(formValues)
                 .then(() => {
+                    toast.success("Locations Created");
                     setOpen(false);
-                    alert("Location Created SuccessFully");
                 })
                 .catch((e) => {
                     setOpen(false);
@@ -91,6 +90,8 @@ const AddLocationForm = ({ sendChildToParent, setOpen }) => {
 
     return (
         <>
+            <Toaster position="top-right" />
+
             <form onSubmit={formik.handleSubmit}>
                 <Box
                     sx={{

@@ -9,6 +9,7 @@ import Location from "../../models/Locations/Location";
 import addLogoImage from "../../assets/images/iconadd.png";
 import "./location.scss";
 import EditLocationForm from "../forms/EditLocationForm";
+import toast, { Toaster } from "react-hot-toast";
 
 const LocationIcon = () => {
     return (
@@ -100,11 +101,11 @@ export default function Locations() {
     const gettingDataFromChild = (formDataFromParent) => {
         setFormData(formDataFromParent);
     };
-    console.log(locations);
     useEffect(() => {
         Location.GetLocations()
             .then((res) => {
                 setLocations(res.results);
+                toast.success("Locations Fetched");
             })
             .catch((err) => {
                 console.log(err);
@@ -113,6 +114,8 @@ export default function Locations() {
     console.log("location form data in parent", formData);
     return (
         <>
+            <Toaster position="top-right" />
+
             <Box
                 style={{
                     marginTop: "10px",
