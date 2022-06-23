@@ -2,6 +2,8 @@ import { Button, Form, Input, Popconfirm, Table } from "antd";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./TeamMemberTable.css";
 import { Checkbox } from "antd";
+import { TableRow } from "@mui/material";
+import { TableRows } from "@mui/icons-material";
 const EditableContext = React.createContext(null);
 
 const EditableRow = ({ index, ...props }) => {
@@ -84,7 +86,7 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const TeamMemberTable = (props) => {
+const TeamMemberTable = ({ tableRow, setOpenEditForm }) => {
   const [dataSource, setDataSource] = useState([
     {
       key: "0",
@@ -101,8 +103,26 @@ const TeamMemberTable = (props) => {
   ]);
   const [count, setCount] = useState(2);
 
+  // const [data, setData] = useState([]);
+
+  // console.log("table Row : ", data, TableRow);
+
+  useEffect(() => {
+    setDataSource(tableRow);
+    // setData(tableRow);
+    // let obj;
+    // for (let i = 0; i < props.tableRow.length(); i++) {
+    //   obj = {
+    //     key: props.tableRow.id,
+    //     name: "Edward King 1",
+    //     active: <Checkbox />,
+    //     address: "London, Park Lane no. 1",
+    //   };
+    // }
+  }, []);
+
   const handleEditForm = () => {
-    props.setOpenEditForm(true);
+    setOpenEditForm(true);
   };
 
   const handleDelete = (key) => {

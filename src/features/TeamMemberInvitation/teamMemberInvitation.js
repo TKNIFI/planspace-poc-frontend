@@ -28,6 +28,7 @@ const TeamInvitation = () => {
   const [count, setCount] = useState(null);
   const [limit, setLimit] = useState(null);
 
+  console.log("table row data ", tableRow);
   const handleClose = () => {
     setOpenAddForm(false);
     setEditRecord(null);
@@ -52,71 +53,6 @@ const TeamInvitation = () => {
       });
   }
 
-  const columns = [
-    {
-      title: "Active",
-      dataIndex: "active",
-      key: "active",
-      render: (_, record) => (
-        <Checkbox
-          onChange={() => updateUser(record.is_active, record.id)}
-          checked={record.is_active}
-        ></Checkbox>
-      ),
-    },
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (_, record) => (
-        <>
-          {record.first_name ? record.first_name : ""}{" "}
-          {record.last_name ? record.last_name : ""}
-        </>
-      ),
-    },
-    {
-      title: "Access Location",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (record) => {
-        return (
-          <>
-            <Space key={record.id} size="middle">
-              <a
-                onClick={() => {
-                  console.log("record", record);
-                  setOpenEditForm(true);
-                  setEditRecord(record);
-                }}
-              >
-                <EditOutlined style={{ color: "gray" }} />
-              </a>
-              {!record.is_logged_in ? (
-                <a>
-                  {tableRow.length >= 1 ? (
-                    <Popconfirm
-                      title="Sure to delete?"
-                      onConfirm={() => handleDelete(record.id)}
-                    >
-                      <DeleteOutlined style={{ color: "gray" }} />
-                    </Popconfirm>
-                  ) : null}
-                </a>
-              ) : (
-                ""
-              )}
-            </Space>
-          </>
-        );
-      },
-    },
-  ];
-
   const makeAToast = (message) => {
     toast(<Alert variant="filled">{message}</Alert>);
   };
@@ -140,6 +76,7 @@ const TeamInvitation = () => {
     }
   };
 
+  console.log("table row in invite", tableRow);
   useEffect(() => {
     getUsers();
   }, []);
@@ -171,7 +108,12 @@ const TeamInvitation = () => {
       </Box>
       {/* table */}
 
-      <TeamMemberTable setOpenEditForm={setOpenEditForm} />
+      <TeamMemberTable
+        tableRow={tableRow}
+        handleDelete={handleDelete}
+        updateUser={updateUser}
+        setOpenEditForm={setOpenEditForm}
+      />
 
       {/* Model to delete html */}
       <Drawer

@@ -2,16 +2,16 @@ import * as React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import {
-    AppBar,
-    Divider,
-    MenuItem,
-    Box,
-    Toolbar,
-    IconButton,
-    Typography,
-    InputBase,
-    Badge,
-    Select,
+  AppBar,
+  Divider,
+  MenuItem,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  InputBase,
+  Badge,
+  Select,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -22,73 +22,71 @@ import planLogo from "../assets/images/plan.svg";
 import "../index.css";
 import { Popover } from "antd";
 const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.grey[400], 0.15),
-    "&:hover": {
-        backgroundColor: alpha(theme.palette.grey[400], 0.25),
-    },
-    marginRight: theme.spacing(5),
-    marginLeft: theme.spacing(5),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-        marginLeft: 70,
-        width: "25%",
-    },
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.grey[400], 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.grey[400], 0.25),
+  },
+  marginRight: theme.spacing(5),
+  marginLeft: theme.spacing(5),
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: 70,
+    width: "25%",
+  },
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "gray",
-    // backgroundColor: alpha(theme.palette.grey[400], 0.15),
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
   color: "gray",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(-1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-
-    },
+  // backgroundColor: alpha(theme.palette.grey[400], 0.15),
 }));
 
 export default function PrimarySearchAppBar() {
-    const history = useHistory();
-    const [location, setLocation] = React.useState("");
-    const handleLogout = () => {
-        localStorage.removeItem("userInfo");
-        history.push("/login");
-    };
+  const history = useHistory();
+  const [location, setLocation] = React.useState("");
+  const handleLogout = () => {
+    localStorage.removeItem("userInfo");
+    history.push("/login");
+  };
 
-    React.useEffect(() => {
-        const userInfo = localStorage.getItem("userInfo");
-        console.log("userInfo", typeof userInfo);
-        let info = JSON.parse(userInfo);
-        if (info) {
-            setLocation(info?.address);
-        }
-    }, []);
-    const menuId = "primary-search-account-menu";
-    const renderMenu = (
-        <>
-            <MenuItem>Profile</MenuItem>
-            <MenuItem>My account</MenuItem>
-            <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-        </>
-    );
+  React.useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo");
+    console.log("userInfo", typeof userInfo);
+    let info = JSON.parse(userInfo);
+    if (info) {
+      setLocation(info?.address);
+    }
+  }, []);
+  const menuId = "primary-search-account-menu";
+  const renderMenu = (
+    <>
+      <MenuItem>Profile</MenuItem>
+      <MenuItem>My account</MenuItem>
+      <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+    </>
+  );
 
+  const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: "gray",
+    "& .MuiInputBase-input": {
+      padding: theme.spacing(1, 1, 1, 0),
+      // vertical padding + font size from searchIcon
+      paddingLeft: `calc(-1em + ${theme.spacing(4)})`,
+      transition: theme.transitions.create("width"),
+      width: "100%",
+      [theme.breakpoints.up("md")]: {
+        width: "20ch",
+      },
+    },
+  }));
 
   return (
     <>
@@ -176,8 +174,7 @@ export default function PrimarySearchAppBar() {
             />
           </Search>
 
-                    <Box sx={{ flexGrow: 1 }} />
-
+          <Box sx={{ flexGrow: 1 }} />
 
           <Select
             sx={{
