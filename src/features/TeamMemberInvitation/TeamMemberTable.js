@@ -92,6 +92,7 @@ const TeamMemberTable = ({
   tableRow,
   setOpenEditForm,
   handleDelete,
+  updateUser,
   getUsers,
 }) => {
   const [dataSource, setDataSource] = useState([
@@ -150,7 +151,12 @@ const TeamMemberTable = ({
       // dataIndex: "is_active",
       render: (record) => (
         <>
-          <Checkbox checked={record.is_active}></Checkbox>
+          <Popconfirm
+            title={`Sure to ${record.is_active ? "Deactivate" : "Activate"}?`}
+            onConfirm={() => updateUser(record.is_active, record.id)}
+          >
+            <Checkbox checked={record.is_active}></Checkbox>
+          </Popconfirm>
         </>
       ),
     },
