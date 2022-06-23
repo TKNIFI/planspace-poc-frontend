@@ -108,10 +108,11 @@ const TeamInvitation = () => {
       {/* table */}
 
       <TeamMemberTable
-        tableRow={tableRow}
+        tableRow={tableRow? tableRow: []}
         handleDelete={handleDelete}
         updateUser={updateUser}
         setOpenEditForm={setOpenEditForm}
+        callBack={getUsers}
       />
 
       {/* Model to delete html */}
