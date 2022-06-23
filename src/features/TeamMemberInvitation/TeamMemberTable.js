@@ -126,21 +126,33 @@ const TeamMemberTable = ({ tableRow, setOpenEditForm }) => {
   };
 
   const handleDelete = (key) => {
-    const newData = dataSource.filter((item) => item.key !== key);
-    setDataSource(newData);
+    await myApi.delete(`api/auth/user/${uid}/`).then((result) => {
+      toast.success(result.data.message);
+      getUsers();
+    });
   };
 
   const defaultColumns = [
     {
       title: "Active",
-      dataIndex: "active",
+      // dataIndex: "is_active",
+      render: (record) => (
+        <>
+        <Checkbox checked={record.is_active}></Checkbox>
+        </>
+      )
     },
 
     {
       title: "Name",
-      dataIndex: "name",
+      // dataIndex: "first_name",
       width: "30%",
       editable: false,
+      render: (record) => (
+        <>
+        {record.first_name? record.first_name: "" + " " + record.last_name? record.last_name: ""}
+        </>
+      ) 
     },
 
     {
@@ -151,7 +163,7 @@ const TeamMemberTable = ({ tableRow, setOpenEditForm }) => {
       title: "Action",
       dataIndex: "operation",
       render: (_, record) =>
-        dataSource.length >= 1 ? (
+        tableRow.length >= 1 ? (
           <>
             <svg
               width="15"
@@ -169,7 +181,7 @@ const TeamMemberTable = ({ tableRow, setOpenEditForm }) => {
 
             <Popconfirm
               title="Sure to delete?"
-              onConfirm={() => handleDelete(record.key)}
+              onConfirm={() => handleDelete(record.id)}
             >
               <svg
                 width="16"
@@ -217,7 +229,7 @@ const TeamMemberTable = ({ tableRow, setOpenEditForm }) => {
         components={components}
         rowClassName={() => "editable-row"}
         bordered
-        dataSource={dataSource}
+        dataSource={tableRow}
         columns={columns}
       />
     </div>
