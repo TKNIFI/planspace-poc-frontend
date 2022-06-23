@@ -14,9 +14,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Location from "../../models/Locations/Location";
 
-const AddLocationForm = ({ sendChildToParent }) => {
+const AddLocationForm = ({ sendChildToParent, setOpen }) => {
     const [copyIsChecked, setCopyIsChecked] = useState();
     const [copyAddressandContacts, setCopyAddressandContacts] = useState([{}]);
+    const innerWidth = window.innerWidth;
+    const leftInputWidth = innerWidth > 1900 ? "98ch" : "70ch";
     const formik = useFormik({
         initialValues: {
             name: "",
@@ -53,7 +55,15 @@ const AddLocationForm = ({ sendChildToParent }) => {
         }),
         onSubmit: (values) => {
             const formValues = values;
-            // Location.CreateLocation(formValues);
+            Location.CreateLocation(formValues)
+                .then(() => {
+                    setOpen(false);
+                    alert("Location Created SuccessFully");
+                })
+                .catch((e) => {
+                    setOpen(false);
+                    alert(e);
+                });
             console.log("Locations values", formValues);
             sendChildToParent(formValues);
         },
@@ -98,7 +108,7 @@ const AddLocationForm = ({ sendChildToParent }) => {
                                 sx={{
                                     "& .MuiTextField-root": {
                                         m: 1,
-                                        width: "70ch",
+                                        width: leftInputWidth,
                                         marginTop: 3,
                                     },
                                 }}
@@ -171,11 +181,19 @@ const AddLocationForm = ({ sendChildToParent }) => {
                                         flexWrap: "wrap",
                                         alignItems: "center",
                                         justifyContent: "center",
-                                        height: "220px",
-                                        width: "231px",
-                                        mt: "27px",
+                                        height:
+                                            innerWidth > 1900
+                                                ? "250px"
+                                                : "220px",
+                                        width:
+                                            innerWidth > 1900
+                                                ? "300px"
+                                                : "231px",
+                                        mt: innerWidth > 1900 ? "20px" : "27px",
                                         borderRadius: "8px",
                                         cursor: "pointer",
+                                        border: "2px dashed #ccc",
+                                        boxShadow: "none",
                                     }}
                                 >
                                     <Typography variant="p">
@@ -204,7 +222,10 @@ const AddLocationForm = ({ sendChildToParent }) => {
                         <Grid item xs={12}>
                             <Box
                                 sx={{
-                                    "& .MuiTextField-root": { width: "30ch" },
+                                    "& .MuiTextField-root": {
+                                        width:
+                                            innerWidth > 1900 ? "45ch" : "30ch",
+                                    },
                                     ml: -6,
                                 }}
                             >
