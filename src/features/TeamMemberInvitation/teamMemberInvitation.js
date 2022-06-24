@@ -121,7 +121,7 @@ const TeamInvitation = () => {
         editValues={(record) => setEditRecord(record)}
         loading={loading}
       />
-
+      <Pagination defaultCurrent={1} total={count} onChange={(page, pageSize) => getUsers(page, pageSize)} />
       {/* Model to delete html */}
       <Drawer
         className="ant-drawer-title"

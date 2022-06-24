@@ -130,7 +130,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                     name="mobile"
                     label="Enter Your phone number*"
                     placeholder="E.g 212-456-7890"
-                    type="number"
+                    type="tel"
                     error={Boolean(
                       formik.touched.mobile &&
                       formik.errors.mobile
