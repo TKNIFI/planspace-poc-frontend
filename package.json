@@ -44,6 +44,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
+    "vercel-build": "yarn global add node-gyp sharp",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
