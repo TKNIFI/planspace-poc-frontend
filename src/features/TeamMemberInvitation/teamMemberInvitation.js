@@ -1,148 +1,189 @@
-import React, { useState } from "react";
-import {
-    Box,
-    Button,
-    Badge,
-    Stack,
-    Grid,
-    Dialog,
-    AppBar,
-    Toolbar,
-    Typography,
-    Slide,
-    IconButton,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Button, Grid, IconButton } from "@mui/material";
+import "./inviteMemberStyles.css";
+import { Alert } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
 import AddMemberForm from "../forms/addMemberForm";
-import { Space, Table, Checkbox } from "antd";
-import { EditOutlined, DeleteFilled } from "@ant-design/icons";
-import axios from "axios"
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="left" ref={ref} {...props} />;
-});
-const columns = [
-    {
-        title: "Active",
-        dataIndex: "Active",
-        key: "active",
-        render: (_, record) => <Checkbox checked={record.active}></Checkbox>,
-    },
-    {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (_, record) => <p>{record.first_name + " " + record.last_name}</p>,
-    },
-    {
-        title: "Access Location",
-        dataIndex: "address",
-        key: "address",
-    },
-    {
-        title: "Action",
-        key: "action",
-        render: (_, record) => (
-            <Space size="middle">
-                <Button>
-                    <EditOutlined />
-                </Button>
-                <Button>
-                    <DeleteFilled />
-                </Button>
-            </Space>
-        ),
-    },
-];
-let data = [
-    {
-        userId: "12asd",
-        Active: true,
-        name: "John Brown",
-        address: "New York No. 1 Lake Park",
-    },
-];
+import {
+  EditOutlined,
+  DeleteOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
+import { TimelineDot } from "@mui/lab";
+import EditMemberForm from "../forms/editMemberForm";
+import { Space, Table, Checkbox, Popconfirm, Drawer, Pagination } from "antd";
+import "./inviteMemberStyles.css";
+import axios from "axios";
+import myApi from "../../network/axios";
+import toast, { Toaster } from "react-hot-toast";
+import TeamMemberTable from "./TeamMemberTable";
+require("dotenv").config();
 
 const TeamInvitation = () => {
-    const [open, setOpen] = useState(false);
-    const [tableRow, setTableRowData] = useState(data);
+  const [openEditForm, setOpenEditForm] = useState(false);
+  const [openAddForm, setOpenAddForm] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [tableRow, setTableRowData] = useState();
+  const [editRecord, setEditRecord] = useState(null);
+  const [count, setCount] = useState(null);
+  const [limit, setLimit] = useState(null);
 
-    const getUsers = () => {
-        try {
-            await axios.get("https://planspace.herokuapp.com/api/auth/user/").then((result) => {
-                setTableRowData(result.response.data.results)
-            })
-        } catch (error) {
-            alert(error.response.data.message)
-        }
+  console.log("table row data ", tableRow);
+  const handleClose = () => {
+    setOpenAddForm(false);
+    setEditRecord(null);
+    setOpenEditForm(false);
+  };
+  async function handleDelete(uid) {
+    console.log("uid", uid);
+    await myApi
+      .delete(`${process.env.REACT_APP_BASE_URL}api/auth/user/${uid}/`)
+      .then((result) => {
+        toast.success(result.data.message);
+        getUsers();
+      });
+  }
+
+  async function updateUser(is_active, uid) {
+    await myApi
+      .put(`${process.env.REACT_APP_BASE_URL}api/auth/user/${uid}/`, {
+        is_active: !is_active,
+      })
+      .then((result) => {
+        toast.success(
+          `User ${is_active ? "deactivated" : "activated"} successfully`
+        );
+        getUsers();
+      });
+  }
+
+  const makeAToast = (message) => {
+    toast.success(message);
+  };
+
+  const getUsers = async (page, pageSize) => {
+    try {
+      let url = `${process.env.REACT_APP_BASE_URL}api/auth/user/`;
+      if (page) {
+        url = `${process.env.REACT_APP_BASE_URL}api/auth/user/?page=${page}`;
+      }
+      setLoading(true);
+      await myApi.get(url).then((result) => {
+        setTableRowData(result.data.results);
+        setCount(result.data.count);
+        setLimit(result.data.limit);
+        setLoading(false);
+      });
+    } catch (error) {
+      setLoading(false);
+      // alert(error?.data?.message);
     }
+  };
 
-    React.userEffect(() => {
-        getUsers()
-    }, [])
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
-    return (
-        <>
-            <Box sx={{ flexGrow: 1, display: "inline" }}>
-                <Grid container spacing={2} columnSpacing={69}>
-                    <Grid item xs={8}></Grid>
-                    <Grid item xs={4}>
-                        <Button
-                            variant="contained"
-                            sx={{ textTransform: "capitalize" }}
-                            onClick={handleClickOpen}
-                        >
-                            <AddIcon /> Add new
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Box>
-            {/* table */}
-            <Box sx={{ marginTop: 2 }}>
-                <Table columns={columns} dataSource={tableRow} />
-            </Box>
-            {/* Model html */}
-            <Dialog
-                fullScreen
-                maxWidth="md"
-                sx={{ pl: 70 }}
-                open={open}
-                onClose={handleClose}
-                TransitionComponent={Transition}
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  return (
+    <>
+      <Toaster position="top-right" />
+      <Box sx={{ flexGrow: 1, display: "inline" }}>
+        <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
+          <Grid item xs={8}></Grid>
+          <Grid item xs={4}>
+            <Button
+              variant="contained"
+              className="addNewBtn"
+              style={{
+                textTransform: "capitalize",
+                float: "right",
+                fontFamily: "Fira Sans",
+                fontSize: "15px",
+                width: "124px",
+                height: "44px",
+              }}
+              onClick={() => setOpenAddForm(true)}
             >
-                <AppBar sx={{ position: "relative" }}>
-                    <Toolbar>
-                        <Typography
-                            sx={{ ml: 2, flex: 1 }}
-                            variant="h6"
-                            component="div"
-                        >
-                            Add New Member
-                        </Typography>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            onClick={handleClose}
-                            aria-label="close"
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
-                {/* form */}
-                <AddMemberForm
-                    formValues={(values) =>
-                        setTableRowData([...tableRow, values])
-                    }
-                    handleClose={(close) => setOpen(close)}
-                />
-            </Dialog>
-        </>
-    );
+              Add new <AddIcon />
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+      {/* table */}
+
+      <TeamMemberTable
+        tableRow={tableRow ? tableRow : []}
+        handleDelete={handleDelete}
+        updateUser={updateUser}
+        getUsers={getUsers}
+        setOpenEditForm={setOpenEditForm}
+        callBack={getUsers}
+        editValues={(record) => setEditRecord(record)}
+        loading={loading}
+      />
+
+      {/* Model to delete html */}
+      <Drawer
+        className="ant-drawer-title"
+        title="Add New Member"
+        width={1080}
+        onClose={handleClose}
+        visible={openAddForm}
+        closable={false}
+        bodyStyle={{
+          paddingBottom: 80,
+        }}
+        extra={
+          <IconButton
+            edge="start"
+            sx={{ color: "white" }}
+            onClick={handleClose}
+            aria-label="close"
+          >
+            <CloseCircleOutlined />
+          </IconButton>
+        }
+      >
+        <AddMemberForm
+          formValues={(values) => setTableRowData([...tableRow, values])}
+          callBack={() => getUsers()}
+          handleClose={(close) => setOpenAddForm(close)}
+          popUp={(message) => makeAToast(message)}
+        />
+      </Drawer>
+      {/* Model to edit html */}
+      <Drawer
+        className="ant-drawer-title"
+        title="Update Member"
+        width={1080}
+        onClose={handleClose}
+        visible={openEditForm}
+        closable={false}
+        bodyStyle={{
+          paddingBottom: 80,
+        }}
+        extra={
+          <IconButton
+            edge="start"
+            sx={{ color: "white" }}
+            onClick={handleClose}
+            aria-label="close"
+          >
+            <CloseCircleOutlined />
+          </IconButton>
+        }
+      >
+        <EditMemberForm
+          editRecordValues={editRecord}
+          callBack={() => getUsers()}
+          handleClose={(close) => {
+            setOpenEditForm(close);
+            // setEditRecord(null);
+          }}
+          popUp={(message) => makeAToast(message)}
+        />
+      </Drawer>
+    </>
+  );
 };
 export default TeamInvitation;

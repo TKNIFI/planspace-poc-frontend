@@ -19,6 +19,8 @@ import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRen
 import AddIcon from "@mui/icons-material/Add";
 import PremiumPackCard from "./packagesCards/premiumpackCard";
 import PackagesForm from "./forms/packageform";
+import { Drawer } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
 const ButtonStyle = {
   backgroundColor: "#FFFFFF",
   color: "lightslategray",
@@ -40,7 +42,7 @@ const ServicePack = () => {
   return (
     <>
       <Box sx={{ flexGrow: 1, display: "inline" }}>
-        <Grid container spacing={2} columnSpacing={69}>
+        <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
           <Grid item xs={8}>
             <Button sx={ButtonStyle}>
               <Stack spacing={4} direction="row">
@@ -67,7 +69,7 @@ const ServicePack = () => {
           <Grid item xs={4}>
             <Button
               variant="contained"
-              sx={{ textTransform: "capitalize" }}
+              style={{ textTransform: "capitalize", float: "right" }}
               onClick={handleClickOpen}
             >
               <AddIcon /> Add new
@@ -82,34 +84,31 @@ const ServicePack = () => {
       </Box>
 
       {/* Model html */}
-      <Dialog
-        fullScreen
-        maxWidth="md"
-        sx={{ pl: 70 }}
-        open={open}
+      <Drawer
+        title="New Package Name"
+        width={900}
         onClose={handleClose}
-        TransitionComponent={Transition}
+        visible={open}
+        closable={false}
+        bodyStyle={{
+          paddingBottom: 80,
+        }}
+        extra={
+          <IconButton
+            edge="start"
+            sx={{ color: "white" }}
+            onClick={handleClose}
+            aria-label="close"
+          >
+            <CloseCircleOutlined />
+          </IconButton>
+        }
       >
-        <AppBar sx={{ position: "relative" }}>
-          <Toolbar>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              New Package Name
-            </Typography>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
         {/* form */}
-        <Box sx={{ mt: 3, p: 2 }}>
+        <Box>
           <PackagesForm />
         </Box>
-      </Dialog>
+      </Drawer>
     </>
   );
 };

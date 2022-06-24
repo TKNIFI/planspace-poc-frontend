@@ -25,15 +25,15 @@ const childrenForCompanyProfile = (basePath) => [
   // },
   { path: `${basePath}/locations`, name: "Locations" },
   {
-    path: `${basePath}/Packages`,
+    path: `${basePath}/packages`,
     name: "Packages",
   },
   {
-    path: `${basePath}/AddOns`,
+    path: `${basePath}/addons`,
     name: "Add-Ons",
   },
   {
-    path: `${basePath}/Team`,
+    path: `${basePath}/team`,
     name: "Invite Team Members",
   },
 ];
@@ -79,10 +79,10 @@ const navigations = [
   },
   {
     name: "Company Settings",
-    path: "/Company Settings",
+    path: "/company_settings",
     icon: <InsertRowLeftOutlined />,
     roles: [K.Roles.Admin],
-    children: childrenForCompanyProfile("/Company Settings"),
+    children: childrenForCompanyProfile("/company_settings"),
   },
   // {
   //   name: "Service Package",

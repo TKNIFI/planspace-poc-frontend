@@ -1,47 +1,72 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import { useFormik } from "formik";
-import { Box, Grid, Button, Typography, TextField } from "@mui/material";
-import MuiAlert from "@mui/material/Alert";
-import { Link, useHistory } from "react-router-dom";
-import * as Yup from "yup";
-// import User from "../../../../models/user/user";
-import { useDispatch } from "react-redux";
+import { Box, Button, Typography, TextField } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-const PasswordResetForm = ({ onSubmiting }) => {
-  let history = useHistory();
-  const dispatch = useDispatch();
-  const onFinish = async (values) => {
-    let formData = new FormData();
-    formData.append("email", values.email);
-    await axios
-      .post("https://planspace.herokuapp.com/api/auth/password_reset/request/", formData)
-      .then((response) => {
-        const data = response.data.data;
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        history.push("/companyprofile/company");
-      })
-      .catch((error) => alert(error.message));
-    // await dispatch(User.loginCall(formData));
-  };
+import { green } from "@mui/material/colors";
+import MuiAlert from "@mui/material/Alert";
+import { Link } from "react-router-dom";
+import * as Yup from "yup";
+require("dotenv").config();
+// import User from "../../../../models/user/user";
+const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
+  const [loading, setLoading] = React.useState(false);
+  // const [email, setEmail] = React.useState()
+  const timer = React.useRef();
+
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      username: "",
     },
+
     validationSchema: Yup.object({
-      email: Yup.string()
+      username: Yup.string()
         .email("must be valid email")
         .required("Email is required"),
-      password: Yup.string()
-        .required("No password provided.")
-        .min(8, "Password is too short - should be 8 chars minimum.")
-        .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
+      // password: Yup.string()
+      //     .required("No password provided.")
+      //     .min(8, "Password is too short - should be 8 chars minimum.")
+      //     .matches(
+      //         /[a-zA-Z]/,
+      //         "Password can only contain Latin letters."
+      //     ),
     }),
-    onSubmit: (values) => {
-      onFinish(values);
+    onSubmit: async (values, helpers) => {
+      setLoading(true);
+      let formData = new FormData();
+      formData.append("username", values.username);
+      await axios
+        .post(
+          `${process.env.REACT_APP_BASE_URL}api/auth/password_reset/request/`,
+          formData
+        )
+        .then((response) => {
+          setLoading(false);
+          onSubmiting(true);
+          submittedEmail(values.username);
+        })
+        .catch((error) => {
+          setLoading(false);
+          for (const [key, value] of Object.entries(
+            error.response.data.message[0]
+          )) {
+            if (key === "non_field_errors") {
+              formik.setErrors({ submit: value[0] });
+            }
+            formik.setFieldError(key, value[0].replace("username", "email"));
+          }
+          helpers.setSubmitting(false);
+          setLoading(false);
+        });
     },
   });
+
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
+
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -51,44 +76,78 @@ const PasswordResetForm = ({ onSubmiting }) => {
           }}
         >
           <TextField
-            id="email"
-            label="Enter Your Email"
+            id="username"
+            label="Enter Your Email*"
+            placeholder="Enter Your Email"
             type="email"
-            value={formik.values.email}
+            value={formik.values.username}
             onChange={formik.handleChange}
             sx={{ width: "100%" }}
+            error={Boolean(
+              formik.touched.username && formik.errors.username
+            )}
+            helperText={
+              formik.touched.username && formik.errors.username
+            }
+            autoFocus={true}
           />
-          {formik.touched.email && formik.errors.email ? (
-            <MuiAlert severity="error">
-              <span>{formik.errors.email}</span>
-            </MuiAlert>
-          ) : null}
         </Box>
+        {formik.errors.submit && (
+          <Box sx={{ mt: 2, mb: 2 }}>
+            <MuiAlert severity="error" style={{ fontSize: 16 }}>
+              {formik.errors.submit}
+            </MuiAlert>
+          </Box>
+        )}
         <Box className="container">
-          <Button
-            sx={{
-              mb: 2,
-              mt: 3,
-              paddingLeft: "70px",
-              paddingRight: "70px",
-              pt: 2,
-              pb: 2,
-              textTransform: "capitalize",
-            }}
-            variant="contained"
-            type="submit"
-            onClick={() => {
-              onSubmiting(true);
-            }}
-          >
-            Send instructions
-          </Button>
+          <Box sx={{ m: 1, position: "relative" }}>
+            <Button
+              sx={{
+                mb: 2,
+                mt: 3,
+                pl: 13,
+                pr: 13,
+                pt: 2,
+                pb: 2,
+                textTransform: "capitalize",
+              }}
+              variant="contained"
+              type="submit"
+              disabled={loading}
+            >
+              Send instructions
+            </Button>
+            {loading && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  color: green[500],
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
+          </Box>
 
           <Typography sx={{ mt: 4 }}>
-            <Link to="/login">Remembered your password? login here</Link>
+            <Link
+              to="/login"
+              style={{ textDecoration: "underline", fontWeight: "bold" }}
+            >
+              Remembered your password? login here
+            </Link>
           </Typography>
-          <Typography sx={{ variant: "body1", color: "gray", mt: 7, mb: 0 }}>
-            Do not have an account? <Link to="/register">Signup here</Link>
+          <Typography sx={{ variant: "body1", color: "gray", mt: 22, mb: 0 }}>
+            Do not have an account?{" "}
+            <Link
+              to="/register"
+              style={{ textDecoration: "underline", fontWeight: "bold" }}
+            >
+              Signup here
+            </Link>
           </Typography>
         </Box>
       </form>

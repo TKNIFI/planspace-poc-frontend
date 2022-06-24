@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Menu, Layout } from "antd";
 import { Link } from "react-router-dom";
 import navigations from "./navigations";
+import "./sider.css";
 
 export default function Sider() {
   const { Sider } = Layout;
@@ -14,20 +15,37 @@ export default function Sider() {
 
   return (
     <>
-      <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+      <Sider
+        collapsible
+        width={236}
+        collapsed={collapsed}
+        onCollapse={onCollapse}
+        style={{ backgroundColor: "#003399" }}
+      >
+        <Menu
+          theme="dark"
+          defaultSelectedKeys={["0"]}
+          defaultOpenKeys={["0"]}
+          mode="inline"
+          style={{ backgroundColor: "#003498" }}
+        >
           {navigations.map((navigation, i) => {
             if ((navigation.children?.length ?? 0) > 0) {
               return (
                 <SubMenu key={i} icon={navigation.icon} title={navigation.name}>
                   {navigation.children.map((subNavigation, j) => {
-                    return <>
-                      <Menu.Item key={`${i}_${j}`}>
-                        <Link to={subNavigation.path}>
-                          {subNavigation.name}
-                        </Link>
-                      </Menu.Item>
-                    </>;
+                    return (
+                      <>
+                        <Menu.Item
+                          key={`${i}_${j}`}
+                          style={{ backgroundColor: "#003498", margin: "-1%" }}
+                        >
+                          <Link to={subNavigation.path}>
+                            {subNavigation.name}
+                          </Link>
+                        </Menu.Item>
+                      </>
+                    );
                   })}
                 </SubMenu>
               );

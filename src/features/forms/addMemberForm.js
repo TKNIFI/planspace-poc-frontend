@@ -1,30 +1,28 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Grid, Box } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { Button as Muibtn } from "@mui/material";
-import Switch from "@mui/material/Switch";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import { styled } from "@mui/material/styles";
+import { Button as Muibtn, Alert } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import { green } from "@mui/material/colors";
+import CircularProgress from "@mui/material/CircularProgress";
+import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Company from "../../models/company/company";
-const Input = styled("input")({
-  display: "none",
-});
+import toast, { Toaster } from "react-hot-toast";
+import myApi from "../../network/axios";
+import PhoneInput from "../../common/phoneNumber"
+import "./addMemberForm.css";
 
-const AddMemberForm = ({ formValues, handleClose }) => {
+const phoneRegExp = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
+const AddMemberForm = ({ handleClose, callBack, popUp }) => {
+  const [loading, setLoading] = React.useState(false);
   const formik = useFormik({
     initialValues: {
       name: "",
       userId: "",
-      email: "",
-      phone: "",
-      address: "",
+      username: "",
+      mobile: ""
     },
     validationSchema: Yup.object({
       // owner: Yup.string().required("owner is required"),
@@ -32,17 +30,50 @@ const AddMemberForm = ({ formValues, handleClose }) => {
         .max(15, "Must be 15 characters or less")
         .required("Name is required"),
       userId: Yup.string().required("user id is required"),
-      email: Yup.string().email("Invalid email").required("Email is required"),
-      phone: Yup.number()
+      username: Yup.string()
+        .email("Invalid email")
+        .required("Email is required"),
+      mobile: Yup.string()
         .required("Phone number is required")
-        .positive()
-        .integer(),
-      address: Yup.string().required("Address is required"),
+        .matches(phoneRegExp, "Phone number is not valid"),
     }),
-    onSubmit: (values) => {
-      formValues(values);
+    onSubmit: async (values, helpers) => {
+      setLoading(true);
+      let formData = new FormData();
+      let name = values.name.split(" ");
+      formData.append("first_name", name[0]);
+      if (name.length > 1) {
+        formData.append("last_name", name[1]);
+      }
+      formData.append("username", values.username);
+      formData.append("mobile", values.mobile.replaceAll('-', ''));
+      await myApi
+        .post("api/auth/user/", formData)
+        .then((result) => {
+          setLoading(false);
+          handleClose(false);
+          popUp(result.data.message);
+          callBack();
+        })
+        .catch((error) => {
+          let message = error.response.data.message
+          console.log("message: ", message)
+          for (let i in message) {
+            let field = message[i]
+            console.log("field: ", field)
+            for (const [key, value] of Object.entries(field)) {
+              console.log("key: ", key)
+              console.log("value: ", value)
+              formik.setFieldError(key, value[0].replace("username", "email"));
+            }
+          }
+          setLoading(false);
+          helpers.setSubmitting(false);
+          handleClose(true);
+        });
     },
   });
+
   return (
     <>
       <form onSubmit={formik.handleSubmit} style={{ padding: "2%" }}>
@@ -54,68 +85,70 @@ const AddMemberForm = ({ formValues, handleClose }) => {
           <Grid container spacing={1}>
             <Grid item xs={6}>
               <TextField
-                id="name"
+                name="name"
                 label="Name"
-                type="text"
                 value={formik.values.name}
+                error={Boolean(formik.touched.name && formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
                 onChange={formik.handleChange}
-                // autoComplete="current"
+                autoFocus={true}
+              // autoComplete="current"
               />
-              {formik.touched.name && formik.errors.name ? (
-                <MuiAlert severity="error" sx={{ width: "70%" }}>
-                  <span>{formik.errors.name}</span>
-                </MuiAlert>
-              ) : null}
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="userId"
+                name="userId"
                 label="User ID"
-                type="text"
                 value={formik.values.userId}
+                error={Boolean(formik.touched.userId && formik.errors.userId)}
+                helperText={formik.touched.userId && formik.errors.userId}
                 onChange={formik.handleChange}
-                // autoComplete="current"
+              // autoComplete="current"
               />
-              {formik.touched.userId && formik.errors.userId ? (
-                <MuiAlert severity="error" sx={{ width: "70%" }}>
-                  <span>{formik.errors.userId}</span>
-                </MuiAlert>
-              ) : null}
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="email"
+                name="username"
                 label="Email"
-                type="text"
-                value={formik.values.email}
+                value={formik.values.username}
+                error={Boolean(
+                  formik.touched.username && formik.errors.username
+                )}
+                helperText={formik.touched.username && formik.errors.username}
                 onChange={formik.handleChange}
-                // autoComplete="current"
+              // autoComplete="current"
               />
-              {formik.touched.email && formik.errors.email ? (
-                <MuiAlert severity="error" sx={{ width: "70%" }}>
-                  <span>{formik.errors.email}</span>
-                </MuiAlert>
-              ) : null}
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                id="phone"
-                label="Phone Number"
-                type="text"
-                value={formik.values.phone}
+              <PhoneInput
+                value={formik.values.mobile}
                 onChange={formik.handleChange}
-                // autoComplete="current"
-              />
-              {formik.touched.phone && formik.errors.phone ? (
-                <MuiAlert severity="error" sx={{ width: "70%" }}>
-                  <span>{formik.errors.phone}</span>
-                </MuiAlert>
-              ) : null}
+              >
+                {() => (
+                  <TextField
+                    id="mobile"
+                    name="mobile"
+                    label="Enter Your phone number*"
+                    placeholder="E.g 212-456-7890"
+                    type="number"
+                    error={Boolean(
+                      formik.touched.mobile &&
+                      formik.errors.mobile
+                    )}
+                    helperText={
+                      formik.touched.mobile &&
+                      formik.errors.mobile
+                    }
+                    sx={{ width: "100%" }}
+                  />
+                )
+                }
+              </PhoneInput>
             </Grid>
-            <Box
+            {/* <Box
               sx={{
                 "& .MuiTextField-root": {
-                  width: "134ch",
+                  width: "813px",
                   marginTop: 3,
                   marginLeft: 0.7,
                 },
@@ -123,21 +156,26 @@ const AddMemberForm = ({ formValues, handleClose }) => {
             >
               <Grid item xs={8}>
                 <TextField
-                  id="address"
+                  name="address"
                   label="Address"
-                  type="text"
                   value={formik.values.address}
+                  error={Boolean(
+                    formik.touched.address && formik.errors.address
+                  )}
+                  helperText={formik.touched.address && formik.errors.address}
                   onChange={formik.handleChange}
-                  // autoComplete="current"
+                // autoComplete="current"
                 />
-                {formik.touched.address && formik.errors.address ? (
-                  <MuiAlert severity="error" sx={{ width: "70%" }}>
-                    <span>{formik.errors.address}</span>
-                  </MuiAlert>
-                ) : null}
               </Grid>
-            </Box>
+            </Box> */}
           </Grid>
+          {formik.errors.submit && (
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <MuiAlert severity="error" style={{ fontSize: 16 }}>
+                {formik.errors.submit}
+              </MuiAlert>
+            </Box>
+          )}
           <Box
             sx={{
               "& .MuiTextField-root": {
@@ -150,16 +188,45 @@ const AddMemberForm = ({ formValues, handleClose }) => {
               },
             }}
           >
-            <Stack spacing={2} direction="row" sx={{ marginTop: 10, marginLeft: 50 }}>
-              <Muibtn variant="outlined" onClick={() => handleClose(false)}>
+            <Stack
+              spacing={2}
+              direction="row"
+              sx={{ marginTop: 8, marginLeft: 50 }}
+            >
+              <Muibtn
+                variant="outlined"
+                className="cancelBtn"
+                onClick={() => handleClose(false)}
+              >
                 Cancel
               </Muibtn>
-              <Muibtn variant="contained" type="submit">
-                Submit
-              </Muibtn>
+              <div>
+                <Muibtn
+                  variant="contained"
+                  className="submitBtn"
+                  type="submit"
+                  disabled={loading}
+                >
+                  Submit
+                </Muibtn>
+                {loading && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      color: green[500],
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: "-12px",
+                      marginLeft: "-12px",
+                    }}
+                  />
+                )}
+              </div>
             </Stack>
           </Box>
         </Box>
+        <Toaster position="top-right" />
       </form>
     </>
   );
