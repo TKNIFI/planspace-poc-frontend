@@ -56,7 +56,7 @@ const EditLocationForm = ({ editRecordValues, sendChildToParent }) => {
         }),
         onSubmit: (values) => {
             const formValues = values;
-            Location.CreateLocation(formValues);
+            Location.UpdateLocation(formValues);
             console.log("Locations values", formValues);
             sendChildToParent(formValues);
         },

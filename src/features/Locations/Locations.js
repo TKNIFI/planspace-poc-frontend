@@ -85,7 +85,7 @@ const EmailIcon = () => {
 
 export default function Locations() {
     const [formData, setFormData] = useState();
-    const [editRecordValues, setEditRecordValues] = useState({});
+    const [editRecordValues, setEditRecordValues] = useState(null);
     const [openEditForm, setOpenEditForm] = useState(false);
     const [open, setOpen] = useState(false);
     const [locations, setLocations] = useState([]);
@@ -149,9 +149,10 @@ export default function Locations() {
                             <Box
                                 sx={{
                                     display: "flex",
-                                    alignItems: "center",
+                                    justifyContent: "center",
                                     flexDirection: "column",
                                     mt: 0,
+                                    width: "330px",
                                 }}
                             >
                                 <CardContent sx={{ flex: "1 0 auto" }}>
@@ -204,18 +205,21 @@ export default function Locations() {
                                     </Button>
                                 </CardContent>
                             </Box>
-                            <EditLocationAltIcon
-                                onClick={() => {
-                                    setOpenEditForm(true);
-                                    setEditRecordValues(item);
-                                }}
-                                color="disabled"
+                            <Box
                                 style={{
-                                    position: "relative",
-                                    left: innerWidth > 1900 ? "68%" : "58%",
+                                    marginLeft:
+                                        innerWidth > 1900 ? "1300px" : "580px",
                                     cursor: "pointer",
                                 }}
-                            />
+                            >
+                                <EditLocationAltIcon
+                                    onClick={() => {
+                                        setOpenEditForm(true);
+                                        setEditRecordValues(item);
+                                    }}
+                                    color="disabled"
+                                />
+                            </Box>
                         </Card>
                     ))}
                 <Button

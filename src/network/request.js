@@ -175,7 +175,7 @@ export default class Request {
         return new Request(
             K.Network.URL.UpdateLocation,
             K.Network.Method.UPDATE,
-            null,
+            body,
             K.Network.Header.Type.Json,
             {},
             false
