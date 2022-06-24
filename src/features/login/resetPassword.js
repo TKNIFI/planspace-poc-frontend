@@ -39,7 +39,7 @@ const SliderContent = () => {
                 <Box className="centered-for-content-swiper-slide-para">
                     <Typography
                         variant="p"
-                        sx={{ color: "lightgray", fontWeight: "bold" }}
+                        sx={{ color: "white", fontWeight: "" }}
                     >
                         Amet minim mollit non deserunt ullamco est sit <br />{" "}
                         aliqua dolor do amet sint. Velit officia consequat duis{" "}
@@ -48,19 +48,19 @@ const SliderContent = () => {
                     </Typography>
                 </Box>
                 <Box className="centered-for-content-swiper-slide-outerEllipse">
-                    <img src={elipseOuter} />
+                    <img style={{ marginBottom: "18px" }} src={elipseOuter} />
                 </Box>
                 <Box className="centered-for-content-swiper-slide-outerEllipse">
                     <img src={elipseInner} />
                 </Box>
                 <Box className="centered-for-content-swiper-slide-outerEllipse">
+                    <img style={{ marginBottom: "120px" }} src={circleImage3} />
+                </Box>
+                <Box className="centered-for-content-swiper-slide-outerEllipse">
+                    <img style={{ marginBottom: "90px" }} src={circleImage2} />
+                </Box>
+                <Box className="centered-for-content-swiper-slide-outerEllipse">
                     <img src={circleImage1} />
-                </Box>
-                <Box className="centered-for-content-swiper-slide-outerEllipse">
-                    <img src={circleImage2} />
-                </Box>
-                <Box className="centered-for-content-swiper-slide-outerEllipse">
-                    <img src={circleImage3} />
                 </Box>
             </Box>
         </>
