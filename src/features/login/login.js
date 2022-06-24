@@ -36,17 +36,7 @@ const SliderContent = () => {
                     </Typography>
                 </Box>
                 <Box className="centered-for-content-swiper-slide-para">
-                    <Typography
-                        variant="p"
-                        style={{
-                            fontStyle: "normal",
-                            fontWeight: "400",
-                            fontSize: "12px",
-                            lineHeight: "14px",
-                            textAlign: "center",
-                            color: "#FFFFFF",
-                        }}
-                    >
+                    <Typography variant="p" sx={{ color: "white" }}>
                         Amet minim mollit non deserunt ullamco est sit <br />{" "}
                         aliqua dolor do amet sint. Velit officia consequat duis{" "}
                         <br /> enim velit mollit. Exercitation veniam consequat
@@ -54,19 +44,19 @@ const SliderContent = () => {
                     </Typography>
                 </Box>
                 <Box className="centered-for-content-swiper-slide-outerEllipse">
-                    <img src={elipseOuter} />
+                    <img style={{ marginBottom: "18px" }} src={elipseOuter} />
                 </Box>
                 <Box className="centered-for-content-swiper-slide-outerEllipse">
                     <img src={elipseInner} />
                 </Box>
                 <Box className="centered-for-content-swiper-slide-outerEllipse">
+                    <img style={{ marginBottom: "120px" }} src={circleImage3} />
+                </Box>
+                <Box className="centered-for-content-swiper-slide-outerEllipse">
+                    <img style={{ marginBottom: "90px" }} src={circleImage2} />
+                </Box>
+                <Box className="centered-for-content-swiper-slide-outerEllipse">
                     <img src={circleImage1} />
-                </Box>
-                <Box className="centered-for-content-swiper-slide-outerEllipse">
-                    <img src={circleImage2} />
-                </Box>
-                <Box className="centered-for-content-swiper-slide-outerEllipse">
-                    <img src={circleImage3} />
                 </Box>
             </Box>
         </>
@@ -109,7 +99,7 @@ export default function Login() {
                 </Grid>
                 {/* create account formik form  */}
                 <Grid item xs={8}>
-                    <Paper sx={{ p: 5 }}>
+                    <Paper sx={{ p: 5, borderRadius: "0px 4px 4px 0px" }}>
                         <Box>
                             <img src={planLogo} height="50px" width="220px" />
                         </Box>
@@ -119,19 +109,19 @@ export default function Login() {
                             </Typography>
                             <Typography
                                 variant="span"
-                                sx={{
-                                    fontStyle: "normal",
-                                    fontWeight: "300",
-                                    fontSize: "14px",
-                                    lineHeight: "14px",
-                                    color: "#323338",
-                                }}
+                                sx={{ mt: 3, color: "gray", fontSize: "18px" }}
                             >
                                 Login to your account by filling out below
                                 details
                             </Typography>
                         </Box>
-                        <Box sx={{ mt: 3, p: 1, height: "445px" }}>
+                        <Box
+                            sx={{
+                                mt: 3,
+                                p: 1,
+                                height: "445px",
+                            }}
+                        >
                             <LoginForm />
                         </Box>
                     </Paper>

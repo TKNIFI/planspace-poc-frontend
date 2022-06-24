@@ -72,6 +72,6 @@ code {
 
 @media screen and (max-width: 2000px) {
   .layout-design {
-    min-height:120vh !important;
+    min-height:124vh !important;
   }
 }

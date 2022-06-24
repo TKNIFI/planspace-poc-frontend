@@ -35,7 +35,14 @@
 }
 
 
-
+input::placeholder,label.MuiInputLabel-root,label.MuiInputLabel-formControl{
+  font-weight: bold !important;
+  opacity: 0.5 !important;
+}
+legend.css-1ftyaf0 span{
+  font-weight: bold !important;
+  background: white !important;
+}
 
 .help-div{
   display: flex;
@@ -48,6 +55,6 @@
       right: 24px;
 }
 
-.ant-layout-content{
-  background-color: #F5F7FB;
-}
+// .ant-layout-content{
+//   background-color: #F5F7FB;
+// }

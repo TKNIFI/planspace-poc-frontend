@@ -4,9 +4,9 @@ width: 760px !important;
 
 
 
-.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root{
+/* .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root{
     margin-right: 141px;
-}
+} */
 
 .css-ra13a9-MuiStack-root{
 
@@ -36,4 +36,16 @@ color: #676879 !important;
 .submitBtn{
     background: #0073EA !important;
     border-radius: 4px;
+}
+
+.css-15k0q1c-MuiStack-root {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    margin-top: 64px;
+    margin-left: 247px !important;
 }
