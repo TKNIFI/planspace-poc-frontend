@@ -111,13 +111,12 @@ const LoginForm = () => {
                     <Button
                         sx={{
                             mb: 2,
-                            paddingLeft: "50px",
-                            paddingRight: "50px",
+                            mt: 3,
+                            paddingLeft: "80px",
+                            paddingRight: "80px",
+                            pt: 2,
+                            pb: 2,
                             textTransform: "capitalize",
-                            marginRight: "8rem",
-                            width: "210px",
-                            height: "47px",
-                            margin: "20px auto !important",
                         }}
                         variant="contained"
                         type="submit"

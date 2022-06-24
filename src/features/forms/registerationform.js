@@ -234,13 +234,18 @@ const RegisterationForm = ({ onSubmiting, email }) => {
                         <Button
                             sx={{
                                 mb: 2,
-                                padding: "12px 50px",
+                                mt: 3,
+                                paddingLeft: "80px",
+                                paddingRight: "80px",
+                                pt: 2,
+                                pb: 2,
+                                textTransform: "none !important",
                             }}
                             variant="contained"
                             type="submit"
                             disabled={loading}
                         >
-                            Create Account
+                            Create account
                         </Button>
                         {loading && (
                             <CircularProgress
