@@ -1,71 +1,62 @@
 {
-  "name": "planspace",
-  "version": "1.2.1",
-  "homepage": "https://NasirNS45.github.io/planspace-poc-frontend",
-  "engines": {
-    "node": "16.13.0",
-    "npm": "8.1.0"
-  },
-  "private": true,
-  "dependencies": {
-    "@emotion/react": "^11.9.0",
-    "@emotion/styled": "^11.8.1",
-    "@mui/icons-material": "^5.6.0",
-    "@mui/lab": "^5.0.0-alpha.83",
-    "@mui/material": "^5.6.0",
-    "@mui/styles": "^5.6.1",
-    "@mui/x-data-grid": "^5.11.1",
-    "@reduxjs/toolkit": "^1.4.0",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "antd": "^4.6.6",
-    "axios": "^0.20.0",
-    "date-fns": "^2.28.0",
-    "dotenv": "^16.0.1",
-    "firebase": "^7.16.1",
-    "formik": "^2.2.9",
-    "gh-pages": "^4.0.0",
-    "js-cookie": "^2.2.1",
-    "jsx-runtime": "^1.2.0",
-    "moment": "^2.29.1",
-    "node-sass": "^6.0.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-hot-toast": "^2.2.0",
-    "react-input-mask": "^2.0.4",
-    "react-redux": "^7.2.1",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
-    "react-social-login": "^3.4.15",
-    "redux-orm": "^0.16.2",
-    "source-map-explorer": "^2.5.0",
-    "swiper": "^8.1.1",
-    "yup": "^0.32.11"
-  },
-  "scripts": {
-    "vercel-build": "yarn global add node-gyp sharp",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "name": "my-app-redux",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@emotion/react": "^11.9.0",
+        "@emotion/styled": "^11.8.1",
+        "@mui/icons-material": "^5.6.0",
+        "@mui/lab": "^5.0.0-alpha.83",
+        "@mui/material": "^5.6.0",
+        "@mui/styles": "^5.6.1",
+        "@mui/x-data-grid": "^5.11.1",
+        "@reduxjs/toolkit": "^1.4.0",
+        "@testing-library/jest-dom": "^4.2.4",
+        "@testing-library/react": "^9.5.0",
+        "@testing-library/user-event": "^7.2.1",
+        "antd": "^4.6.6",
+        "axios": "^0.20.0",
+        "date-fns": "^2.28.0",
+        "dotenv": "^16.0.1",
+        "firebase": "^7.16.1",
+        "formik": "^2.2.9",
+        "js-cookie": "^2.2.1",
+        "jsx-runtime": "^1.2.0",
+        "moment": "^2.29.1",
+        "node-sass": "^4.14.1",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-hot-toast": "^2.2.0",
+        "react-input-mask": "^2.0.4",
+        "react-redux": "^7.2.1",
+        "react-router-dom": "^5.2.0",
+        "react-scripts": "3.4.3",
+        "react-social-login": "^3.4.15",
+        "redux-orm": "^0.16.2",
+        "source-map-explorer": "^2.5.0",
+        "swiper": "^8.1.1",
+        "yup": "^0.32.11"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "analyze": "source-map-explorer 'build/static/js/*.js'"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
 }
