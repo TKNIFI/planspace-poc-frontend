@@ -51,3 +51,27 @@ box-shadow: inset 2px 0px 0px #FFFFFF;
 .ant-layout-sider-trigger{
     background: rgba(0, 64, 169, 0.5) !important;
 }
+
+
+.ant-layout-sider-children {
+    height: 100%;
+    margin-top: -0.1px;
+    padding-top: 0.1px;
+    padding-left: 11px;
+}
+
+
+.ant-menu-dark .ant-menu-inline.ant-menu-sub {
+    /* background: #000c17; */
+
+
+    background-color: rgb(0, 51, 153);
+    padding-left: 14px;
+
+}
+
+
+/* .ant-menu-item-selected a,
+.ant-menu-item-selected a:hover {
+    color: #1890ff !important;
+} */

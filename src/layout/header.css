@@ -12,3 +12,8 @@
 .ant-select-selection-item{
 margin-top: 2px;
 }
+
+
+.css-hyum1k-MuiToolbar-root {
+    min-height: 85px !important;
+}
