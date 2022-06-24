@@ -5,3 +5,4 @@ build
 firebase.json
 .vscode
 .env
+.vercel
