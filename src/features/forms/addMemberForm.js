@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
 import myApi from "../../network/axios";
-import PhoneInput from "../../common/phoneNumber"
+import PhoneInput from "../../common/phoneNumber";
 import "./addMemberForm.css";
 
 const phoneRegExp = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
@@ -22,7 +22,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
       name: "",
       userId: "",
       username: "",
-      mobile: ""
+      mobile: "",
     },
     validationSchema: Yup.object({
       // owner: Yup.string().required("owner is required"),
@@ -46,7 +46,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
         formData.append("last_name", name[1]);
       }
       formData.append("username", values.username);
-      formData.append("mobile", values.mobile.replaceAll('-', ''));
+      formData.append("mobile", values.mobile.replaceAll("-", ""));
       await myApi
         .post("api/auth/user/", formData)
         .then((result) => {
@@ -56,14 +56,14 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
           callBack();
         })
         .catch((error) => {
-          let message = error.response.data.message
-          console.log("message: ", message)
+          let message = error.response.data.message;
+          console.log("message: ", message);
           for (let i in message) {
-            let field = message[i]
-            console.log("field: ", field)
+            let field = message[i];
+            console.log("field: ", field);
             for (const [key, value] of Object.entries(field)) {
-              console.log("key: ", key)
-              console.log("value: ", value)
+              console.log("key: ", key);
+              console.log("value: ", value);
               formik.setFieldError(key, value[0].replace("username", "email"));
             }
           }
@@ -79,11 +79,15 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
       <form onSubmit={formik.handleSubmit} style={{ padding: "2%" }}>
         <Box
           sx={{
-            "& .MuiTextField-root": { width: "60ch", marginTop: 3 },
+            "& .MuiTextField-root": {
+              width: "60ch",
+              marginTop: 3,
+              width: "330px",
+            },
           }}
         >
           <Grid container spacing={1}>
-            <Grid item xs={6}>
+            <Grid item xs={6} className="field-width">
               <TextField
                 name="name"
                 label="Name"
@@ -92,7 +96,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 helperText={formik.touched.name && formik.errors.name}
                 onChange={formik.handleChange}
                 autoFocus={true}
-              // autoComplete="current"
+                // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -103,7 +107,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 error={Boolean(formik.touched.userId && formik.errors.userId)}
                 helperText={formik.touched.userId && formik.errors.userId}
                 onChange={formik.handleChange}
-              // autoComplete="current"
+                // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -116,7 +120,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 )}
                 helperText={formik.touched.username && formik.errors.username}
                 onChange={formik.handleChange}
-              // autoComplete="current"
+                // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -132,17 +136,12 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                     placeholder="E.g 212-456-7890"
                     type="tel"
                     error={Boolean(
-                      formik.touched.mobile &&
-                      formik.errors.mobile
+                      formik.touched.mobile && formik.errors.mobile
                     )}
-                    helperText={
-                      formik.touched.mobile &&
-                      formik.errors.mobile
-                    }
+                    helperText={formik.touched.mobile && formik.errors.mobile}
                     sx={{ width: "100%" }}
                   />
-                )
-                }
+                )}
               </PhoneInput>
             </Grid>
             {/* <Box

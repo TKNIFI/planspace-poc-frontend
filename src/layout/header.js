@@ -217,7 +217,9 @@ export default function PrimarySearchAppBar() {
             </Option>
           </Select>
 
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{ display: { xs: "none", md: "flex", paddingLeft: "13px" } }}
+          >
             <Divider
               orientation="vertical"
               flexItem

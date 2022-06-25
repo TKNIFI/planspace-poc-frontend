@@ -9,7 +9,7 @@ import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import myApi from "../../network/axios";
-import PhoneInput from "../../common/phoneNumber"
+import PhoneInput from "../../common/phoneNumber";
 
 const phoneRegExp = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
@@ -20,10 +20,14 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: editRecordValues?.first_name ? editRecordValues?.first_name : "" + " " + editRecordValues?.last_name ? editRecordValues?.last_name : "",
+      name: editRecordValues?.first_name
+        ? editRecordValues?.first_name
+        : "" + " " + editRecordValues?.last_name
+        ? editRecordValues?.last_name
+        : "",
       userId: editRecordValues?.username,
       username: editRecordValues?.username,
-      mobile: editRecordValues?.mobile
+      mobile: editRecordValues?.mobile,
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -47,7 +51,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
           formData.append("last_name", name[1]);
         }
         formData.append("username", values.username);
-        formData.append("mobile", values.mobile.replaceAll('-', ''));
+        formData.append("mobile", values.mobile.replaceAll("-", ""));
 
         await myApi
           .put(`api/auth/user/${editRecordValues?.id}/`, formData)
@@ -58,14 +62,14 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
             callBack();
           });
       } catch (error) {
-        let message = error.response.data.message
-        console.log("message: ", message)
+        let message = error.response.data.message;
+        console.log("message: ", message);
         for (let i in message) {
-          let field = message[i]
-          console.log("field: ", field)
+          let field = message[i];
+          console.log("field: ", field);
           for (const [key, value] of Object.entries(field)) {
-            console.log("key: ", key)
-            console.log("value: ", value)
+            console.log("key: ", key);
+            console.log("value: ", value);
             formik.setFieldError(key, value[0].replace("username", "email"));
           }
         }
@@ -81,7 +85,11 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
       <form onSubmit={formik.handleSubmit} style={{ padding: "2%" }}>
         <Box
           sx={{
-            "& .MuiTextField-root": { width: "60ch", marginTop: 3 },
+            "& .MuiTextField-root": {
+              width: "60ch",
+              marginTop: 3,
+              width: "330px",
+            },
           }}
         >
           <Grid container spacing={1}>
@@ -95,7 +103,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 onChange={formik.handleChange}
                 autoFocus={true}
 
-              // autoComplete="current"
+                // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -107,7 +115,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 helperText={formik.touched.userId && formik.errors.userId}
                 onChange={formik.handleChange}
 
-              // autoComplete="current"
+                // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -116,16 +124,12 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 label="Email"
                 value={formik.values.username}
                 error={Boolean(
-                  formik.touched.username &&
-                  formik.errors.username
+                  formik.touched.username && formik.errors.username
                 )}
-                helperText={
-                  formik.touched.username &&
-                  formik.errors.username
-                }
+                helperText={formik.touched.username && formik.errors.username}
                 onChange={formik.handleChange}
 
-              // autoComplete="current"
+                // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -141,17 +145,12 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                     placeholder="E.g 212-456-7890"
                     type="tel"
                     error={Boolean(
-                      formik.touched.mobile &&
-                      formik.errors.mobile
+                      formik.touched.mobile && formik.errors.mobile
                     )}
-                    helperText={
-                      formik.touched.mobile &&
-                      formik.errors.mobile
-                    }
+                    helperText={formik.touched.mobile && formik.errors.mobile}
                     sx={{ width: "100%" }}
                   />
-                )
-                }
+                )}
               </PhoneInput>
             </Grid>
             {/* <Box
