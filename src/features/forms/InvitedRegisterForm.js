@@ -60,7 +60,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
             formData.append("username", values.username);
             formData.append("uid", uid);
             formData.append("token", token);
-            formData.append("mobile", values.mobile.replaceAll('-', ''));
+            formData.append("mobile", values.mobile.replaceAll("-", ""));
             formData.append("company_name", values.company_name);
             formData.append("password", values.password);
             formData.append("first_name", name[0]);
@@ -81,7 +81,10 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                     for (const [key, value] of Object.entries(
                         error.response.data.message[0]
                     )) {
-                        formik.setFieldError(key, value[0].replace("username", "email"));
+                        formik.setFieldError(
+                            key,
+                            value[0].replace("username", "email")
+                        );
                     }
                     helpers.setStatus({ success: false });
                     helpers.setSubmitting(false);
@@ -130,7 +133,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                         type="text"
                         error={Boolean(
                             formik.touched.first_name &&
-                            formik.errors.first_name
+                                formik.errors.first_name
                         )}
                         helperText={
                             formik.touched.first_name &&
@@ -150,7 +153,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                                 type="email"
                                 error={Boolean(
                                     formik.touched.username &&
-                                    formik.errors.username
+                                        formik.errors.username
                                 )}
                                 helperText={
                                     formik.touched.username &&
@@ -174,7 +177,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                                         type="tel"
                                         error={Boolean(
                                             formik.touched.mobile &&
-                                            formik.errors.mobile
+                                                formik.errors.mobile
                                         )}
                                         helperText={
                                             formik.touched.mobile &&
@@ -193,7 +196,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                         type="text"
                         error={Boolean(
                             formik.touched.company_name &&
-                            formik.errors.company_name
+                                formik.errors.company_name
                         )}
                         helperText={
                             formik.touched.company_name &&
@@ -231,14 +234,18 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                         <Button
                             sx={{
                                 mb: 2,
-                                paddingLeft: "50px",
-                                paddingRight: "50px",
+                                mt: 3,
+                                paddingLeft: "80px",
+                                paddingRight: "80px",
+                                pt: 2,
+                                pb: 2,
+                                textTransform: "none !important",
                             }}
                             variant="contained"
                             type="submit"
                             disabled={loading}
                         >
-                            Create Account
+                            Create account
                         </Button>
                         {loading && (
                             <CircularProgress
