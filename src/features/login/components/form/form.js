@@ -112,10 +112,10 @@ const LoginForm = () => {
                         sx={{
                             mb: 2,
                             mt: 3,
-                            paddingLeft: "90px",
-                            paddingRight: "90px",
-                            paddingTop: "10px",
-                            paddingBottom: "10px",
+                            paddingLeft: "100px",
+                            paddingRight: "100px",
+                            paddingTop: "9px",
+                            paddingBottom: "9px",
                             textTransform: "none !important",
                             background: "#0073EA !important",
                         }}
@@ -123,7 +123,7 @@ const LoginForm = () => {
                         type="submit"
                         disabled={loading}
                     >
-                        <span style={{ fontSize: "16px" }}>Log in</span>
+                        <span style={{ fontSize: "16px" }}>Log In</span>
                     </Button>
                     {loading && (
                         <CircularProgress
