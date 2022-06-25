@@ -97,7 +97,7 @@ export default function PrimarySearchAppBar() {
       <AppBar
         className="appBar"
         position="static"
-        sx={{ backgroundColor: "white" }}
+        sx={{ backgroundColor: "white", height: "85px" }}
       >
         <Toolbar>
           <Typography
@@ -184,7 +184,7 @@ export default function PrimarySearchAppBar() {
             style={{
               width: 222,
             }}
-          // onChange={handleChange}
+            // onChange={handleChange}
           >
             <Option value="TNFE - Pennysylvania">
               {" "}
