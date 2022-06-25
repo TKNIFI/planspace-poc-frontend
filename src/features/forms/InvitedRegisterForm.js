@@ -235,17 +235,20 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                             sx={{
                                 mb: 2,
                                 mt: 3,
-                                paddingLeft: "80px",
-                                paddingRight: "80px",
-                                pt: 2,
-                                pb: 2,
+                                paddingLeft: "90px",
+                                paddingRight: "90px",
+                                paddingTop: "10px",
+                                paddingBottom: "10px",
                                 textTransform: "none !important",
+                                background: "#0073EA !important",
                             }}
                             variant="contained"
                             type="submit"
                             disabled={loading}
                         >
-                            Create account
+                            <span style={{ fontSize: "16px" }}>
+                                Create account
+                            </span>
                         </Button>
                         {loading && (
                             <CircularProgress

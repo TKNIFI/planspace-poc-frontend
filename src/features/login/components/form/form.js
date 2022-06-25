@@ -112,17 +112,18 @@ const LoginForm = () => {
                         sx={{
                             mb: 2,
                             mt: 3,
-                            paddingLeft: "80px",
-                            paddingRight: "80px",
-                            pt: 2,
-                            pb: 2,
-                            textTransform: "capitalize",
+                            paddingLeft: "90px",
+                            paddingRight: "90px",
+                            paddingTop: "10px",
+                            paddingBottom: "10px",
+                            textTransform: "none !important",
+                            background: "#0073EA !important",
                         }}
                         variant="contained"
                         type="submit"
                         disabled={loading}
                     >
-                        Log in
+                        <span style={{ fontSize: "16px" }}>Log in</span>
                     </Button>
                     {loading && (
                         <CircularProgress
