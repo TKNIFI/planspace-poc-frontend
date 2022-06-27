@@ -165,7 +165,7 @@ const TeamMemberTable = ({
     },
     {
       title: "Email",
-      width: "30%",
+      width: "40%",
       editable: false,
       render: (record) => (
         <>{record.primary_email_id ? record.primary_email_id : ""} </>
@@ -204,7 +204,11 @@ const TeamMemberTable = ({
                   width="16"
                   height="16"
                   viewBox="0 0 16 16"
-                  style={{ width: "23px", height: "19px", marginLeft: "8px" }}
+                  style={{
+                    width: "23px",
+                    height: "19px",
+                    marginLeft: "8px",
+                  }}
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -249,10 +253,11 @@ const TeamMemberTable = ({
         components={components}
         rowClassName={() => "editable-row"}
         bordered
-        style={{ fontFamily: "Fira Sans", fontWeight: 400 }}
         dataSource={tableRow}
+        Style={{ fontFamily: "Fira Sans" }}
         columns={columns}
         loading={loading}
+        pagination={false}
       />
     </div>
   );
