@@ -95,7 +95,7 @@ const TeamMemberTable = ({
   handleDelete,
   updateUser,
   getUsers,
-  loading
+  loading,
 }) => {
   const [count, setCount] = useState(2);
 
@@ -122,7 +122,7 @@ const TeamMemberTable = ({
 
   const handleEditForm = (record) => {
     setOpenEditForm(true);
-    editValues(record)
+    editValues(record);
   };
 
   // const handleDelete = async (uid) => {
@@ -143,7 +143,10 @@ const TeamMemberTable = ({
             title={`Sure to ${record.is_active ? "Deactivate" : "Activate"}?`}
             onConfirm={() => updateUser(record.is_active, record.id)}
           >
-            <Checkbox disabled={record.is_logged_in ? true : false} checked={record.is_active}></Checkbox>
+            <Checkbox
+              disabled={record.is_logged_in ? true : false}
+              checked={record.is_active}
+            ></Checkbox>
           </Popconfirm>
         </>
       ),
@@ -155,8 +158,17 @@ const TeamMemberTable = ({
       editable: false,
       render: (record) => (
         <>
-          {record.first_name ? record.first_name : ""} {record.last_name ? record.last_name : ""}
+          {record.first_name ? record.first_name : ""}{" "}
+          {record.last_name ? record.last_name : ""}
         </>
+      ),
+    },
+    {
+      title: "Email",
+      width: "30%",
+      editable: false,
+      render: (record) => (
+        <>{record.primary_email_id ? record.primary_email_id : ""} </>
       ),
     },
 
@@ -202,7 +214,9 @@ const TeamMemberTable = ({
                   />
                 </svg>
               </Popconfirm>
-            ) : ""}
+            ) : (
+              ""
+            )}
           </>
         ) : null,
     },
@@ -235,6 +249,7 @@ const TeamMemberTable = ({
         components={components}
         rowClassName={() => "editable-row"}
         bordered
+        style={{ fontFamily: "Fira Sans", fontWeight: 400 }}
         dataSource={tableRow}
         columns={columns}
         loading={loading}
