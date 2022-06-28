@@ -11,106 +11,111 @@ import { green } from "@mui/material/colors";
 require("dotenv").config();
 
 const RegisterSuccess = ({ email }) => {
-    // const [email, setEmail] = React.useState()
-    const [loading, setLoading] = React.useState(false);
+  // const [email, setEmail] = React.useState()
+  const [loading, setLoading] = React.useState(false);
 
-    const resendEmail = async () => {
-        setLoading(true);
-        try {
-            await axios
-                .post(
-                    `${process.env.REACT_APP_BASE_URL}api/auth/register/email_resend/`,
-                    { email: email }
-                )
-                .then((response) => {
-                    toast.success(response.data.message);
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    toast.error(error.message);
-                    setLoading(false);
-                });
-        } catch (error) {
-            setLoading(false);
-            toast.error(error.message);
-        }
-    };
+  const resendEmail = async () => {
+    setLoading(true);
+    try {
+      await axios
+        .post(
+          `${process.env.REACT_APP_BASE_URL}api/auth/register/email_resend/`,
+          { email: email }
+        )
+        .then((response) => {
+          toast.success(response.data.message);
+          setLoading(false);
+        })
+        .catch((error) => {
+          toast.error(error.message);
+          setLoading(false);
+        });
+    } catch (error) {
+      setLoading(false);
+      toast.error(error.message);
+    }
+  };
 
-    return (
-        <>
-            {/* <Grid> */}
-            <Toaster position="top-right" />
-            <Paper sx={{ height: "100%", p: 5 }}>
-                <Box>
-                    <img src={planLogo} height="30px" width="170px" />
-                </Box>
-                <Box
-                    sx={{
-                        mt: 3,
-                        p: 1,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
-                    <img src={successCircle} height="25%" width="25%" />
-                </Box>
-                <Box
-                    sx={{
-                        mt: 2,
-                        p: 1,
-                        display: "inline-flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
-                    <Typography variant="h5" sx={{ color: "#003399" }}>
-                        Account created successfully!
-                    </Typography>
-                    <Typography
-                        variant="span"
-                        sx={{ mt: 2, color: "gray", textAlign: "center" }}
-                    >
-                        Thank you for registering with us. An email with a
-                        confirmation link has been sent to your registred email
-                        id. Please click on the link to confirm your account and
-                        start using the system.
-                    </Typography>
-                    <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
-                        Did not receive the mail?{" "}
-                        <Button onClick={() => resendEmail()}>
-                            {loading ? (
-                                <CircularProgress
-                                    size={24}
-                                    sx={{
-                                        color: green[500],
-                                        position: "absolute",
-                                        top: "50%",
-                                        left: "50%",
-                                        marginTop: "-12px",
-                                        marginLeft: "-12px",
-                                    }}
-                                />
-                            ) : (
-                                "Resend"
-                            )}
-                        </Button>
-                    </Typography>
-                    <Box sx={{ mt: 20, mb: 0 }}>
-                        <Typography
-                            variant="span"
-                            sx={{ mt: 2, color: "gray" }}
-                        >
-                            Already confirmed?{" "}
-                            <Link to="/login">Signin here</Link>
-                        </Typography>
-                    </Box>
-                </Box>
-            </Paper>
-            {/* </Grid> */}
-        </>
-    );
+  return (
+    <>
+      {/* <Grid> */}
+      <Toaster position="top-right" />
+      <Paper sx={{ height: "100%", p: 5 }}>
+        <Box>
+          <img src={planLogo} height="30px" width="170px" />
+        </Box>
+        <Box
+          sx={{
+            mt: 3,
+            p: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "Fira Sans",
+          }}
+        >
+          <img src={successCircle} height="25%" width="25%" />
+        </Box>
+        <Box
+          sx={{
+            mt: 2,
+            p: 1,
+            display: "inline-flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "Fira Sans",
+          }}
+        >
+          <Typography variant="h5" sx={{ color: "#003399" }}>
+            Account created successfully!
+          </Typography>
+          <Typography
+            variant="span"
+            sx={{
+              mt: 2,
+              color: "gray",
+              textAlign: "center",
+              fontFamily: "Fira Sans",
+            }}
+          >
+            Thank you for registering with us. An email with a confirmation link
+            has been sent to your registred email id. Please click on the link
+            to confirm your account and start using the system.
+          </Typography>
+          <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
+            Did not receive the mail?{" "}
+            <Button onClick={() => resendEmail()}>
+              {loading ? (
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    color: green[500],
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    marginTop: "-12px",
+                    marginLeft: "-12px",
+                  }}
+                />
+              ) : (
+                "Resend"
+              )}
+            </Button>
+          </Typography>
+          <Box sx={{ mt: 20, mb: 0 }}>
+            <Typography
+              variant="span"
+              sx={{ mt: 2, color: "gray", fontFamily: "Fira Sans" }}
+            >
+              Already confirmed? <Link to="/login">Signin here</Link>
+            </Typography>
+          </Box>
+        </Box>
+      </Paper>
+      {/* </Grid> */}
+    </>
+  );
 };
 
 export default RegisterSuccess;
