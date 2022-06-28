@@ -1,3 +1,6 @@
+*{
+  font-family: "Fira Sans" !important;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -38,6 +41,9 @@
 input::placeholder,label.MuiInputLabel-root,label.MuiInputLabel-formControl{
   font-weight: bold !important;
   opacity: 0.5 !important;
+}
+label.MuiInputLabel-formControl::first-letter{
+  color:"red"!important
 }
 legend.css-1ftyaf0 span{
   font-weight: bold !important;

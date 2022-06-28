@@ -191,8 +191,8 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                     </Grid>
                     <TextField
                         id="company_name"
-                        label="Enter Your Business name"
-                        placeholder="Enter Your Business Name"
+                        label="Enter Your Business name*"
+                        placeholder="Enter Your Business Name*"
                         type="text"
                         error={Boolean(
                             formik.touched.company_name &&

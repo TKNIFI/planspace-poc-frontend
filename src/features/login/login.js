@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import "./login.module.scss";
 import "antd/dist/antd.css";
 import User from "../../models/user/user";
 import { useDispatch } from "react-redux";
@@ -10,7 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
 import "swiper/swiper.min.css";
 import "swiper/modules/pagination/pagination.min.css";
 import { Pagination } from "swiper";
-import SocialButton from "./components/SocialButton";
+// import SocialButton from "./components/SocialButton";
 import sliderImage from "../../assets/images/sliderImage.png";
 import elipseOuter from "../../assets/images/Ellipse125.png";
 import elipseInner from "../../assets/images/Ellipse126.png";
