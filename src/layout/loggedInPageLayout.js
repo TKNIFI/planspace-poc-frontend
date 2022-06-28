@@ -27,15 +27,14 @@ export default function LoggedInPageLayout({ children }) {
         }
       })
       .catch((error) => {
-        console.log(error);
+        history.push("/login");
       });
   };
 
   React.useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
     const obj = JSON.parse(userInfo);
-
-    isUserActivated(obj.access);
+    isUserActivated(obj?.access);
     if (!userInfo) {
       history.push("/login");
     }
