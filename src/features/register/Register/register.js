@@ -32,7 +32,9 @@ const SliderContent = () => {
                         sx={{
                             color: "white",
                             fontWeight: "bold",
+                            fontFamily: "Fira Sans",
                             fontSize: "30px",
+                            fontFamily: "Fira Sans",
                         }}
                     >
                         Event Planning Made Easy
@@ -48,6 +50,7 @@ const SliderContent = () => {
                             lineHeight: "14px",
                             textAlign: "center",
                             color: "#FFFFFF",
+                            fontFamily: "Fira Sans",
                         }}
                     >
                         Amet minim mollit non deserunt ullamco est sit <br />{" "}

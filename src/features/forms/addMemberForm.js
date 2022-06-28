@@ -216,7 +216,10 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                             <Muibtn
                                 variant="outlined"
                                 className="cancelBtn"
-                                style={{ fontFamily: "Fira Sans" }}
+                                style={{
+                                    fontFamily: "Fira Sans",
+                                    textTransform: "none",
+                                }}
                                 onClick={() => handleClose(false)}
                             >
                                 Cancel
@@ -226,7 +229,10 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                                     variant="contained"
                                     className="submitBtn"
                                     type="submit"
-                                    style={{ fontFamily: "Fira Sans" }}
+                                    style={{
+                                        fontFamily: "Fira Sans",
+                                        textTransform: "none",
+                                    }}
                                     disabled={loading}
                                 >
                                     Submit

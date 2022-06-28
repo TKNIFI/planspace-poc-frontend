@@ -27,8 +27,6 @@ const TeamInvitation = () => {
   const [editRecord, setEditRecord] = useState(null);
   const [count, setCount] = useState(null);
   const [limit, setLimit] = useState(null);
-
-  console.log("table row data ", tableRow);
   const handleClose = () => {
     setOpenAddForm(false);
     setEditRecord(null);
@@ -130,7 +128,7 @@ const TeamInvitation = () => {
       {/* Model to delete html */}
       <Drawer
         className="ant-drawer-title"
-        title="Add New Member"
+        title="Add New User"
         width={1080}
         onClose={handleClose}
         visible={openAddForm}
@@ -159,7 +157,7 @@ const TeamInvitation = () => {
       {/* Model to edit html */}
       <Drawer
         className="ant-drawer-title"
-        title="Update Member"
+        title="Update User"
         width={1080}
         onClose={handleClose}
         visible={openEditForm}

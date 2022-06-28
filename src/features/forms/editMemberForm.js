@@ -223,6 +223,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                             <Muibtn
                                 variant="outlined"
                                 type="reset"
+                                style={{ textTransform: "none" }}
                                 onClick={() => {
                                     handleClose(false);
                                     // formik.values.name = "";
@@ -237,6 +238,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                             <div>
                                 <Muibtn
                                     variant="contained"
+                                    style={{ textTransform: "none" }}
                                     type="submit"
                                     disabled={loading}
                                 >

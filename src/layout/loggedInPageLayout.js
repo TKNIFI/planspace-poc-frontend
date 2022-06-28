@@ -7,29 +7,52 @@ import "antd/dist/antd.css";
 import styles from "./layout.module.scss";
 import { useHistory } from "react-router-dom";
 
+import axios from "axios";
+
 export default function LoggedInPageLayout({ children }) {
-    const { Content } = Layout;
-    const history = useHistory();
+  const { Content } = Layout;
+  const history = useHistory();
 
-    React.useEffect(() => {
-        const userInfo = localStorage.getItem("userInfo");
-        if (!userInfo) {
-            history.push("/login");
+  const isUserActivated = async (access_token) => {
+    await axios
+      .post(`${process.env.REACT_APP_BASE_URL}api/auth/verify/`, {
+        token: access_token,
+      })
+      .then((response) => {
+        const data = response.data.data;
+
+        console.log("data in axios => ", data.is_active);
+        if (!data.is_active) {
+          history.push("/login");
         }
-    }, []);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-    return (
-        <>
-            <AppHeader />
-            <Layout className="layout-design">
-                <Layout className={styles["site-layout"]}>
-                    <Sider />
-                    <Content style={{ margin: "0 16px" }}>
-                        <Breadcrumbs />
-                        {children}
-                    </Content>
-                </Layout>
-            </Layout>
-        </>
-    );
+  React.useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo");
+    const obj = JSON.parse(userInfo);
+
+    isUserActivated(obj.access);
+    if (!userInfo) {
+      history.push("/login");
+    }
+  }, []);
+
+  return (
+    <>
+      <AppHeader />
+      <Layout className="layout-design">
+        <Layout className={styles["site-layout"]}>
+          <Sider />
+          <Content style={{ margin: "0 16px" }}>
+            <Breadcrumbs />
+            {children}
+          </Content>
+        </Layout>
+      </Layout>
+    </>
+  );
 }
