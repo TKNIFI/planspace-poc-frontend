@@ -93,7 +93,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                         <Grid item xs={6} className="field-width">
                             <TextField
                                 name="name"
-                                label="Name"
+                                label="Name*"
                                 value={formik.values.name}
                                 error={Boolean(
                                     formik.touched.name && formik.errors.name

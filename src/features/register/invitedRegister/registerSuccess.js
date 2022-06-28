@@ -9,7 +9,7 @@ const RegisterSuccess = () => {
             <Grid item xs={8}>
                 <Paper sx={{ height: "100%", p: 5 }}>
                     <Box>
-                        <img src={planLogo} height="30px" width="170px" />
+                        <img src={planLogo} height="50px" width="220px" />
                     </Box>
                     <Box
                         sx={{

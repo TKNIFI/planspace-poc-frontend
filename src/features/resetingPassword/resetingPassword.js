@@ -137,8 +137,8 @@ export default function ResetingPassword() {
                                     <Box>
                                         <img
                                             src={planLogo}
-                                            height="30px"
-                                            width="170px"
+                                            height="50px"
+                                            width="220px"
                                         />
                                     </Box>
                                     <Box sx={{ mt: 3, p: 1 }}>

@@ -98,7 +98,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                         <Grid item xs={6}>
                             <TextField
                                 name="name"
-                                label="Name"
+                                label="Name*"
                                 value={formik.values.name}
                                 error={Boolean(
                                     formik.touched.name && formik.errors.name
