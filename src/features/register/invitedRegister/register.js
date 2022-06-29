@@ -95,7 +95,6 @@ function RegisterInvited() {
                 `${process.env.REACT_APP_BASE_URL}api/auth/user/invited/?uid=${uid}&token=${token}`
             )
             .then((result) => {
-                console.log("result", result.data.data);
                 setIsValid(true);
                 setIsLoading(false);
                 setUserDetails(result.data.data);

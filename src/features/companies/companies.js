@@ -37,7 +37,6 @@ export default function Companies() {
     setFormData(formDataFromParent);
   };
   useEffect(() => {
-    console.log(Company.GetCompany());
   }, []);
   return (
     <>

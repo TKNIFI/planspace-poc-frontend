@@ -8,7 +8,6 @@ function user_data() {
     const data = JSON.parse(localStorage.getItem("userInfo"));
     return data;
   } catch {
-    console.log("You are not LogIn");
     return null;
   }
 }
@@ -30,7 +29,6 @@ myApi.interceptors.request.use(
       config.headers.Authorization = `JWT ${data?.access}`;
       return config;
     } catch {
-      console.log("You are not LogIn");
       return null;
     }
   },

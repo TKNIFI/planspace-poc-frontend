@@ -33,7 +33,6 @@ const TeamInvitation = () => {
     setOpenEditForm(false);
   };
   async function handleDelete(uid) {
-    console.log("uid", uid);
     await myApi
       .delete(`${process.env.REACT_APP_BASE_URL}api/auth/user/${uid}/`)
       .then((result) => {

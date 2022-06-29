@@ -3,7 +3,6 @@ import User from "../models/user/user";
 import { Redirect, Route } from "react-router-dom";
 
 export default function RouteWithSubRoutes(route) {
-    console.log("current path and component",route)
   return (
     <Route
       path={route.path}

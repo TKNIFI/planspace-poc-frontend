@@ -57,13 +57,9 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 })
                 .catch((error) => {
                     let message = error.response.data.message;
-                    console.log("message: ", message);
                     for (let i in message) {
                         let field = message[i];
-                        console.log("field: ", field);
                         for (const [key, value] of Object.entries(field)) {
-                            console.log("key: ", key);
-                            console.log("value: ", value);
                             formik.setFieldError(
                                 key,
                                 value[0].replace("username", "email")

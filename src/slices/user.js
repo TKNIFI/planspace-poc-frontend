@@ -23,7 +23,6 @@ const slice = createSlice({
 export const { reducer } = slice;
 
 export const login = (username, password) => async (dispatch) => {
-    //   console.log(email, password, token);
 
     const { data } = await myApi.post("api/auth/login/", {
         username,
@@ -34,7 +33,6 @@ export const login = (username, password) => async (dispatch) => {
 };
 
 export const register = (formData) => async (dispatch) => {
-    //   console.log(email, password, token);
 
     const { data } = await axios.post(
         `${process.env.REACT_APP_BASE_URL}api/auth/register/`,

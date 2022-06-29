@@ -33,7 +33,6 @@ const AddonsForm = () => {
     onSubmit: (values) => {
       const formValues = values;
       Location.CreateLocation(formValues);
-      console.log("Add-On values", formValues);
     },
   });
   return (

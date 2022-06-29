@@ -37,7 +37,6 @@ const PackagesForm = () => {
     onSubmit: (values) => {
       const formValues = values;
       Location.CreateLocation(formValues);
-      console.log("package values", formValues);
     },
   });
   return (

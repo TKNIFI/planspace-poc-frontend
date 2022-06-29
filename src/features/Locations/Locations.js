@@ -24,9 +24,7 @@ export default function Locations() {
         setFormData(formDataFromParent);
     };
     useEffect(() => {
-        console.log(Location.GetLocations());
     }, []);
-    console.log("location form data in parent", formData);
     return (
         <>
             <Box

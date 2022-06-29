@@ -8,8 +8,6 @@ exports["default"] = void 0;
 
 var getToken = function getToken() {
   var info = localStorage.getItem("userInfo");
-  console.log("info", info);
-
   if (info) {
     if (JSON.parse(info).access_token) {
       return JSON.parse(info).access_token;

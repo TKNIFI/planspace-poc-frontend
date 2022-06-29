@@ -12,7 +12,6 @@ export default class NetworkCall {
       });
       return response.data;
     } catch (error) {
-      console.log(error.message);
       return Promise.reject({
         error: error,
         message: K.Network.Default.Error,

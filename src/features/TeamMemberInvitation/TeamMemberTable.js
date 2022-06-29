@@ -101,10 +101,7 @@ const TeamMemberTable = ({
 
   const [data, setData] = useState([]);
 
-  // console.log("table Row : ", data, TableRow);
-
   if (tableRow) {
-    console.log("table in row otus", tableRow[0]);
     // setDataSource(tableRow);
   }
   useEffect(() => {

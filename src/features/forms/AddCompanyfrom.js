@@ -59,7 +59,6 @@ function AddCompanyfrom({sendChildToParent}) {
       let formData = values;
       Company.CreateCompany(formData);
       sendChildToParent(formData);
-      console.log(formData);
 
     },
   });

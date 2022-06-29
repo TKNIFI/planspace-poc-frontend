@@ -89,7 +89,6 @@ export default class Request {
   }
 
   static CreateCompany(requestbody) {
-    console.log("requested body", requestbody);
     const body = {
       business: requestbody.bname,
       mailingAddressOnly: requestbody.mailingAddressOnly,

@@ -5,42 +5,41 @@ import Sider from "../layout/sider";
 import Breadcrumbs from "../layout/breadcrumbs";
 import "antd/dist/antd.css";
 import styles from "./layout.module.scss";
+import Pusher from "pusher-js";
 import { useHistory } from "react-router-dom";
 
-import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function LoggedInPageLayout({ children }) {
   const { Content } = Layout;
   const history = useHistory();
 
-  const isUserActivated = async (access_token) => {
-    await axios
-      .post(`${process.env.REACT_APP_BASE_URL}api/auth/verify/`, {
-        token: access_token,
-      })
-      .then((response) => {
-        const data = response.data.data;
-
-        console.log("data in axios => ", data.is_active);
-        if (!data.is_active) {
-          window.localStorage.removeItem("UserInfo");
-          history.push("/login");
+  const checkUserStatus = async () => {
+    let userInfo = localStorage.getItem("userInfo")
+    if (!userInfo) {
+      localStorage.removeItem("userInfo")
+      history.push("/login")
+    }
+    const pusher = new Pusher("4d4775961a9801e20744", {
+      cluster: "ap2",
+    });
+    const channel = pusher.subscribe("planspace_user");
+    channel.bind("update_user", function (user) {
+      if (!user.is_active) {
+        if (userInfo) {
+          userInfo = JSON.parse(userInfo)
+          if (userInfo.user_id === user.id) {
+            toast.error("Your account has been deactivated by the admin")
+            localStorage.removeItem("userInfo")
+            history.push("/login")
+          }
         }
-      })
-      .catch((error) => {
-        history.push("/login");
-      });
+      }
+    });
   };
 
   React.useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo");
-    if (userInfo) {
-      const obj = JSON.parse(userInfo);
-      isUserActivated(obj?.access);
-    }
-    if (!userInfo) {
-      history.push("/login");
-    }
+    checkUserStatus();
   }, []);
 
   return (

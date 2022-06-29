@@ -53,8 +53,6 @@ const AddLocationForm = ({ sendChildToParent }) => {
         }),
         onSubmit: (values) => {
             const formValues = values;
-            // Location.CreateLocation(formValues);
-            console.log("Locations values", formValues);
             sendChildToParent(formValues);
         },
     });
