@@ -34,8 +34,10 @@ export default function LoggedInPageLayout({ children }) {
 
   React.useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
-    const obj = JSON.parse(userInfo);
-    isUserActivated(obj?.access);
+    if (userInfo) {
+      const obj = JSON.parse(userInfo);
+      isUserActivated(obj?.access);
+    }
     if (!userInfo) {
       history.push("/login");
     }
