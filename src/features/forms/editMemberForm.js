@@ -15,15 +15,16 @@ const phoneRegExp = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
 const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
     const [loading, setLoading] = React.useState(false);
-
+    console.log(editRecordValues);
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            name: editRecordValues?.first_name
-                ? editRecordValues?.first_name
-                : "" + " " + editRecordValues?.last_name
-                ? editRecordValues?.last_name
-                : "",
+            name:
+                editRecordValues?.first_name +
+                " " +
+                (editRecordValues?.last_name !== null
+                    ? editRecordValues?.last_name
+                    : " "),
             userId: editRecordValues?.username,
             username: editRecordValues?.username,
             mobile: editRecordValues?.mobile,
