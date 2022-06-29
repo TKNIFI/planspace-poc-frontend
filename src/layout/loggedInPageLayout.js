@@ -23,6 +23,7 @@ export default function LoggedInPageLayout({ children }) {
 
         console.log("data in axios => ", data.is_active);
         if (!data.is_active) {
+          window.localStorage.removeItem("UserInfo");
           history.push("/login");
         }
       })
