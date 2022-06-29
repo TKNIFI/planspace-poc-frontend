@@ -9,6 +9,7 @@ import Pusher from "pusher-js";
 import { useHistory } from "react-router-dom";
 
 import toast from "react-hot-toast";
+import { duration } from "moment";
 
 export default function LoggedInPageLayout({ children }) {
   const { Content } = Layout;
@@ -20,8 +21,8 @@ export default function LoggedInPageLayout({ children }) {
       localStorage.removeItem("userInfo")
       history.push("/login")
     }
-    const pusher = new Pusher("4d4775961a9801e20744", {
-      cluster: "ap2",
+    const pusher = new Pusher(process.env.REACT_APP_PUSHER_API_KEY, {
+      cluster: process.env.REACT_APP_PUSHER_CLUSTER,
     });
     const channel = pusher.subscribe("planspace_user");
     channel.bind("update_user", function (user) {
