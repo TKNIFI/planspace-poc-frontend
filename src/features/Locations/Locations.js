@@ -13,6 +13,7 @@ import addLogoImage from "../../assets/images/iconadd.png";
 import "./location.scss";
 export default function Locations() {
     const [formData, setFormData] = useState();
+    const [user, setUser] = useState();
     const [open, setOpen] = useState(false);
     const handleClickOpen = () => {
         setOpen(true);
@@ -24,6 +25,11 @@ export default function Locations() {
         setFormData(formDataFromParent);
     };
     useEffect(() => {
+        const userInfo = localStorage.getItem("userInfo");
+        let info = JSON.parse(userInfo);
+        if (info) {
+            setUser(info);
+        }
     }, []);
     return (
         <>
@@ -36,7 +42,8 @@ export default function Locations() {
                 <div className="headcard">
                     <div>
                         <p className="headTitle">
-                            Hi Bobin, Welcome to PlanSpace.
+                            Hi {user?.first_name || user?.user_name}, Welcome to
+                            PlanSpace.
                         </p>
                         <p className="description">
                             We are glad to have you onbard. Here is your quick
