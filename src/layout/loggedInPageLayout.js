@@ -7,6 +7,7 @@ import "antd/dist/antd.css";
 import styles from "./layout.module.scss";
 import Pusher from "pusher-js";
 import { useHistory } from "react-router-dom";
+import axios from 'axios'
 
 import toast from "react-hot-toast";
 import { duration } from "moment";
@@ -14,9 +15,10 @@ import { duration } from "moment";
 export default function LoggedInPageLayout({ children }) {
   const { Content } = Layout;
   const history = useHistory();
+  
+  let userInfo = localStorage.getItem("userInfo")
 
   const checkUserStatus = async () => {
-    let userInfo = localStorage.getItem("userInfo")
     if (!userInfo) {
       localStorage.removeItem("userInfo")
       history.push("/login")
@@ -39,8 +41,30 @@ export default function LoggedInPageLayout({ children }) {
     });
   };
 
+  const logoutUser = async () => {
+    if (userInfo) {
+      let access_token = JSON.parse(userInfo).access
+      await axios
+      .post(`${process.env.REACT_APP_BASE_URL}api/auth/verify/`, {
+        token: access_token,
+      })
+      .then((response) => {
+        const data = response.data.data;
+        if (!data.is_active) {
+          localStorage.removeItem("UserInfo");
+          history.push("/login");
+        }
+      })
+      .catch((error) => {
+        localStorage.removeItem("UserInfo");
+        history.push("/login");
+      });
+    }
+  }
+
   React.useEffect(() => {
-    checkUserStatus();
+    // checkUserStatus();
+    logoutUser()
   }, []);
 
   return (
