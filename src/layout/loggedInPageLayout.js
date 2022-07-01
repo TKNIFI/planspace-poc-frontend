@@ -63,7 +63,7 @@ export default function LoggedInPageLayout({ children }) {
   }
 
   React.useEffect(() => {
-    // checkUserStatus();
+    checkUserStatus();
     logoutUser()
   }, []);
 
