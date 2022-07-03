@@ -15,7 +15,7 @@ import { Space, Table, Checkbox, Popconfirm, Drawer, Pagination } from "antd";
 import "./inviteMemberStyles.css";
 import axios from "axios";
 import myApi from "../../network/axios";
-import toast, { Toaster } from "react-hot-toast";
+// import toast, { Toaster } from "react-hot-toast";
 import TeamMemberTable from "./TeamMemberTable";
 require("dotenv").config();
 
@@ -36,7 +36,7 @@ const TeamInvitation = () => {
     await myApi
       .delete(`${process.env.REACT_APP_BASE_URL}api/auth/user/${uid}/`)
       .then((result) => {
-        toast.success(result.data.message);
+        // toast.success(result.data.message);
         getUsers();
       });
   }
@@ -47,15 +47,15 @@ const TeamInvitation = () => {
         is_active: !is_active,
       })
       .then((result) => {
-        toast.success(
-          `User ${is_active ? "deactivated" : "activated"} successfully`
-        );
+        // toast.success(
+        // `User ${is_active ? "deactivated" : "activated"} successfully`
+        // );
         getUsers();
       });
   }
 
   const makeAToast = (message) => {
-    toast.success(message);
+    // toast.success(message);
   };
 
   const getUsers = async (page, pageSize) => {
@@ -66,6 +66,7 @@ const TeamInvitation = () => {
       }
       setLoading(true);
       await myApi.get(url).then((result) => {
+        console.log("getuser output => ", result.data);
         setTableRowData(result.data.results);
         setCount(result.data.count);
         setLimit(result.data.limit);
@@ -83,7 +84,7 @@ const TeamInvitation = () => {
 
   return (
     <>
-      <Toaster position="top-right" />
+      {/* <Toaster position="top-right" /> */}
       <Box sx={{ flexGrow: 1, display: "inline" }}>
         <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
           <Grid item xs={8}></Grid>
@@ -99,6 +100,7 @@ const TeamInvitation = () => {
                 width: "124px",
                 height: "44px",
               }}
+              data-testid="addBtn"
               onClick={() => setOpenAddForm(true)}
             >
               Add new <AddIcon />

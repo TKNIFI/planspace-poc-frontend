@@ -20,6 +20,7 @@
         "dotenv": "^16.0.1",
         "firebase": "^7.16.1",
         "formik": "^2.2.9",
+        "goober": "^2.1.10",
         "js-cookie": "^2.2.1",
         "jsx-runtime": "^1.2.0",
         "moment": "^2.29.1",
