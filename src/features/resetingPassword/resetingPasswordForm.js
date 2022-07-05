@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { Alert, Box, Button, TextField } from "@mui/material";
 // import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 // import User from "../../../../models/user/user";
 // import { useDispatch } from "react-redux";
 require("dotenv").config();

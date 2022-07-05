@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -6,21 +6,16 @@ import Grid from "@mui/material/Grid";
 import planLogo from "../../../assets/images/plan.svg";
 import { Link, Typography } from "@mui/material";
 import axios from "axios";
-import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
-import RegisterationForm from "../../forms/registerationform";
-import RegisterSuccess from "./registerSuccess";
-// import RegisterSuccess from "../../register/registerSuccess";
-import InvalidLink from "../../login/invalidLink";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { EffectCoverflow, Pagination } from "swiper";
 import "swiper/swiper.min.css";
-import "swiper/modules/pagination/pagination.min.css";
-import { Pagination } from "swiper";
+import "swiper/swiper-bundle.min.css";
 import sliderImage from "../../../assets/images/sliderImage.png";
 import elipseOuter from "../../../assets/images/Ellipse125.png";
 import elipseInner from "../../../assets/images/Ellipse126.png";
 import circleImage1 from "../../../assets/images/sliderCircleImage1.png";
 import circleImage2 from "../../../assets/images/sliderCircleImage2.png";
 import circleImage3 from "../../../assets/images/sliderCircleImage3.png";
-import CircularProgress from "@mui/material/CircularProgress";
 require("dotenv").config();
 
 const SliderContent = () => {
@@ -39,8 +34,6 @@ const SliderContent = () => {
                     >
                         Event Planning Made Easy
                     </Typography>
-                </Box>
-                <Box className="centered-for-content-swiper-slide-para">
                     <Typography
                         variant="p"
                         sx={{ color: "lightgray", fontWeight: "bold" }}
@@ -51,6 +44,7 @@ const SliderContent = () => {
                         sunt <br /> nostrud amet.
                     </Typography>
                 </Box>
+                <Box className="centered-for-content-swiper-slide-para"></Box>
                 <Box className="centered-for-content-swiper-slide-outerEllipse">
                     <img src={elipseOuter} />
                 </Box>
@@ -73,6 +67,7 @@ const SliderContent = () => {
 function Verify() {
     const [isValid, setIsValid] = useState(true);
     const [email, setEmail] = useState(true);
+    SwiperCore.use([EffectCoverflow, Pagination]);
 
     function useQuery() {
         const { search } = useLocation();
@@ -111,11 +106,21 @@ function Verify() {
                 <Grid item xs={6}>
                     <Paper>
                         <Swiper
-                            centeredSlides
+                            effect={"coverflow"}
+                            grabCursor={true}
+                            centeredSlides={true}
+                            slidesPerView={"auto"}
+                            coverflowEffect={{
+                                rotate: 10,
+                                stretch: 0,
+                                depth: 100,
+                                modifier: 1,
+                                slideShadows: false,
+                            }}
                             pagination={{
                                 dynamicBullets: true,
                             }}
-                            modules={[Pagination]}
+                            className="mySwiper"
                         >
                             <SwiperSlide>
                                 <SliderContent />

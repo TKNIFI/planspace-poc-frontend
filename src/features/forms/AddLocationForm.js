@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import toast, { Toaster } from "react-hot-toast";
+import { toast } from "react-toastify";
 import clarityimageline from "../../assets/images/clarity_image-line.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -90,8 +90,6 @@ const AddLocationForm = ({ sendChildToParent, setOpen }) => {
 
     return (
         <>
-            <Toaster position="top-right" />
-
             <form onSubmit={formik.handleSubmit}>
                 <Box
                     sx={{

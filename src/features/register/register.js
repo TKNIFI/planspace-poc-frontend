@@ -11,12 +11,12 @@ import Grid from "@mui/material/Grid";
 import planLogo from "../../assets/images/plan.png";
 import { Typography } from "@mui/material";
 import axios from "axios";
-import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { EffectCoverflow, Pagination } from "swiper";
+import "swiper/swiper.min.css";
+import "swiper/swiper-bundle.min.css";
 import RegisterationForm from "../forms/registerationform";
 import RegisterSuccess from "../register/registerSuccess";
-import "swiper/swiper.min.css";
-import "swiper/modules/pagination/pagination.min.css";
-import { Pagination } from "swiper";
 import sliderImage from "../../assets/images/sliderImage.png";
 import elipseOuter from "../../assets/images/Ellipse125.png";
 import elipseInner from "../../assets/images/Ellipse126.png";
@@ -40,8 +40,6 @@ const SliderContent = () => {
                     >
                         Event Planning Made Easy
                     </Typography>
-                </Box>
-                <Box className="centered-for-content-swiper-slide-para">
                     <Typography
                         variant="p"
                         sx={{ color: "lightgray", fontWeight: "bold" }}
@@ -52,6 +50,7 @@ const SliderContent = () => {
                         sunt <br /> nostrud amet.
                     </Typography>
                 </Box>
+                <Box className="centered-for-content-swiper-slide-para"></Box>
                 <Box className="centered-for-content-swiper-slide-outerEllipse">
                     <img src={elipseOuter} />
                 </Box>
@@ -104,6 +103,7 @@ function Register() {
     useEffect(() => {
         checkToken();
     }, []);
+    SwiperCore.use([EffectCoverflow, Pagination]);
 
     return (
         <Grid container spacing={0} columns={16} sx={{ ml: 12 }}>
@@ -111,11 +111,21 @@ function Register() {
             <Grid item xs={6}>
                 <Paper>
                     <Swiper
-                        centeredSlides
+                        effect={"coverflow"}
+                        grabCursor={true}
+                        centeredSlides={true}
+                        slidesPerView={"auto"}
+                        coverflowEffect={{
+                            rotate: 10,
+                            stretch: 0,
+                            depth: 100,
+                            modifier: 1,
+                            slideShadows: false,
+                        }}
                         pagination={{
                             dynamicBullets: true,
                         }}
-                        modules={[Pagination]}
+                        className="mySwiper"
                     >
                         <SwiperSlide>
                             <SliderContent />

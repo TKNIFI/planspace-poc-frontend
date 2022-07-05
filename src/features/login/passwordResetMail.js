@@ -4,7 +4,7 @@ import axios from "axios";
 import planLogo from "../../assets/images/plan.svg";
 import { Typography, Grid, Paper, Box, Button, Alert } from "@mui/material";
 import { Link } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import { toast } from "react-toastify";
 import emailimage from "../../assets/images/emailSuccessImage.png";
 require("dotenv").config();
 
@@ -27,7 +27,6 @@ const PasswordResetMail = ({ email }) => {
 
     return (
         <>
-            <Toaster position="top-right" />
             <Grid item xs={8}>
                 <Paper sx={{ height: "100%", p: 5 }}>
                     <Box>

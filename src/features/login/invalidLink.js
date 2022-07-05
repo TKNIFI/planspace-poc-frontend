@@ -1,16 +1,13 @@
 import React from "react";
 import "antd/dist/antd.css";
-import axios from "axios";
 import planLogo from "../../assets/images/plan.svg";
-import { Typography, Grid, Paper, Box, Button, Alert } from "@mui/material";
+import { Typography, Grid, Paper, Box } from "@mui/material";
 import { Link } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
 import emailimage from "../../assets/images/invalid_link.jpg";
 
 const InvalidLink = () => {
     return (
         <>
-            <Toaster position="top-right" />
             <Grid item xs={8}>
                 <Paper
                     sx={{

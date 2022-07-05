@@ -9,7 +9,7 @@ import Location from "../../models/Locations/Location";
 import addLogoImage from "../../assets/images/iconadd.png";
 import "./location.scss";
 import EditLocationForm from "../forms/EditLocationForm";
-import toast, { Toaster } from "react-hot-toast";
+import { toast } from "react-toastify";
 
 const LocationIcon = () => {
     return (
@@ -113,8 +113,6 @@ export default function Locations() {
     console.log("location form data in parent", formData);
     return (
         <>
-            <Toaster position="top-right" />
-
             <Box
                 style={{
                     marginTop: "10px",
