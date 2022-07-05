@@ -27,6 +27,30 @@ import circleImage3 from "../../../assets/images/sliderCircleImage3.png";
 
 require("dotenv").config();
 
+function CircularProgressWithLabel(props) {
+  return (
+    <Box sx={{ position: "relative", display: "inline-flex" }}>
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: "absolute",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="caption" component="div" color="text.secondary">
+          {`${Math.round(props.counter)}`}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
+
 const SliderContent = () => {
   return (
     <>
@@ -75,8 +99,7 @@ const SliderContent = () => {
 };
 function Verify() {
   const [isValid, setIsValid] = useState(false);
-  const [email, setEmail] = useState(true);
-  const [invalidLoaderState, setInvalidLoaderState] = useState(true);
+  const [counter, setCounter] = useState(6);
 
   const [progress, setProgress] = React.useState(0);
   const history = useHistory();
@@ -114,16 +137,22 @@ function Verify() {
       setProgress((prevProgress) =>
         prevProgress >= 100 ? 0 : prevProgress + 10
       );
+      //   setCounter(counter - 1);
     }, 470);
     setTimeout(() => {
       console.log("time out");
       if (isValid) {
         history.push("/login");
       } else {
-        setInvalidLoaderState(false);
       }
     }, 5000);
   }, []);
+
+  React.useEffect(() => {
+    setInterval(() => {
+      setCounter(counter - 1);
+    }, 800);
+  }, [counter]);
 
   const styleLoaderWrapper = {
     height: "165px",
@@ -161,21 +190,28 @@ function Verify() {
                 <img src={planLogo} height="30px" width="170px" />
               </Box>
               <Box sx={{ mt: 3, p: 1 }}>
-                <Typography variant="h5" sx={{ color: "#003399" }}>
-                  {invalidLoaderState
-                    ? "Verifying...."
-                    : "Invalid or Expired link"}
+                <Typography
+                  variant="h5"
+                  sx={{
+                    color: "#003399",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  Invalid or Expired link
                 </Typography>
               </Box>
               <Box sx={{ mt: 2, p: 1, height: "445px" }}>
-                <Typography>
-                  <Link href="/login">click Login</Link>
+                <Typography
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Link href="/register">click here to register again </Link>
                 </Typography>
-                {invalidLoaderState && (
-                  <div style={styleLoaderWrapper}>
-                    <CircularProgress variant="determinate" value={progress} />
-                  </div>
-                )}
               </Box>
             </Paper>
           ) : (
@@ -194,10 +230,15 @@ function Verify() {
                 </Box>
                 <Box sx={{ mt: 2, p: 1, height: "445px" }}>
                   <Typography>
-                    Click here to <Link href="/login"> Login</Link>
+                    You will be redirect to Login Screen.{" "}
+                    <Link href="/login"> Click here to Login</Link>
                   </Typography>
                   <div style={styleLoaderWrapper}>
-                    <CircularProgress variant="determinate" value={progress} />
+                    <CircularProgressWithLabel
+                      variant="determinate"
+                      value={progress}
+                      counter={counter}
+                    />
                   </div>
                 </Box>
               </Paper>
