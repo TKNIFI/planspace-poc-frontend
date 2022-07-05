@@ -184,66 +184,52 @@ function Verify() {
           </Paper>
         </Grid>
         <Grid item xs={8}>
-          {!isValid ? (
+          <>
             <Paper sx={{ height: "100%", p: 5 }}>
               <Box>
-                <img src={planLogo} height="30px" width="170px" />
+                <img src={planLogo} height="50px" width="220px" />
               </Box>
               <Box sx={{ mt: 3, p: 1 }}>
-                <Typography
-                  variant="h5"
-                  sx={{
-                    color: "#003399",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  Invalid or Expired link
+                <Typography variant="h5" sx={{ color: "#003399" }}>
+                  Welcome To PlanSpace
+                </Typography>
+                <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
+                  Your account has been verified successfully
                 </Typography>
               </Box>
               <Box sx={{ mt: 2, p: 1, height: "445px" }}>
-                <Typography
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Link href="/register">click here to register again </Link>
-                </Typography>
+                {isValid ? (
+                  <>
+                    <Typography
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontSize: "25px",
+                      }}
+                    >
+                      <Link href="/login">Click here to Login</Link>
+                    </Typography>
+
+                    <div style={styleLoaderWrapper}>
+                      <div>
+                        <Typography>
+                          You will be redirect to Login Screen.{" "}
+                        </Typography>
+                      </div>
+                      <CircularProgressWithLabel
+                        variant="determinate"
+                        value={progress}
+                        counter={counter}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <Typography>Token is Invalid or Expired. </Typography>
+                )}
               </Box>
             </Paper>
-          ) : (
-            <>
-              <Paper sx={{ height: "100%", p: 5 }}>
-                <Box>
-                  <img src={planLogo} height="50px" width="220px" />
-                </Box>
-                <Box sx={{ mt: 3, p: 1 }}>
-                  <Typography variant="h5" sx={{ color: "#003399" }}>
-                    Welcome To PlanSpace
-                  </Typography>
-                  <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
-                    Your account has been verified successfully
-                  </Typography>
-                </Box>
-                <Box sx={{ mt: 2, p: 1, height: "445px" }}>
-                  <Typography>
-                    You will be redirect to Login Screen.{" "}
-                    <Link href="/login"> Click here to Login</Link>
-                  </Typography>
-                  <div style={styleLoaderWrapper}>
-                    <CircularProgressWithLabel
-                      variant="determinate"
-                      value={progress}
-                      counter={counter}
-                    />
-                  </div>
-                </Box>
-              </Paper>
-            </>
-          )}
+          </>
         </Grid>
       </Grid>
     </>
