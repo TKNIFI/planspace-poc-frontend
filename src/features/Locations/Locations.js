@@ -4,6 +4,7 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import { Box, Card, CardContent, CardMedia, IconButton } from "@mui/material";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AddLocationForm from "../forms/AddLocationForm";
+import EditCompanyForm from "../forms/EditCompanyfrom"
 import locImage from "../../assets/images/northFace.png";
 import Location from "../../models/Locations/Location";
 import addLogoImage from "../../assets/images/iconadd.png";
@@ -88,6 +89,7 @@ export default function Locations() {
     const [formData, setFormData] = useState();
     const [editRecordValues, setEditRecordValues] = useState(null);
     const [openEditForm, setOpenEditForm] = useState(false);
+    const [openCompanyEditForm, setOpenCompanyEditForm] = useState(false);
     const [open, setOpen] = useState(false);
     const [locations, setLocations] = useState([]);
     const [company, setCompany] = useState([]);
@@ -99,26 +101,30 @@ export default function Locations() {
     const handleClose = () => {
         setOpen(false);
     };
+    // const makeAToast = (message) => {
+    //     toast.success(message)
+    // }
     const innerWidth = window.innerWidth;
     const gettingDataFromChild = (formDataFromParent) => {
         setFormData(formDataFromParent);
     };
-    useEffect(() => {
+    const getCompanyDetails = () => {
         getCompany().then((res) => setCompany(res?.data?.results));
+    }
+    useEffect(() => {
+        getCompanyDetails()
         Location.GetLocations()
             .then((res) => {
                 setLocations(res.results);
-                toast.success("Locations Fetched");
             })
             .catch((err) => {
                 console.log(err);
             });
     }, [innerWidth, open]);
-    console.log("location form data in parent", formData);
+
     return (
         <>
             <Toaster position="top-right" />
-
             <Box
                 style={{
                     marginTop: "10px",
@@ -224,25 +230,29 @@ export default function Locations() {
                                         </Typography>
                                     </Box>
                                 </CardContent>
-                                {/* <Button
-                                    variant="contained"
-                                    color="success"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        padding: "4px 8px",
-                                        gap: "8px",
-                                        width: "190px",
-                                        height: "28px",
-                                        background: "#31A463",
-                                        borderRadius: "16px",
-                                        color: "white",
-                                    }}
-                                >
-                                    Physical Main Location
-                                </Button> */}
+                                <CardContent>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            // justifyContent: "center",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <div style={{ width: "50px" }}>
+                                            <LocationIcon />
+                                        </div>
+                                        <Typography
+                                            style={{ marginLeft: "10px" }}
+                                            variant="subtitle5"
+                                            color="text.secondary"
+                                            component="span"
+                                        >
+                                            {
+                                                company[0]?.address_line1 ? company[0]?.address_line1 : "" + " " + company[0]?.address_line2 ? company[0]?.address_line2 : ""
+                                            }
+                                        </Typography>
+                                    </Box>
+                                </CardContent>
                             </CardContent>
                         </Box>
                         <Box
@@ -253,10 +263,7 @@ export default function Locations() {
                             }}
                         >
                             <EditLocationAltIcon
-                                // onClick={() => {
-                                //     setOpenEditForm(true);
-                                //     setEditRecordValues(item);
-                                // }}
+                                onClick={() =>setOpenCompanyEditForm(true)}
                                 color="disabled"
                             />
                         </Box>
@@ -337,6 +344,35 @@ export default function Locations() {
                 <EditLocationForm
                     sendChildToParent={gettingDataFromChild}
                     editRecordValues={editRecordValues}
+                />
+            </Drawer>
+
+            <Drawer
+                className="ant-drawer-title"
+                title="Edit Company Details"
+                width={1080}
+                onClose={handleClose}
+                visible={openCompanyEditForm}
+                closable={false}
+                bodyStyle={{
+                    paddingBottom: 80,
+                }}
+                extra={
+                    <IconButton
+                        edge="start"
+                        sx={{ color: "white" }}
+                        onClick={() => setOpenCompanyEditForm(false)}
+                        aria-label="close"
+                    >
+                        <CloseCircleOutlined />
+                    </IconButton>
+                }
+            >
+                <EditCompanyForm
+                    defaultValues={company[0]}
+                    callBack={() => getCompanyDetails()}
+                    handleClose={(close) =>setOpenCompanyEditForm(close)}
+                    popUp={(message) => toast.success(message)}
                 />
             </Drawer>
         </>

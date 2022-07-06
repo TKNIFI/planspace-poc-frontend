@@ -11,9 +11,9 @@ export default class Company extends BaseModel {
     return await NetworkCall.fetch(Request.GetCompany());
   }
 
-  // static async UpdateCompany(Props) {
-  //   return await NetworkCall.fetch(Request.UpdateCompany(Props));
-  // }
+  static async UpdateCompany(Props) {
+    return await NetworkCall.fetch(Request.UpdateCompany(Props));
+  }
 
   // static async DeleteCompany(id) {
   //   return await NetworkCall.fetch(Request.DeleteCompany(id));
