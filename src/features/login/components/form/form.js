@@ -5,7 +5,7 @@ import { Box, Grid, Button, Typography, TextField } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 // import User from "../../../../models/user/user";
 // import { login } from "../../../../slices/user";
@@ -149,8 +149,9 @@ const LoginForm = () => {
                         />
                     )}
                     <Typography>
-                        <Link
-                            to="/forgot_password"
+                        <a><span
+                            onClick={() => history.push("/forgot_password")}
+                            // to="/forgot_password"
                             style={{
                                 textDecoration: "underline",
                                 fontWeight: "bold",
@@ -158,7 +159,7 @@ const LoginForm = () => {
                             }}
                         >
                             Forgot Username / Password?
-                        </Link>
+                        </span></a>
                     </Typography>
                     <Typography
                         sx={{
@@ -169,8 +170,8 @@ const LoginForm = () => {
                         }}
                     >
                         Do not have an account?{" "}
-                        <Link
-                            to="/register"
+                        <a><span
+                            onClick={() => history.push("/register")}
                             style={{
                                 textDecoration: "underline",
                                 fontWeight: "bold",
@@ -178,7 +179,7 @@ const LoginForm = () => {
                             }}
                         >
                             Signup here
-                        </Link>
+                        </span></a>
                     </Typography>
                 </Box>
             </form>

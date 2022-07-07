@@ -5,7 +5,7 @@ import { Box, Button, Typography, TextField } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
 import MuiAlert from "@mui/material/Alert";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
 require("dotenv").config();
 // import User from "../../../../models/user/user";
@@ -13,7 +13,7 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
   const [loading, setLoading] = React.useState(false);
   // const [email, setEmail] = React.useState()
   const timer = React.useRef();
-
+  const history = useHistory();
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -133,21 +133,21 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
           </Box>
 
           <Typography sx={{ mt: 4 }}>
-            <Link
-              to="/login"
+            <a><span
+              onClick={() => history.push("/login")}
               style={{ textDecoration: "underline", fontWeight: "bold" }}
             >
               Remembered your password? login here
-            </Link>
+            </span></a>
           </Typography>
           <Typography sx={{ variant: "body1", color: "gray", mt: 22, mb: 0 }}>
             Do not have an account?{" "}
-            <Link
-              to="/register"
+            <a><span
+              onClick={() => history.push("/register")}
               style={{ textDecoration: "underline", fontWeight: "bold" }}
             >
               Signup here
-            </Link>
+            </span></a>
           </Typography>
         </Box>
       </form>

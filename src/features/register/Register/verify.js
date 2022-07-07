@@ -70,7 +70,8 @@ function Verify() {
     SwiperCore.use([EffectCoverflow, Pagination]);
 
     function useQuery() {
-        const { search } = useLocation();
+        let search = (new URL(document.location)).searchParams;
+        // const { search } = useLocation();
         return React.useMemo(() => new URLSearchParams(search), [search]);
     }
     let query = useQuery();

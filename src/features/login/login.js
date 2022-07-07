@@ -70,14 +70,14 @@ const SliderContent = () => {
 export default function Login() {
     // const dispatch = useDispatch();
     const history = useHistory();
-    const location = useLocation();
+    // const location = useLocation();
 
     const onFinish = async (values) => {
         // await dispatch(User.loginCall(values.username, values.password));
 
         // Logged in.
-        const { from } = location.state || { from: { path: "dashboard" } };
-        history.replace(from);
+        // const { from } = location.state || { from: { path: "dashboard" } };
+        // history.replace(from);
     };
     SwiperCore.use([EffectCoverflow, Pagination]);
 

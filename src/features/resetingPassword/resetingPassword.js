@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
 import "antd/dist/antd.css";
 import planLogo from "../../assets/images/plan.svg";
 import { Typography, Grid, Paper, Box } from "@mui/material";
@@ -71,13 +70,14 @@ export default function ResetingPassword() {
     SwiperCore.use([EffectCoverflow, Pagination]);
 
     function useQuery() {
-        const { search } = useLocation();
+        let search = (new URL(document.location)).searchParams;
+        // const { search } = useLocation();
         return React.useMemo(() => new URLSearchParams(search), [search]);
     }
     let query = useQuery();
     const uid = query.get("uid");
     const token = query.get("token");
-
+    console.log(uid);
     async function checkToken() {
         let formData = new FormData();
         formData.append("uid", uid);
