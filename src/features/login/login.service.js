@@ -1,4 +1,5 @@
 import myApi from "../../network/axios";
+require("dotenv").config();
 
 export const login = (username, password) => async () => {
     const { data } = await myApi.post("api/auth/login/", {

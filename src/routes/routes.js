@@ -16,8 +16,8 @@ import Addons from "../features/servicePackages/addons";
 import TeamInvitation from "../features/TeamMemberInvitation/teamMemberInvitation";
 import ResetPassword from "../features/login/resetPassword";
 import PasswordResetMail from "../features/login/passwordResetMail";
-import ResetingPassword from "../features/resetingPassword/resetingPassword"
-import Verifiy from "../features/register/Register/verify"
+import ResetingPassword from "../features/resetingPassword/resetingPassword";
+import Verifiy from "../features/register/Register/verify";
 // Template for a route
 // {
 //   path: '/login',
@@ -69,7 +69,7 @@ const routes = [
     path: "/account/password/change",
     name: "reset password",
     component: ResetingPassword,
-    layout: GuestPageLayout
+    layout: GuestPageLayout,
   },
   // {
   //   path: "/pwdresetmail",

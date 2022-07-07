@@ -4,12 +4,14 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import { Box, Card, CardContent, CardMedia, IconButton } from "@mui/material";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AddLocationForm from "../forms/AddLocationForm";
+import EditCompanyForm from "../forms/EditCompanyfrom"
 import locImage from "../../assets/images/northFace.png";
 import Location from "../../models/Locations/Location";
 import addLogoImage from "../../assets/images/iconadd.png";
 import "./location.scss";
 import EditLocationForm from "../forms/EditLocationForm";
 import { toast } from "react-toastify";
+import {getCompany} from "./location.service";
 
 const LocationIcon = () => {
     return (
@@ -87,30 +89,39 @@ export default function Locations() {
     const [formData, setFormData] = useState();
     const [editRecordValues, setEditRecordValues] = useState(null);
     const [openEditForm, setOpenEditForm] = useState(false);
+    const [openCompanyEditForm, setOpenCompanyEditForm] = useState(false);
     const [open, setOpen] = useState(false);
     const [locations, setLocations] = useState([]);
+    const [company, setCompany] = useState([]);
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    console.log(company);
     const handleClickOpen = () => {
         setOpen(true);
     };
     const handleClose = () => {
         setOpen(false);
     };
+    // const makeAToast = (message) => {
+    //     toast.success(message)
+    // }
     const innerWidth = window.innerWidth;
     const gettingDataFromChild = (formDataFromParent) => {
         setFormData(formDataFromParent);
     };
+    const getCompanyDetails = () => {
+        getCompany().then((res) => setCompany(res?.data?.results));
+    }
     useEffect(() => {
+        getCompanyDetails()
         Location.GetLocations()
             .then((res) => {
                 setLocations(res.results);
-                toast.success("Locations Fetched");
             })
             .catch((err) => {
                 console.log(err);
             });
     }, [innerWidth, open]);
-    console.log("location form data in parent", formData);
+
     return (
         <>
             <Box
@@ -134,91 +145,129 @@ export default function Locations() {
                         <Button>Finish Setup</Button>
                     </div>
                 </div>
-                {locations &&
-                    locations?.map((item) => (
-                        <Card sx={{ display: "flex", p: 1, m: 1 }}>
+                {userInfo && (
+                    // locations?.map((item) => (
+                    <Card sx={{ display: "flex", p: 1, m: 1 }}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                flexDirection: "column",
+                                textAlign: "center",
+                                padding: "20px",
+                            }}
+                        >
                             <CardMedia
                                 component="img"
                                 sx={{ width: "250px", height: "250px" }}
                                 image={locImage}
                                 alt="Live from space"
                             />
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    flexDirection: "column",
-                                    mt: 0,
-                                    width: "330px",
-                                }}
-                            >
-                                <CardContent sx={{ flex: "1 0 auto" }}>
-                                    <CardContent>
-                                        <Typography
-                                            variant="subtitle5"
-                                            color="text.secondary"
-                                            component="span"
-                                        >
-                                            <LocationIcon />{" "}
-                                            {item?.address_line1}
-                                        </Typography>
-                                    </CardContent>
-                                    <CardContent>
-                                        <Typography
-                                            variant="subtitle5"
-                                            color="text.secondary"
-                                            component="span"
-                                        >
-                                            <EmailIcon /> {item?.email}
-                                        </Typography>
-                                    </CardContent>
-                                    <CardContent>
-                                        <Typography
-                                            variant="subtitle5"
-                                            color="text.secondary"
-                                            component="span"
-                                        >
-                                            <LocalPhoneIcon /> {item?.phone}
-                                        </Typography>
-                                    </CardContent>
-                                    <Button
-                                        variant="contained"
-                                        color="success"
-                                        style={{
+                            <strong style={{ marginTop: "10px" }}>
+                                {company[0]?.name}
+                            </strong>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                flexDirection: "column",
+                                mt: 0,
+                                width: "330px",
+                            }}
+                        >
+                            <CardContent sx={{ flex: "1 0 auto" }}>
+                                {/* <CardContent>
+                                    <Typography
+                                        variant="subtitle5"
+                                        color="text.secondary"
+                                        component="span"
+                                    >
+                                        <LocationIcon /> {userInfo?.address}
+                                    </Typography>
+                                </CardContent> */}
+                                <CardContent>
+                                    <Box
+                                        sx={{
                                             display: "flex",
-                                            flexDirection: "row",
-                                            justifyContent: "center",
+                                            // justifyContent: "center",
                                             alignItems: "center",
-                                            padding: "4px 8px",
-                                            gap: "8px",
-                                            width: "190px",
-                                            height: "28px",
-                                            background: "#31A463",
-                                            borderRadius: "16px",
-                                            color: "white",
                                         }}
                                     >
-                                        Physical Main Location
-                                    </Button>
+                                        <div style={{ width: "50px" }}>
+                                            <EmailIcon />
+                                        </div>
+                                        <Typography
+                                            style={{ marginLeft: "10px" }}
+                                            variant="subtitle5"
+                                            color="text.secondary"
+                                            component="span"
+                                        >
+                                            {company[0]?.email}
+                                        </Typography>
+                                    </Box>
                                 </CardContent>
-                            </Box>
-                            <Box
-                                style={{
-                                    marginLeft:
-                                        innerWidth > 1900 ? "1300px" : "580px",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                <EditLocationAltIcon
-                                    onClick={() => {
-                                        setOpenEditForm(true);
-                                        setEditRecordValues(item);
-                                    }}
-                                    color="disabled"
-                                />
-                            </Box>
-                        </Card>
-                    ))}
+                                <CardContent>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            // justifyContent: "center",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <div style={{ width: "50px" }}>
+                                            <LocalPhoneIcon />
+                                        </div>
+                                        <Typography
+                                            style={{ marginLeft: "10px" }}
+                                            variant="subtitle5"
+                                            color="text.secondary"
+                                            component="span"
+                                        >
+                                            {company[0]?.phone ||
+                                                "(229)555-0199"}
+                                        </Typography>
+                                    </Box>
+                                </CardContent>
+                                <CardContent>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            // justifyContent: "center",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <div style={{ width: "50px" }}>
+                                            <LocationIcon />
+                                        </div>
+                                        <Typography
+                                            style={{ marginLeft: "10px" }}
+                                            variant="subtitle5"
+                                            color="text.secondary"
+                                            component="span"
+                                        >
+                                            {
+                                                company[0]?.address_line1 ? company[0]?.address_line1 : "" + " " + company[0]?.address_line2 ? company[0]?.address_line2 : ""
+                                            }
+                                        </Typography>
+                                    </Box>
+                                </CardContent>
+                            </CardContent>
+                        </Box>
+                        <Box
+                            style={{
+                                marginLeft:
+                                    innerWidth > 1900 ? "1450px" : "690px",
+                                cursor: "pointer",
+                            }}
+                        >
+                            <EditLocationAltIcon
+                                onClick={() =>setOpenCompanyEditForm(true)}
+                                color="disabled"
+                            />
+                        </Box>
+                    </Card>
+                )}
                 <Button
                     style={{
                         width: "250px",
@@ -294,6 +343,35 @@ export default function Locations() {
                 <EditLocationForm
                     sendChildToParent={gettingDataFromChild}
                     editRecordValues={editRecordValues}
+                />
+            </Drawer>
+
+            <Drawer
+                className="ant-drawer-title"
+                title="Edit Company Details"
+                width={1080}
+                onClose={handleClose}
+                visible={openCompanyEditForm}
+                closable={false}
+                bodyStyle={{
+                    paddingBottom: 80,
+                }}
+                extra={
+                    <IconButton
+                        edge="start"
+                        sx={{ color: "white" }}
+                        onClick={() => setOpenCompanyEditForm(false)}
+                        aria-label="close"
+                    >
+                        <CloseCircleOutlined />
+                    </IconButton>
+                }
+            >
+                <EditCompanyForm
+                    defaultValues={company[0]}
+                    callBack={() => getCompanyDetails()}
+                    handleClose={(close) =>setOpenCompanyEditForm(close)}
+                    popUp={(message) => toast.success(message)}
                 />
             </Drawer>
         </>

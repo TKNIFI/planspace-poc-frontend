@@ -181,4 +181,15 @@ export default class Request {
             false
         );
     }
+
+    static UpdateCompany(body) {
+        return new Request(
+            K.Network.URL.UpdateCompany,
+            K.Network.Method.UPDATE,
+            body,
+            K.Network.Header.Type.Json,
+            {},
+            false
+        );
+    }
 }

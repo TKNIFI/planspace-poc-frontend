@@ -36,8 +36,9 @@ const LoginForm = () => {
             formData.append("username", values.username);
             formData.append("password", values.password);
             loginUser(values.username, values.password)
-                .then((data) => {
-                    localStorage.setItem("userInfo", JSON.stringify(data.data));
+                .then((res) => {
+                    console.log(res.data);
+                    localStorage.setItem("userInfo", JSON.stringify(res?.data?.data));
                     setLoading(false);
                     history.push("/");
                 })

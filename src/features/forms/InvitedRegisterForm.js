@@ -28,10 +28,10 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            first_name: user?.first_name + " " + user?.last_name,
+            first_name: user?.first_name ? user?.first_name : "" + " " + user?.last_name ? user?.last_name : "s",
             username: user?.username,
             mobile: user?.mobile,
-            company_name: "",
+            company_name: user?.company,
             password: "",
         },
         validationSchema: Yup.object({
@@ -42,9 +42,6 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
             mobile: Yup.string()
                 .matches(phoneRegExp, "Phone number is not valid")
                 .required("Enter phone number"),
-            company_name: Yup.string().required(
-                "Your Business name is required"
-            ),
             password: Yup.string()
                 .required("No password provided.")
                 .min(8, "Password is too short - should be 8 chars minimum.")
@@ -61,7 +58,6 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
             formData.append("uid", uid);
             formData.append("token", token);
             formData.append("mobile", values.mobile.replaceAll("-", ""));
-            formData.append("company_name", values.company_name);
             formData.append("password", values.password);
             formData.append("first_name", name[0]);
             if (name.length > 1) {
@@ -133,7 +129,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                         type="text"
                         error={Boolean(
                             formik.touched.first_name &&
-                                formik.errors.first_name
+                            formik.errors.first_name
                         )}
                         helperText={
                             formik.touched.first_name &&
@@ -153,7 +149,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                                 type="email"
                                 error={Boolean(
                                     formik.touched.username &&
-                                        formik.errors.username
+                                    formik.errors.username
                                 )}
                                 helperText={
                                     formik.touched.username &&
@@ -177,7 +173,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                                         type="tel"
                                         error={Boolean(
                                             formik.touched.mobile &&
-                                                formik.errors.mobile
+                                            formik.errors.mobile
                                         )}
                                         helperText={
                                             formik.touched.mobile &&
@@ -196,8 +192,9 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                         type="text"
                         error={Boolean(
                             formik.touched.company_name &&
-                                formik.errors.company_name
+                            formik.errors.company_name
                         )}
+                        disabled={true}
                         helperText={
                             formik.touched.company_name &&
                             formik.errors.company_name

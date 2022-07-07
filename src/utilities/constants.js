@@ -88,6 +88,9 @@ const K = {
             //get company
             GetCompany: "/company/",
 
+            // update Location
+            UpdateCompany: "/api/company/:id/",
+
             //create Locations
             CreateLocation: "/company/location/",
 
