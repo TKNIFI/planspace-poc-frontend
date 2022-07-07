@@ -60,6 +60,11 @@ box-shadow: inset 2px 0px 0px #FFFFFF;
     padding-left: 11px;
 }
 
+.ant-menu-submenu-open{
+
+    /* opacity: 0; */
+}
+
 
 .ant-menu-dark .ant-menu-inline.ant-menu-sub {
     /* background: #000c17; */

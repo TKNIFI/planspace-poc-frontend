@@ -24,7 +24,7 @@ export default function Sider() {
       >
         <Menu
           theme="dark"
-          defaultSelectedKeys={["0"]}
+          // defaultSelectedKeys={["0"]}
           defaultOpenKeys={["0"]}
           mode="inline"
           style={{ backgroundColor: "#003498" }}
@@ -35,16 +35,18 @@ export default function Sider() {
                 <SubMenu key={i} icon={navigation.icon} title={navigation.name}>
                   {navigation.children.map((subNavigation, j) => {
                     return (
-                      <>
-                        <Menu.Item
-                          key={`${i}_${j}`}
-                          style={{ paddingLeft: "48px", margin: "-1%" }}
-                        >
-                          <Link to={subNavigation.path}>
-                            {subNavigation.name}
-                          </Link>
-                        </Menu.Item>
-                      </>
+                      !collapsed && (
+                        <>
+                          <Menu.Item
+                            key={`${i}_${j}`}
+                            style={{ paddingLeft: "48px", margin: "-1%" }}
+                          >
+                            <Link to={subNavigation.path}>
+                              {subNavigation.name}
+                            </Link>
+                          </Menu.Item>
+                        </>
+                      )
                     );
                   })}
                 </SubMenu>
