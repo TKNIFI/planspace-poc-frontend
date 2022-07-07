@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,400;1,300&family=Poppins:ital@1&display=swap');
 
 .ant-drawer-content-wrapper{
-width: 760px !important;
+width: 53% !important;
 }
 
 .ant-drawer-header{
@@ -55,5 +55,5 @@ color: #676879 !important;
     margin-left: 247px !important;
 }
 .field-width{
-    width: 330px;
+    width: 381px;
 }
