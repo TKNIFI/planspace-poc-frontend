@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./App.scss";
 import routes from "../routes/routes";
@@ -11,11 +11,11 @@ function App() {
         <div className="App">
             <ToastContainer autoClose={3000} />
 
-            <BrowserRouter>
-                {routes.map((route, i) => (
-                    <RouteWithSubRoutes key={i} {...route} />
-                ))}
-            </BrowserRouter>
+      <Switch>
+        {routes.map((route, i) => (
+          <RouteWithSubRoutes key={i} {...route} />
+        ))}
+      </Switch>
 
             <div className="help-div">
                 <svg
