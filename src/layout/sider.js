@@ -13,6 +13,12 @@ export default function Sider() {
     setCollapsed(collapsed);
   };
 
+  const handleClick = () => {
+    if (collapsed) {
+      setCollapsed(false);
+    }
+  };
+
   return (
     <>
       <Sider
@@ -21,13 +27,15 @@ export default function Sider() {
         collapsed={collapsed}
         onCollapse={onCollapse}
         style={{ backgroundColor: "#003399" }}
+        onClick={handleClick}
       >
         <Menu
           theme="dark"
-          // defaultSelectedKeys={["0"]}
+          defaultSelectedKeys={["0"]}
           defaultOpenKeys={["0"]}
           mode="inline"
           style={{ backgroundColor: "#003498" }}
+          onClick={handleClick}
         >
           {navigations.map((navigation, i) => {
             if ((navigation.children?.length ?? 0) > 0) {
@@ -53,8 +61,8 @@ export default function Sider() {
               );
             } else {
               return (
-                <Menu.Item key={i} icon={navigation.icon}>
-                  <Link to={navigation.path}>{navigation.name}</Link>
+                <Menu.Item key={i} icon={navigation.icon} onClick={handleClick}>
+                  {<Link to={navigation.path}>{navigation.name}</Link>}
                 </Menu.Item>
               );
             }
