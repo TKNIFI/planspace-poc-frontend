@@ -12,3 +12,10 @@ export default configureStore({
         counter: counterReducer,
     },
 });
+
+const reducer = {
+  orm: createReducer(orm),
+  counter: counterReducer,
+};
+
+export { reducer };

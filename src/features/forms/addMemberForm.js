@@ -8,6 +8,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+// import { Toaster } from "react-hot-toast";
 import myApi from "../../network/axios";
 import PhoneInput from "../../common/phoneNumber";
 import "./addMemberForm.css";
@@ -38,7 +39,6 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
     }),
     onSubmit: async (values, helpers) => {
       setLoading(true);
-
       let formData = new FormData();
       let name = values.name.split(" ");
       formData.append("first_name", name[0]);
@@ -74,8 +74,8 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
   return (
     <>
       <form
+        data-testid="form"
         onSubmit={formik.handleSubmit}
-        id="myForm"
         style={{ padding: "2%" }}
       >
         <Box
@@ -92,6 +92,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
               <TextField
                 name="name"
                 label="Name*"
+                placeholder="Name"
                 value={formik.values.name}
                 error={Boolean(formik.touched.name && formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
@@ -105,6 +106,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 name="userId"
                 label="User ID*"
                 value={formik.values.userId}
+                placeholder="User"
                 error={Boolean(formik.touched.userId && formik.errors.userId)}
                 helperText={formik.touched.userId && formik.errors.userId}
                 onChange={formik.handleChange}
@@ -116,6 +118,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 name="username"
                 label="Email*"
                 value={formik.values.username}
+                placeholder="Email"
                 error={Boolean(
                   formik.touched.username && formik.errors.username
                 )}
@@ -213,6 +216,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                     fontFamily: "Fira Sans",
                     textTransform: "none",
                   }}
+                  data-testid="submit-button"
                   disabled={loading}
                 >
                   Submit
@@ -234,6 +238,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
             </Stack>
           </Box>
         </Box>
+        {/* <Toaster position="top-right" /> */}
       </form>
     </>
   );
