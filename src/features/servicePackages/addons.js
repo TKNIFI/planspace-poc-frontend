@@ -15,6 +15,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Drawer } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import AddonsForm from "../servicePackages/forms/adonsform";
+import ActiveCard from "./ActiveCard";
 const ButtonStyle = {
   backgroundColor: "#FFFFFF",
   color: "lightslategray",
@@ -71,6 +72,12 @@ const Addons = () => {
         </Grid>
       </Box>
       {/* cards */}
+
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <ActiveCard />
+        <ActiveCard />
+        <ActiveCard />
+      </div>
 
       {/* Model html */}
       <Drawer
