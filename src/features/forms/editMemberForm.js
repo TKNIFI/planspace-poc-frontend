@@ -77,7 +77,11 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
 
   return (
     <>
-      <form onSubmit={formik.handleSubmit} style={{ padding: "2%" }}>
+      <form
+        onSubmit={formik.handleSubmit}
+        data-testid="form"
+        style={{ padding: "2%" }}
+      >
         <Box
           sx={{
             "& .MuiTextField-root": {
@@ -93,6 +97,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 name="name"
                 label="Name*"
                 value={formik.values.name}
+                placeholder="Name"
                 error={Boolean(formik.touched.name && formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
                 onChange={formik.handleChange}
@@ -104,6 +109,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
               <TextField
                 name="userId"
                 label="User ID"
+                placeholder="User"
                 value={formik.values.userId}
                 error={Boolean(formik.touched.userId && formik.errors.userId)}
                 helperText={formik.touched.userId && formik.errors.userId}
@@ -117,6 +123,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 name="username"
                 label="Email"
                 value={formik.values.username}
+                placeholder="Email"
                 error={Boolean(
                   formik.touched.username && formik.errors.username
                 )}
@@ -216,6 +223,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                   style={{ textTransform: "none" }}
                   type="submit"
                   disabled={loading}
+                  data-testid="submit-button"
                 >
                   Submit
                 </Muibtn>

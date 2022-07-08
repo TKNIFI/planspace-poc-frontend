@@ -15,7 +15,7 @@ import "swiper/swiper.min.css";
 import "swiper/swiper-bundle.min.css";
 import RegisterationForm from "../../forms/registerationform";
 import RegisterSuccess from "./registerSuccess";
-// import RegisterSuccess from "../../register/registerSuccess";
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import InvalidLink from "../../login/invalidLink";
 import sliderImage from "../../../assets/images/sliderImage.png";
 import elipseOuter from "../../../assets/images/Ellipse125.png";
@@ -26,26 +26,32 @@ import circleImage3 from "../../../assets/images/sliderCircleImage3.png";
 require("dotenv").config();
 
 function CircularProgressWithLabel(props) {
+  const history = useHistory();
   return (
-    <Box sx={{ position: "relative", display: "inline-flex" }}>
-      <CircularProgress variant="determinate" {...props} />
-      <Box
-        sx={{
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          position: "absolute",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+    <Box>
+      <CountdownCircleTimer
+        isPlaying
+        duration={5}
+        colors={['#2576b8']}
+        colorsTime={[0]}
+        onComplete={() => {
+          history.push("/login")
         }}
       >
-        <Typography variant="caption" component="div" color="text.secondary">
-          {`${Math.round(props.counter)}`}
-        </Typography>
-      </Box>
-    </Box>
+        {({ remainingTime }) => {
+          return (
+            <Box sx={{ marginLeft: 5 }}>
+              <Typography>
+                Redirecting to login page in
+              </Typography>
+              <Typography variant="h3" sx={{ textAlign: "center", marginRight: 2 }}> {remainingTime}</Typography>
+              <Typography sx={{ textAlign: "center", marginRight: 2 }}>Seconds</Typography>
+            </Box>
+          )
+        }
+        }
+      </CountdownCircleTimer>
+    </Box >
   );
 }
 
@@ -96,8 +102,9 @@ const SliderContent = () => {
   );
 };
 function Verify() {
-  const [isValid, setIsValid] = useState(false);
+  const [isValid, setIsValid] = useState();
   const [counter, setCounter] = useState(6);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [progress, setProgress] = React.useState(0);
   const history = useHistory();
@@ -122,9 +129,11 @@ function Verify() {
         )
         .then((result) => {
           setIsValid(true);
+          setIsLoading(false);
         });
     } catch (error) {
       setIsValid(false);
+      setIsLoading(false);
     }
   };
 
@@ -141,7 +150,6 @@ function Verify() {
       console.log("time out");
       if (isValid) {
         history.push("/login");
-      } else {
       }
     }, 5000);
   }, []);
@@ -163,26 +171,25 @@ function Verify() {
   return (
     <>
       <Grid container spacing={0} columns={16} sx={{ ml: 12 }}>
-        {/* carousal  */}
         <Grid item xs={6}>
           <Paper>
-          <Swiper
-                                effect={"coverflow"}
-                                grabCursor={true}
-                                centeredSlides={true}
-                                slidesPerView={"auto"}
-                                coverflowEffect={{
-                                    rotate: 10,
-                                    stretch: 0,
-                                    depth: 100,
-                                    modifier: 1,
-                                    slideShadows: false,
-                                }}
-                                pagination={{
-                                    dynamicBullets: true,
-                                }}
-                                className="mySwiper"
-                            >
+            <Swiper
+              effect={"coverflow"}
+              grabCursor={true}
+              centeredSlides={true}
+              slidesPerView={"auto"}
+              coverflowEffect={{
+                rotate: 10,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: false,
+              }}
+              pagination={{
+                dynamicBullets: true,
+              }}
+              className="mySwiper"
+            >
               <SwiperSlide>
                 <SliderContent />
               </SwiperSlide>
@@ -198,14 +205,30 @@ function Verify() {
               <Box>
                 <img src={planLogo} height="50px" width="220px" />
               </Box>
+
               <Box sx={{ mt: 3, p: 1 }}>
                 <Typography variant="h5" sx={{ color: "#003399" }}>
-                  Welcome To PlanSpace
+                  {isLoading
+                    ? "Verifying ..."
+                    : ""}
+                  {isValid
+                    ? "Your Account is Verified Successfully"
+                    : ""}
+                  {!isLoading && !isValid ?
+                    "Token is Invalid or Expired" : ""}
                 </Typography>
-                <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
-                  Your account has been verified successfully
-                </Typography>
+                {isValid && (
+                  <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
+                    Your account has been verified successfully
+                  </Typography>
+                )}
               </Box>
+
+              {isLoading && (
+                <div>
+                  <CircularProgress />
+                </div>
+              )}
               <Box sx={{ mt: 2, p: 1, height: "445px" }}>
                 {isValid ? (
                   <>
@@ -215,22 +238,25 @@ function Verify() {
                         justifyContent: "center",
                         alignItems: "center",
                         fontSize: "25px",
+                        marginBottom: 5
                       }}
                     >
                       <Link href="/login">Click here to Login</Link>
                     </Typography>
 
                     <div style={styleLoaderWrapper}>
-                      <div>
+                      {/* <div sx={{ marginBottom: 50 }}>
                         <Typography>
                           You will be redirect to Login Screen.{" "}
                         </Typography>
+                      </div> */}
+                      <div sx={{ marginTop: "10px" }}>
+                        <CircularProgressWithLabel
+                          variant="determinate"
+                          value={progress}
+                          counter={counter}
+                        />
                       </div>
-                      <CircularProgressWithLabel
-                        variant="determinate"
-                        value={progress}
-                        counter={counter}
-                      />
                     </div>
                   </>
                 ) : (

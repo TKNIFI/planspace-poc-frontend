@@ -83,31 +83,33 @@ const TeamInvitation = () => {
         getUsers();
     }, []);
 
-    return (
-        <>
-            <Box sx={{ flexGrow: 1, display: "inline" }}>
-                <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    <Grid item xs={8}></Grid>
-                    <Grid item xs={4}>
-                        <Button
-                            variant="contained"
-                            className="addNewBtn"
-                            style={{
-                                textTransform: "capitalize",
-                                float: "right",
-                                fontFamily: "Fira Sans",
-                                fontSize: "15px",
-                                width: "124px",
-                                height: "44px",
-                            }}
-                            onClick={() => setOpenAddForm(true)}
-                        >
-                            Add new <AddIcon />
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Box>
-            {/* table */}
+  return (
+    <>
+      {/* <Toaster position="top-right" /> */}
+      <Box sx={{ flexGrow: 1, display: "inline" }}>
+        <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
+          <Grid item xs={8}></Grid>
+          <Grid item xs={4}>
+            <Button
+              variant="contained"
+              className="addNewBtn"
+              style={{
+                textTransform: "capitalize",
+                float: "right",
+                fontFamily: "Fira Sans",
+                fontSize: "15px",
+                width: "124px",
+                height: "44px",
+              }}
+              data-testid="addBtn"
+              onClick={() => setOpenAddForm(true)}
+            >
+              Add new <AddIcon />
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+      {/* table */}
 
             <TeamMemberTable
                 tableRow={tableRow ? tableRow : []}
