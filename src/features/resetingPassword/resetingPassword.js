@@ -35,7 +35,11 @@ const SliderContent = () => {
                     </Typography>
                     <Typography
                         variant="p"
-                        sx={{ color: "lightgray", fontWeight: "bold" }}
+                        sx={{
+                            color: "white",
+                            fontFamily: "Fira Sans",
+                         }}
+                        
                     >
                         Amet minim mollit non deserunt ullamco est sit <br />{" "}
                         aliqua dolor do amet sint. Velit officia consequat duis{" "}

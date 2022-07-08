@@ -1,14 +1,19 @@
-import React from "react";
+import React,{useState} from "react";
 import axios from "axios";
 import { useFormik } from "formik";
-import { Alert, Box, Button, TextField } from "@mui/material";
-// import { Link, useHistory } from "react-router-dom";
+import { Alert, Box, Button, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 // import User from "../../../../models/user/user";
 // import { useDispatch } from "react-redux";
 require("dotenv").config();
 const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
+    const [showPassword, setShowPassword] = useState(false);
+const handleClickShowPassword = () => setShowPassword(!showPassword);
+const handleMouseDownPassword = () => setShowPassword(!showPassword);
+    const history = useHistory();
     const formik = useFormik({
         initialValues: {
             newpassword: "",
@@ -44,10 +49,9 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         formData
                     )
                     .then((result) => {
+                        console.log(result)
                         toast.success(
-                            <Alert severity="success" variant="filled">
-                                {result.data.data}
-                            </Alert>
+                                result?.data?.message
                         );
                         // eslint-disable-next-line no-unused-expressions
                         formik.values.newpassword &&
@@ -75,7 +79,22 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         id="newpassword"
                         label="Enter new password*"
                         placeholder="Enter new password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
+                        InputProps={{
+                            endAdornment:(
+                                <InputAdornment position="end">
+                                    <IconButton>
+                                        <IconButton
+                                          aria-label="toggle password visibility"
+                                          onClick={handleClickShowPassword}
+                                          onMouseDown={handleMouseDownPassword}
+                                        >
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
                         value={formik.values.newpassword}
                         error={Boolean(
                             formik.touched.newpassword &&
@@ -93,8 +112,23 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         id="confirmpassword"
                         label="Confirm new password*"
                         placeholder="Confirm new password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         value={formik.values.confirmpassword}
+                        InputProps={{
+                            endAdornment:(
+                                <InputAdornment position="end">
+                                    <IconButton>
+                                    <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+        >
+          {showPassword ? <Visibility /> : <VisibilityOff />}
+        </IconButton>
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
                         error={Boolean(
                             formik.touched.confirmpassword &&
                                 formik.errors.confirmpassword
@@ -110,7 +144,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                 <Box className="container">
                     <Button
                         sx={{
-                            fontSize: 20,
+                            fontSize: 16,
                             textTransform: "capitalize",
                             pl: 10,
                             pr: 10,
@@ -122,6 +156,28 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         Reset Password
                     </Button>
                 </Box>
+                <Box sx={{textAlign: "center"}}>
+                <Typography
+                        sx={{
+                            variant: "body1",
+                            color: "gray",
+                            mt: 15,
+                            fontFamily: "Fira Sans",
+                        }}
+                    >
+                        Do not have an account?{" "}
+                        <a><span
+                            onClick={() => history.push("/register")}
+                            style={{
+                                textDecoration: "underline",
+                                fontWeight: "bold",
+                                fontFamily: "Fira Sans",
+                            }}
+                        >
+                            Signup here
+                        </span></a>
+                    </Typography>
+                    </Box>
             </form>
         </>
     );
