@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Paper, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import { toast } from "react-toastify";
 import planLogo from "../../../assets/images/plan.svg";
 import successCircle from "../../../assets/images/checkCircle.png";
 import { Button } from "antd";
@@ -39,7 +39,6 @@ const RegisterSuccess = ({ email }) => {
     return (
         <>
             {/* <Grid> */}
-            <Toaster position="top-right" />
             <Paper sx={{ height: "100%", p: 5 }}>
                 <Box>
                     <img src={planLogo} height="50px" width="220px" />

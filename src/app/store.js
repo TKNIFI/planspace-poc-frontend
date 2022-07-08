@@ -1,14 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { createReducer } from 'redux-orm';
-import User from '../models/user/user';
-import counterReducer from '../features/counter/counterSlice';
-import orm from './orm';
+import { configureStore } from "@reduxjs/toolkit";
+import { createReducer } from "redux-orm";
+import User from "../models/user/user";
+import counterReducer from "../features/counter/counterSlice";
+import orm from "./orm";
 
-orm.register(User); 
+orm.register(User);
 
 export default configureStore({
-  reducer: {
-    orm: createReducer(orm),
-    counter: counterReducer,
-  },
+    reducer: {
+        // orm: createReducer(orm),
+        counter: counterReducer,
+    },
 });

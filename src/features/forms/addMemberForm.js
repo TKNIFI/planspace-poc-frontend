@@ -8,7 +8,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Toaster } from "react-hot-toast";
 import myApi from "../../network/axios";
 import PhoneInput from "../../common/phoneNumber";
 import "./addMemberForm.css";
@@ -235,7 +234,6 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
             </Stack>
           </Box>
         </Box>
-        <Toaster position="top-right" />
       </form>
     </>
   );

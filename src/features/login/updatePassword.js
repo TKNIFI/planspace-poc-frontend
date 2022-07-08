@@ -6,10 +6,10 @@ import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import planLogo from "../../assets/images/plan.svg";
 import { Typography, Grid, Paper, Box } from "@mui/material";
-import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { EffectCoverflow, Pagination } from "swiper";
 import "swiper/swiper.min.css";
-import "swiper/modules/pagination/pagination.min.css";
-import { Pagination } from "swiper";
+import "swiper/swiper-bundle.min.css";
 import sliderImage from "../../assets/images/sliderImage.png";
 import PasswordResetForm from "../forms/passwordResetForm";
 import PasswordResetMail from "../login/passwordResetMail";
@@ -27,6 +27,7 @@ export default function ResetPassword() {
         const { from } = location.state || { from: { path: "dashboard" } };
         history.replace(from);
     };
+    SwiperCore.use([EffectCoverflow, Pagination]);
 
     return (
         <>
@@ -35,10 +36,20 @@ export default function ResetPassword() {
                 <Grid item xs={8}>
                     <Paper sx={{ height: "100%" }}>
                         <Swiper
+                            effect={"coverflow"}
+                            grabCursor={true}
+                            centeredSlides={true}
+                            slidesPerView={"auto"}
+                            coverflowEffect={{
+                                rotate: 10,
+                                stretch: 0,
+                                depth: 100,
+                                modifier: 1,
+                                slideShadows: false,
+                            }}
                             pagination={{
                                 dynamicBullets: true,
                             }}
-                            modules={[Pagination]}
                             className="mySwiper"
                         >
                             <SwiperSlide>

@@ -6,9 +6,8 @@ import { Box, Grid, Button, Typography, TextField } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { green } from "@mui/material/colors";
 import User from "../../models/user/user";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
 import SocialButton from "../login/components/SocialButton";
 import CircularProgress from "@mui/material/CircularProgress";
 import gmailLogo from "../../assets/images/gmailLogo.png";
@@ -20,7 +19,6 @@ const phoneRegExp = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
 const RegisterationForm = ({ onSubmiting, email }) => {
   let history = useHistory();
-  const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const [check, setCheck] = React.useState(false);
   const timer = React.useRef();
@@ -253,8 +251,8 @@ const RegisterationForm = ({ onSubmiting, email }) => {
             sx={{ variant: "body1", color: "gray", fontFamily: "Fira Sans" }}
           >
             Already have an account?{" "}
-            <Link
-              to="/login"
+            <a><span
+              onClick={() => history.push("/login")}
               style={{
                 textDecoration: "underline",
                 fontWeight: "bold",
@@ -262,7 +260,7 @@ const RegisterationForm = ({ onSubmiting, email }) => {
               }}
             >
               Signin here
-            </Link>
+            </span></a>
           </Typography>
         </Box>
       </form>
