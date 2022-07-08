@@ -98,6 +98,7 @@ const SliderContent = () => {
 function Verify() {
   const [isValid, setIsValid] = useState(false);
   const [counter, setCounter] = useState(6);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [progress, setProgress] = React.useState(0);
   const history = useHistory();
@@ -122,9 +123,11 @@ function Verify() {
         )
         .then((result) => {
           setIsValid(true);
+          setIsLoading(false);
         });
     } catch (error) {
       setIsValid(false);
+      setIsLoading(false);
     }
   };
 
@@ -163,26 +166,25 @@ function Verify() {
   return (
     <>
       <Grid container spacing={0} columns={16} sx={{ ml: 12 }}>
-        {/* carousal  */}
         <Grid item xs={6}>
           <Paper>
-          <Swiper
-                                effect={"coverflow"}
-                                grabCursor={true}
-                                centeredSlides={true}
-                                slidesPerView={"auto"}
-                                coverflowEffect={{
-                                    rotate: 10,
-                                    stretch: 0,
-                                    depth: 100,
-                                    modifier: 1,
-                                    slideShadows: false,
-                                }}
-                                pagination={{
-                                    dynamicBullets: true,
-                                }}
-                                className="mySwiper"
-                            >
+            <Swiper
+              effect={"coverflow"}
+              grabCursor={true}
+              centeredSlides={true}
+              slidesPerView={"auto"}
+              coverflowEffect={{
+                rotate: 10,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: false,
+              }}
+              pagination={{
+                dynamicBullets: true,
+              }}
+              className="mySwiper"
+            >
               <SwiperSlide>
                 <SliderContent />
               </SwiperSlide>
@@ -198,14 +200,27 @@ function Verify() {
               <Box>
                 <img src={planLogo} height="50px" width="220px" />
               </Box>
+
               <Box sx={{ mt: 3, p: 1 }}>
                 <Typography variant="h5" sx={{ color: "#003399" }}>
-                  Welcome To PlanSpace
+                  {isLoading
+                    ? "Verifying token.."
+                    : isValid
+                    ? "Your Account is Verified Successfully"
+                    : "Token is Invalid or Expired"}
                 </Typography>
-                <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
-                  Your account has been verified successfully
-                </Typography>
+                {isValid && (
+                  <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
+                    Your account has been verified successfully
+                  </Typography>
+                )}
               </Box>
+
+              {isLoading && (
+                <div>
+                  <CircularProgress />
+                </div>
+              )}
               <Box sx={{ mt: 2, p: 1, height: "445px" }}>
                 {isValid ? (
                   <>
