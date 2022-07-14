@@ -84,6 +84,9 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
               width: "60ch",
               marginTop: 3,
               width: "381px",
+              width: "-webkit-fill-available",
+
+              marginRight: "23px",
             },
           }}
         >
@@ -194,7 +197,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
             <Stack
               spacing={2}
               direction="row"
-              sx={{ marginTop: 8, marginLeft: "317px" }}
+              sx={{ marginTop: 8, display: "flex", justifyContent: "center" }}
             >
               <Muibtn
                 variant="outlined"

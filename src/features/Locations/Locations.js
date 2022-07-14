@@ -374,7 +374,7 @@ export default function Locations() {
 
       <Drawer
         className="ant-drawer-title"
-        title="Edit Company Details"
+        title={company[0]?.name}
         width={1080}
         onClose={handleClose}
         visible={openCompanyEditForm}

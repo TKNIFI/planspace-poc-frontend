@@ -15,7 +15,7 @@ describe("Location unit Test", () => {
   });
   test("Company card is rendering or not", () => {
     render(<Locations />);
-    const divElem = screen.getByTestId("card");
+    // const divElem = screen.getByTestId("card");
     // expect(divElem).toHaveClass(
     //   "MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-67k2te-MuiPaper-root-MuiCard-root"
     // );
