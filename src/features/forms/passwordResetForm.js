@@ -77,8 +77,8 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
         >
           <TextField
             id="username"
-            label="Enter Your Email*"
-            placeholder="Enter Your Email"
+            label="Enter Your email*"
+            placeholder="Enter Your email"
             type="email"
             value={formik.values.username}
             onChange={formik.handleChange}
@@ -115,7 +115,7 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
               type="submit"
               disabled={loading}
             >
-              Send instructions
+              <span style={{ fontSize: "16px" }}>Send instructions</span>
             </Button>
             {loading && (
               <CircularProgress
@@ -137,7 +137,7 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
               onClick={() => history.push("/login")}
               style={{ textDecoration: "underline", fontWeight: "bold" }}
             >
-              Remembered your password? login here
+              Remembered your password? Login Here
             </span></a>
           </Typography>
           <Typography sx={{ variant: "body1", color: "gray", mt: 22, mb: 0 }}>

@@ -41,9 +41,12 @@
 }
 
 
-input::placeholder,
 label.MuiInputLabel-root,
 label.MuiInputLabel-formControl {
+  font-weight: bold !important;
+}
+
+input::placeholder {
   font-weight: bold !important;
   opacity: 0.5 !important;
 }
