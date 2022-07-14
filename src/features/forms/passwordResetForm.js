@@ -77,8 +77,8 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
         >
           <TextField
             id="username"
-            label="Enter Your Email*"
-            placeholder="Enter Your Email"
+            label="Enter Your email*"
+            placeholder="Enter Your email"
             type="email"
             value={formik.values.username}
             onChange={formik.handleChange}

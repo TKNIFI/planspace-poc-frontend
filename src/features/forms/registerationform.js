@@ -129,8 +129,8 @@ const RegisterationForm = ({ onSubmiting, email }) => {
             <Grid item xs={6}>
               <TextField
                 id="username"
-                label="Enter your email id*"
-                placeholder="Enter your email id"
+                label="Enter your email address*"
+                placeholder="Enter your email address"
                 type="email"
                 error={Boolean(
                   formik.touched.username && formik.errors.username
@@ -150,7 +150,7 @@ const RegisterationForm = ({ onSubmiting, email }) => {
                   <TextField
                     id="mobile"
                     name="mobile"
-                    label="Enter Your phone number*"
+                    label="Enter your phone number*"
                     placeholder="E.g 212-456-7890"
                     type="tel"
                     error={Boolean(
@@ -166,8 +166,8 @@ const RegisterationForm = ({ onSubmiting, email }) => {
           <TextField
             id="company_name"
             name="company_name"
-            label="Enter Your Business name"
-            placeholder="Enter Your Business Name"
+            label="Enter your Business Name"
+            placeholder="Enter your Business Name"
             type="text"
             error={Boolean(
               formik.touched.company_name && formik.errors.company_name
@@ -182,8 +182,8 @@ const RegisterationForm = ({ onSubmiting, email }) => {
           <TextField
             id="password"
             name="password"
-            label="Create password*"
-            placeholder="Create password"
+            label="Create Password*"
+            placeholder="Create Password"
             type="password"
             error={Boolean(formik.touched.password && formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
