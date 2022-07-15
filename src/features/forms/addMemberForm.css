@@ -57,3 +57,7 @@ color: #676879 !important;
 .field-width{
     width: 381px;
 }
+
+.ant-drawer-title{
+    font-weight: bolder;
+}
