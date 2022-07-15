@@ -111,7 +111,7 @@ function Register() {
         </Grid>
         {/* create account formik form  */}
         <Grid item xs={8}>
-          {true ? (
+          {check ? (
             <RegisterSuccess email={email} />
           ) : (
             <>
