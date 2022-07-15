@@ -87,17 +87,26 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
             "& .MuiTextField-root": {
               width: "60ch",
               marginTop: 3,
-              width: "381px",
+              width: "29vw",
             },
           }}
         >
           <Grid container spacing={1}>
-            <Grid item xs={6}>
+            <Grid
+              item
+              xs={6}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <TextField
                 name="name"
                 label="Name*"
                 value={formik.values.name}
                 placeholder="Name"
+                sx={{ width: "" }}
                 error={Boolean(formik.touched.name && formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
                 onChange={formik.handleChange}
@@ -105,7 +114,15 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 // autoComplete="current"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid
+              item
+              xs={6}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <TextField
                 name="userId"
                 label="User ID"
@@ -118,7 +135,15 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 // autoComplete="current"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid
+              item
+              xs={6}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <TextField
                 name="username"
                 label="Email"
@@ -132,7 +157,15 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 // autoComplete="current"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid
+              item
+              xs={6}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <PhoneInput
                 value={formik.values.mobile}
                 onChange={formik.handleChange}
@@ -192,6 +225,9 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 position: "fixed",
                 top: "50%",
                 left: "50%",
+                display: "flex",
+
+                justifyContent: "center",
                 marginTop: "-100px",
                 marginLeft: "-100px",
               },
@@ -200,7 +236,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
             <Stack
               spacing={2}
               direction="row"
-              sx={{ marginTop: 10, marginLeft: "317px" }}
+              sx={{ marginTop: 10, display: "flex", justifyContent: "center" }}
             >
               <Muibtn
                 variant="outlined"
