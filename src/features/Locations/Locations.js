@@ -11,6 +11,7 @@ import addLogoImage from "../../assets/images/iconadd.png";
 import "./location.scss";
 import EditLocationForm from "../forms/EditLocationForm";
 import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
 import { getCompany } from "./location.service";
 
 const LocationIcon = () => {
@@ -95,6 +96,7 @@ export default function Locations() {
   const [company, setCompany] = useState([]);
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   console.log(company);
+  const history = useHistory();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -145,7 +147,7 @@ export default function Locations() {
             </p>
           </div>
           <div>
-            <Button>Finish Setup</Button>
+            <Button onClick={() => history.push("/")}>Finish Setup</Button>
           </div>
         </div>
         {userInfo && (
@@ -311,15 +313,13 @@ export default function Locations() {
           icon={<img src={addLogoImage} />}
           onClick={handleClickOpen}
         >
-          <Typography style={{ marginTop: "12px" }}>
-            Add New Location
-          </Typography>
+          <Typography style={{ marginTop: "12px" }}>Add New Venue</Typography>
         </Button>
       </Box>
 
       {/* Model html */}
       <Drawer
-        title="New Location Name"
+        title="New Venue Name"
         width={innerWidth > 1900 ? 1250 : 900}
         onClose={handleClose}
         visible={open}

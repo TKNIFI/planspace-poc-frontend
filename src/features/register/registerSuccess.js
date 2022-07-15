@@ -43,10 +43,10 @@ const RegisterSuccess = () => {
               link has been sent to your registred email id. Please click on the
               link to confirm your account and start using the system.
             </Typography>
-            <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
+            {/* <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
               Did not receive the mail? <Link>Resend</Link>
-            </Typography>
-            <Box sx={{mt: 20, mb: 0}}>
+            </Typography> */}
+            <Box sx={{ mt: 20, mb: 0 }}>
               <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
                 Already confirmed? <Link to="/login">Signin here</Link>
               </Typography>
