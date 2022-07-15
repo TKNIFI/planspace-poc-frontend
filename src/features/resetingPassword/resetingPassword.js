@@ -132,9 +132,9 @@ export default function ResetingPassword() {
                     </Paper>
                 </Grid>
                 {/* create account formik form  */}
-                {true ? (
+                {isValid ? (
                     <Grid item xs={8}>
-                        {true ? (
+                        {check ? (
                             <ResetingPasswordConfirmation />
                         ) : (
                             <>
