@@ -148,11 +148,15 @@ const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirm
                 <Box className="container">
                     <Button
                         sx={{
-                            fontSize: 16,
-                            textTransform: "capitalize",
-                            pl: 10,
-                            pr: 10,
-                            py:1
+                            mb: 2,
+                            mt: 3,
+                            paddingLeft: "100px",
+                            paddingRight: "100px",
+                            paddingTop: "9px",
+                            paddingBottom: "9px",
+                            textTransform: "none !important",
+                            fontFamily: "Fira Sans",
+                            background: "#0073EA !important",
                         }}
                         variant={formik.values.newpassword ? "contained" : "outlined"}
                         type="submit"

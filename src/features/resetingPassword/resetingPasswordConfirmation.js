@@ -39,8 +39,8 @@ const ResetingPasswordConfirmation = () => {
                         variant="h6"
                         sx={{ mt: 2, color: "gray", textAlign: "center" }}
                     >
-                        Your password changed successfully. You can now <br />{" "}
-                        login with new password.
+                        Your password is changed successfully. You can now <br />{" "}
+                        login with the new password.
                     </Typography>
                     <Box sx={{ mt: 15, mb: 0 }}>
                         <Link to="/login">
@@ -57,6 +57,21 @@ const ResetingPasswordConfirmation = () => {
                             </Button>
                         </Link>
                     </Box>
+                    <Typography
+                variant="span"
+                sx={{ mt: 2, color: "gray", fontSize: "18px" }}
+              >
+                Do not have an account?{" "}
+                <Link
+                  to="/register"
+                  style={{
+                    textDecoration: "underline",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Signup here
+                </Link>
+              </Typography>
                 </Box>
             </Paper>
         </>
