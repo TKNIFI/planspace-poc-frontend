@@ -145,7 +145,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                             <TextField
                                 id="username"
                                 label="Enter your email id*"
-                                placeholder="Enter your email id"
+                                placeholder="Enter your email address"
                                 type="email"
                                 error={Boolean(
                                     formik.touched.username &&

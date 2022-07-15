@@ -219,7 +219,7 @@ function Verify() {
                 </Typography>
                 {isValid && (
                   <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
-                    Your account has been verified successfully
+                    Your Account has been verified Successfully
                   </Typography>
                 )}
               </Box>

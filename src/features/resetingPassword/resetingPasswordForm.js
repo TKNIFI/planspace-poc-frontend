@@ -11,8 +11,12 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 require("dotenv").config();
 const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
 const handleClickShowPassword = () => setShowPassword(!showPassword);
 const handleMouseDownPassword = () => setShowPassword(!showPassword);
+const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
     const history = useHistory();
     const formik = useFormik({
         initialValues: {
@@ -112,7 +116,7 @@ const handleMouseDownPassword = () => setShowPassword(!showPassword);
                         id="confirmpassword"
                         label="Confirm new password*"
                         placeholder="Confirm new password"
-                        type={showPassword ? "text" : "password"}
+                        type={showConfirmPassword ? "text" : "password"}
                         value={formik.values.confirmpassword}
                         InputProps={{
                             endAdornment:(
@@ -120,10 +124,10 @@ const handleMouseDownPassword = () => setShowPassword(!showPassword);
                                     <IconButton>
                                     <IconButton
                                     aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
+                                    onClick={handleClickShowConfirmPassword}
+                                    onMouseDown={handleMouseDownConfirmPassword}
         >
-          {showPassword ? <Visibility /> : <VisibilityOff />}
+          {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
         </IconButton>
                                     </IconButton>
                                 </InputAdornment>
@@ -148,9 +152,11 @@ const handleMouseDownPassword = () => setShowPassword(!showPassword);
                             textTransform: "capitalize",
                             pl: 10,
                             pr: 10,
+                            py:1
                         }}
-                        variant="contained"
+                        variant={formik.values.newpassword ? "contained" : "outlined"}
                         type="submit"
+                        disabled={formik.values.newpassword ? false : true}
                         // onClick={checkingFormFields}
                     >
                         Reset Password

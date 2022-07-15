@@ -41,12 +41,23 @@
 }
 
 
-label.MuiInputLabel-root,
+// label.MuiInputLabel-root,
 label.MuiInputLabel-formControl {
   font-weight: bold !important;
 }
 
-input::placeholder {
+.css-u9osun.Mui-focused {
+  font-weight: bold !important;
+  opacity: 1 !important;
+}
+
+.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+  font-weight: bold !important;
+  opacity: 1 !important;
+}
+
+input::placeholder,
+label.MuiInputLabel-root {
   font-weight: bold !important;
   opacity: 0.5 !important;
 }
