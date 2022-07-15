@@ -15,7 +15,7 @@ const Dashboard = () => {
   };
   return (
     <>
-      <div className="img"></div>
+      <div className="img-dashboard"></div>
       <Button
         style={{
           width: "250px",

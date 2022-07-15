@@ -1,5 +1,5 @@
 import React from "react";
-import Dashboard from "../features/dashboard/dashboard";
+import Dashboard from "../features/dashboard/Dashboard";
 import Login from "../features/login/login";
 import Locations from "../features/Locations/Locations";
 // import EditLocation from "../features/Locations/EditLocation";

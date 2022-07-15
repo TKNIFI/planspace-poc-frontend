@@ -34,7 +34,7 @@ const childrenForCompanyProfile = (basePath) => [
   },
   {
     path: `${basePath}/team`,
-    name: "Invite Team Members",
+    name: "Team",
   },
 ];
 
