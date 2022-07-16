@@ -9,6 +9,7 @@ import Unauthorized from "../features/unauthorized/unauthorized";
 import Users from "../features/users/users";
 import GuestPageLayout from "../layout/guestPageLayout";
 import LoggedInPageLayout from "../layout/loggedInPageLayout";
+import Website from "../features/integration/Website";
 import K from "../utilities/constants";
 import Companies from "../features/companies/companies";
 import ServicePack from "../features/servicePackages/servicePacakges";
@@ -18,48 +19,63 @@ import ResetPassword from "../features/login/resetPassword";
 import PasswordResetMail from "../features/login/passwordResetMail";
 import ResetingPassword from "../features/resetingPassword/resetingPassword";
 import Verifiy from "../features/register/Register/verify";
+import PageNotFound from "../layout/404";
 
 const defaultCrudChildren = [
   { path: "/details/:id", name: "Details" },
   { path: "/store/:id", name: "Edit" },
 ];
 
+const userExist = () => {
+  let userInfo = localStorage.getItem("userInfo");
+  if (userInfo) {
+    return true
+  } else {
+    return false
+  }
+}
 const routes = [
   {
     path: "/login",
     name: "Login",
     component: Login,
     layout: GuestPageLayout,
+    exact: true
   },
   {
     path: "/register/invited",
     name: "Register",
     component: RegisterInvited,
     layout: GuestPageLayout,
+    exact: true
   },
   {
     path: "/register/activate",
     name: "Activate",
     component: Verifiy,
     layout: GuestPageLayout,
+    exact: true
   },
   {
     path: "/register",
     name: "Register",
     component: Register,
     layout: GuestPageLayout,
+    exact: true
   },
   {
     path: "/forgot_password",
     name: "Forgot Password",
     component: ResetPassword,
     layout: GuestPageLayout,
+    exact: true
   },
   {
     path: "/account/password/change",
     name: "reset password",
     component: ResetingPassword,
     layout: GuestPageLayout,
+    exact: true
   },
   // {
   //   path: "/pwdresetmail",
@@ -83,6 +99,7 @@ const routes = [
     roles: [K.Roles.Admin],
     children: defaultCrudChildren,
     layout: LoggedInPageLayout,
+    exact: true
   },
   {
     path: "/Locations/:id",
@@ -92,6 +109,7 @@ const routes = [
     roles: [K.Roles.Admin],
     children: defaultCrudChildren,
     layout: LoggedInPageLayout,
+    exact: true
   },
   // {
   //   path: "/editlocation/:id",
@@ -102,6 +120,7 @@ const routes = [
     path: "/company_settings/packages",
     name: "Service Package",
     component: ServicePack,
+    exact: true,
     layout: LoggedInPageLayout,
   },
   {
@@ -109,12 +128,14 @@ const routes = [
     name: "Service Package",
     component: Addons,
     layout: LoggedInPageLayout,
+    exact: true
   },
   {
     path: "/company_settings/team",
     name: "Service Package",
     component: TeamInvitation,
     layout: LoggedInPageLayout,
+    exact: true
   },
   {
     path: "/users",
@@ -124,6 +145,7 @@ const routes = [
     roles: [],
     children: defaultCrudChildren,
     layout: LoggedInPageLayout,
+    exact: true
   },
   {
     path: "/unauthorized",
@@ -132,6 +154,7 @@ const routes = [
     authenticated: false,
     roles: [],
     layout: GuestPageLayout,
+    exact: true
   },
   {
     path: "/",
@@ -139,7 +162,16 @@ const routes = [
     component: Dashboard,
     authenticated: false,
     layout: LoggedInPageLayout,
+    exact: true
   },
+
 ];
+
+routes.push({
+  path: "*",
+  name: "404",
+  component: PageNotFound,
+  layout: userExist() ? LoggedInPageLayout : GuestPageLayout,
+})
 
 export default routes;

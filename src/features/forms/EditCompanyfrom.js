@@ -59,15 +59,19 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: defaultValues?.name,
-      address_line1: defaultValues?.address_line1,
-      address_line2: defaultValues?.address_line2,
-      city: defaultValues?.city,
-      state: defaultValues?.state,
-      zip_code: defaultValues?.zip_code,
-      phone: defaultValues?.phone,
-      email: defaultValues?.email,
-      logo: defaultValues?.logo,
+      name: defaultValues?.name ? defaultValues?.name : "",
+      address_line1: defaultValues?.address_line1
+        ? defaultValues?.address_line1
+        : "",
+      address_line2: defaultValues?.address_line2
+        ? defaultValues?.address_line2
+        : "",
+      city: defaultValues?.city ? defaultValues?.city : "",
+      state: defaultValues?.state ? defaultValues?.state : "",
+      zip_code: defaultValues?.zip_code ? defaultValues?.zip_code : "",
+      phone: defaultValues?.phone ? defaultValues?.phone : "",
+      email: defaultValues?.email ? defaultValues?.email : "",
+      logo: defaultValues?.logo ? defaultValues?.logo : "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
@@ -281,9 +285,10 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                   <TextField
                     id="zip_code"
                     label="Zip code"
-                    placeholder="Zip code"
                     required
                     sx={{ marginTop: "50px", width: "17vw" }}
+                    placeholder="E.g 20001 (Washington DC)"
+
                     // type=""
                     // autoComplete="current"
                   />
@@ -312,6 +317,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                   id="phone"
                   name="phone"
                   label="Enter phone number*"
+                  placeholder="E.g 121-532-2545"
                   type="tel"
                   error={Boolean(formik.touched.mobile && formik.errors.phone)}
                   helperText={formik.touched.phone && formik.errors.phone}
