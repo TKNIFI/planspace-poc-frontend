@@ -17,6 +17,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [passwordScore,setPasswordScore] = useState(0);
+    const [loading, setLoading] = React.useState(false)
     const passwordEnums = ["TOO SHORT", "WEAK","GOOD","STRONG","STRONG"];
     const passwordColors=["#dddddd","#ef4836","#f6b44d","#2b90ef","#25c281"];
 
@@ -49,7 +50,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
         }),
         onSubmit: async (values, helpers) => {
             try {
-                // setLoading(true);
+                setLoading(true);
                 let formData = new FormData();
                 formData.append("uid", uid);
                 formData.append("token", token);
@@ -61,7 +62,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         formData
                     )
                     .then((result) => {
-                        // setLoading(false)
+                        setLoading(false)
                         toast.success(
                                 result?.data?.message
                         );
@@ -72,7 +73,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                             : null;
                     });
             } catch (error) {
-                // setLoading(false)
+                setLoading(false)
                 formik.setErrors({ submit: error.response.data.message });
                 helpers.setSubmitting(false);
                 onSubmiting(false);
@@ -172,7 +173,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         }}
                         variant={formik.values.newpassword ? "contained" : "outlined"}
                         type="submit"
-                        // loading={loading}
+                        loading={loading}
                         // onClick={checkingFormFields}
                     >
                         Reset Password

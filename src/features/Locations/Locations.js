@@ -6,6 +6,7 @@ import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AddLocationForm from "../forms/AddLocationForm";
 import EditCompanyForm from "../forms/EditCompanyfrom";
 import locImage from "../../assets/images/northFace.png";
+import companyImage from "../../assets/images/company_logo.jpg";
 import Location from "../../models/Locations/Location";
 import addLogoImage from "../../assets/images/iconadd.png";
 import "./location.scss";
@@ -184,7 +185,7 @@ export default function Locations() {
                   <CardMedia
                     component="img"
                     sx={{ width: "250px", height: "250px" }}
-                    image={company[0]?.logo ? company[0].logo : locImage}
+                    image={company[0]?.logo ? company[0].logo : companyImage}
                     alt="Live from space"
                   />
                   <strong style={{ marginTop: "10px" }}>

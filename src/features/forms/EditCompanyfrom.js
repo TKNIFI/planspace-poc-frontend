@@ -13,10 +13,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import myApi from "../../network/axios";
 import PhoneInput from "../../common/phoneNumber";
+import ZipCodeInput from "../../common/zipcodeInput";
 
 const Input = styled("input")({
   display: "none",
 });
+
+const phoneRegExp = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
 function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
   const [file, setFile] = React.useState(null)
@@ -49,7 +52,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
     },
 
     onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files);
+      console.log('Dropped files', e);
     },
   };
 
@@ -74,7 +77,9 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
       city: Yup.string().nullable(),
       state: Yup.string().nullable(),
       zip_code: Yup.number().positive().integer().nullable(),
-      phone: Yup.number().positive().integer().nullable(),
+      phone: Yup.string()
+        .required("Phone number is required")
+        .matches(phoneRegExp, "Phone number is not valid").nullable(),
       email: Yup.string().email("Invalid email").nullable(),
     }),
 
@@ -88,7 +93,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
         formData.append("city", values.city)
         formData.append("state", values.state)
         formData.append("zip_code", values.zip_code)
-        formData.append("phone", values.phone)
+        formData.append("phone", values.phone.replaceAll("-", ""))
         formData.append("email", values.email)
         if (file) {
           formData.append("logo", file ? file : new File([], ""))
@@ -269,18 +274,22 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                   </Typography>
                 </Paper>
               </Upload>
-
-              <TextField
-                id="zip_code"
-                label="Zip code"
-                placeholder="Zip code"
-                required
-                sx={{ marginTop: "44px", width: "19vw" }}
-                type="number"
+              <ZipCodeInput
                 value={formik.values.zip_code}
                 onChange={formik.handleChange}
-              // autoComplete="current"
-              />
+              >
+                {() => (
+                  <TextField
+                    id="zip_code"
+                    label="Zip code"
+                    placeholder="Zip code"
+                    required
+                    sx={{ marginTop: "44px", width: "19vw" }}
+                    // type=""
+                  // autoComplete="current"
+                  />
+                )}
+              </ZipCodeInput>
               {formik.touched.zip_code && formik.errors.zip_code ? (
                 <MuiAlert severity="error" sx={{ width: "25%" }}>
                   <p>{formik.errors.zip_code}</p>
@@ -298,7 +307,6 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                   id="phone"
                   name="phone"
                   label="Enter phone number*"
-                  placeholder="E.g 212-456-7890"
                   type="tel"
                   error={Boolean(
                     formik.touched.mobile && formik.errors.phone
