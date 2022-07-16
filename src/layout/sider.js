@@ -31,8 +31,8 @@ export default function Sider() {
       >
         <Menu
           theme="dark"
-          defaultSelectedKeys={["0"]}
-          defaultOpenKeys={["0"]}
+          // defaultSelectedKeys={["0"]}
+          // defaultOpenKeys={["0"]}
           mode="inline"
           style={{ backgroundColor: "#003498" }}
           onClick={handleClick}
