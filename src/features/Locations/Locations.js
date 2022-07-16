@@ -100,8 +100,8 @@ export default function Locations() {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleClose = (close) => {
+    setOpen(close);
   };
   // const makeAToast = (message) => {
   //     toast.success(message)
@@ -168,7 +168,7 @@ export default function Locations() {
                 <CardMedia
                   component="img"
                   sx={{ width: "250px", height: "250px" }}
-                  image={locImage}
+                  image={company[0]?.logo? company[0].logo : locImage}
                   alt="Live from space"
                 />
                 <strong style={{ marginTop: "10px" }}>
@@ -396,7 +396,7 @@ export default function Locations() {
         <EditCompanyForm
           defaultValues={company[0]}
           callBack={() => getCompanyDetails()}
-          handleClose={(close) => setOpenCompanyEditForm(close)}
+          handleClose={(close) => handleClose(close)}
           popUp={(message) => toast.success(message)}
         />
       </Drawer>
