@@ -154,10 +154,10 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         onChange={formik.handleChange}
                         sx={{ width: "100%" }}
                     />
-                    <div>
+                    {/* <div>
                         <strong>Password Strength <span style={{color:passwordColors[passwordScore]}}>{passwordEnums[passwordScore]}</span></strong>
                         <PasswordStrengthBar className="passwordMeter" scoreWordStyle={{display: "none"}} password={formik.values.newpassword} onChangeScore={(score) => setPasswordScore(score)} />
-                    </div>
+                    </div> */}
                 </Box>
                 <Box className="container">
                     <LoadingButton
