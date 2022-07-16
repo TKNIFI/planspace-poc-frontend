@@ -7,18 +7,23 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import PasswordStrengthBar from 'react-password-strength-bar';
+
+// import User from "../../../../models/user/user";
+// import { useDispatch } from "react-redux";
 require("dotenv").config();
 
 const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [loading, setLoading] = React.useState(false);
+    const [passwordScore,setPasswordScore] = useState(0);
+    const passwordEnums = ["TOO SHORT", "WEAK","GOOD","STRONG","STRONG"];
+    const passwordColors=["#dddddd","#ef4836","#f6b44d","#2b90ef","#25c281"];
 
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
     const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
     const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
-
     const history = useHistory();
     const formik = useFormik({
         initialValues: {
@@ -44,7 +49,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
         }),
         onSubmit: async (values, helpers) => {
             try {
-                setLoading(true);
+                // setLoading(true);
                 let formData = new FormData();
                 formData.append("uid", uid);
                 formData.append("token", token);
@@ -56,7 +61,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         formData
                     )
                     .then((result) => {
-                        setLoading(false)
+                        // setLoading(false)
                         toast.success(
                                 result?.data?.message
                         );
@@ -67,7 +72,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                             : null;
                     });
             } catch (error) {
-                setLoading(false)
+                // setLoading(false)
                 formik.setErrors({ submit: error.response.data.message });
                 helpers.setSubmitting(false);
                 onSubmiting(false);
@@ -116,18 +121,6 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         autoFocus="true"
                         sx={{ width: "100%" }}
                     />
-                        <Popover 
-                         anchorOrigin={{
-                           vertical: 'bottom',
-                           horizontal: 'center',
-                         }}
-                         transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'center',
-                        }}
-                        >
-                            <PasswordStrengthBar password={formik.values.newpassword} />
-                        </Popover>
                     <TextField
                         id="confirmpassword"
                         label="Confirm new password*"
@@ -160,6 +153,10 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         onChange={formik.handleChange}
                         sx={{ width: "100%" }}
                     />
+                    <div>
+                        <strong>Password Strength <span style={{color:passwordColors[passwordScore]}}>{passwordEnums[passwordScore]}</span></strong>
+                        <PasswordStrengthBar className="passwordMeter" scoreWordStyle={{display: "none"}} password={formik.values.newpassword} onChangeScore={(score) => setPasswordScore(score)} />
+                    </div>
                 </Box>
                 <Box className="container">
                     <LoadingButton
@@ -175,7 +172,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         }}
                         variant={formik.values.newpassword ? "contained" : "outlined"}
                         type="submit"
-                        loading={loading}
+                        // loading={loading}
                         // onClick={checkingFormFields}
                     >
                         Reset Password
