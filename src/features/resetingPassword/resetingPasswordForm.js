@@ -6,6 +6,9 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import Popover from '@mui/material/Popover';
+import PasswordStrengthBar from 'react-password-strength-bar';
+
 // import User from "../../../../models/user/user";
 // import { useDispatch } from "react-redux";
 require("dotenv").config();
@@ -112,6 +115,18 @@ const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirm
                         autoFocus="true"
                         sx={{ width: "100%" }}
                     />
+                        <Popover 
+                         anchorOrigin={{
+                           vertical: 'bottom',
+                           horizontal: 'center',
+                         }}
+                         transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'center',
+                        }}
+                        >
+                            <PasswordStrengthBar password={formik.values.newpassword} />
+                        </Popover>
                     <TextField
                         id="confirmpassword"
                         label="Confirm new password*"
@@ -156,7 +171,6 @@ const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirm
                             paddingBottom: "9px",
                             textTransform: "none !important",
                             fontFamily: "Fira Sans",
-                            background: "#0073EA !important",
                         }}
                         variant={formik.values.newpassword ? "contained" : "outlined"}
                         type="submit"
