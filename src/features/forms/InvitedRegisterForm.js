@@ -25,10 +25,21 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
     const [loading, setLoading] = React.useState(false);
     const timer = React.useRef();
 
+    const getFullName = () => {
+    let name = ""
+     if (user?.first_name) {
+        name += user?.first_name + " "
+     }
+     if (user?.last_name) {
+        name += user?.last_name
+     }
+     return name;
+    }
+
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            first_name: user?.first_name ? user?.first_name : "" + " " + user?.last_name ? user?.last_name : "s",
+            first_name: getFullName(),
             username: user?.username,
             mobile: user?.mobile,
             company_name: user?.company,
