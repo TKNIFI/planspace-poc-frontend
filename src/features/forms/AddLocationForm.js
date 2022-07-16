@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Upload } from "antd";
+import { Upload, message } from "antd";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Button as Muibtn, Paper, Grid } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -13,11 +14,46 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Location from "../../models/Locations/Location";
 
-const AddLocationForm = ({ sendChildToParent, setOpen }) => {
+const AddLocationForm = ({ sendChildToParent, setOpen, callBack, handleClose, popUp }) => {
   const [copyIsChecked, setCopyIsChecked] = useState();
   const [copyAddressandContacts, setCopyAddressandContacts] = useState([{}]);
   const innerWidth = window.innerWidth;
   const leftInputWidth = innerWidth > 1900 ? "98ch" : "70ch";
+
+  const [file, setFile] = React.useState(null)
+  const [loading, setLoading] = React.useState(false)
+
+  const dummyRequest = async ({ file, onSuccess }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 0);
+  }
+
+  const props = {
+    name: 'file',
+    multiple: false,
+    customRequest: dummyRequest,
+
+    beforeUpload(file, fileList) {
+      console.log("file", file)
+      setFile(file)
+    },
+    onChange(info) {
+      const { status } = info.file;
+
+      if (status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully.`);
+        setFile(info.file.originFileObj)
+      } else if (status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+
+    onDrop(e) {
+      console.log('Dropped files', e.dataTransfer.files);
+    },
+  };
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -28,7 +64,7 @@ const AddLocationForm = ({ sendChildToParent, setOpen }) => {
       zip_code: "",
       phone_id: "",
       email: "",
-      logo_url: "",
+      logo: "",
     },
     validationSchema: Yup.object({
       // owner: Yup.string().required("owner is required"),
@@ -48,43 +84,36 @@ const AddLocationForm = ({ sendChildToParent, setOpen }) => {
         .positive()
         .integer(),
       email: Yup.string().email("Invalid email").required("Email is required"),
-      // logo_url: Yup.mixed().required("location image is required"),
     }),
     onSubmit: (values) => {
-      const formValues = values;
-      Location.CreateLocation(formValues)
-        .then(() => {
-          toast.success("Locations Created");
-          setOpen(false);
+      setLoading(true)
+      let formData = new FormData();
+      formData.append("name", values.name)
+      formData.append("address_line1", values.address_line1)
+      formData.append("address_line2", values.address_line2)
+      formData.append("city", values.city)
+      formData.append("state", values.state)
+      formData.append("zip_code", values.zip_code)
+      formData.append("phone", values.phone_id)
+      formData.append("email", values.email)
+      if (file) {
+        formData.append("logo", file ? file : new File([], ""))
+      }
+      Location.CreateLocation(formData)
+        .then((result) => {
+          console.log("result", result)
+          setLoading(false)
+          popUp(result.message)
+          handleClose();
         })
         .catch((e) => {
-          setOpen(false);
-          alert(e);
+          console.log("E", e.response.data.message)
+          setLoading(false)
+          formik.setSubmitting(false)
         });
-      console.log("Locations values", formValues);
-      sendChildToParent(formValues);
+      // sendChildToParent(formValues);
     },
   });
-  const [fileList, setFileList] = useState([
-    {
-      uid: "-1",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-    {
-      uid: "-xxx",
-      percent: 50,
-      name: "image.png",
-      status: "uploading",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-    {
-      uid: "-5",
-      name: "image.png",
-      status: "error",
-    },
-  ]);
 
   return (
     <>
@@ -157,12 +186,7 @@ const AddLocationForm = ({ sendChildToParent, setOpen }) => {
               </Box>
             </Grid>
             <Grid item xs={4}>
-              <Upload
-                accept="image"
-                action={formik.values.logo_url}
-                onChange={formik.handleChange}
-                name="logo_url"
-              >
+              <Upload {...props}>
                 <Paper
                   elevation={3}
                   sx={{
@@ -316,10 +340,10 @@ const AddLocationForm = ({ sendChildToParent, setOpen }) => {
               justifyContent: "center",
             }}
           >
-            <Muibtn variant="outlined">cancel</Muibtn>
-            <Muibtn variant="contained" type="submit">
+            <Muibtn variant="outlined" onClick={() => handleClose}>cancel</Muibtn>
+            <LoadingButton loading={loading} variant="contained" type="submit">
               Save changes
-            </Muibtn>
+            </LoadingButton>
           </Stack>
         </Box>
       </form>

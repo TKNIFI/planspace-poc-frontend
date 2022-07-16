@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { Button as Muibtn } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-import { Button as Paper, Grid } from "@mui/material";
+import { Paper, Grid } from "@mui/material";
 import { Upload, message } from "antd";
 import clarityimageline from "../../assets/images/clarity_image-line.png";
 import MuiAlert from "@mui/material/Alert";
@@ -20,6 +20,7 @@ const Input = styled("input")({
 
 function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
   const [file, setFile] = React.useState(null)
+  const [loading, setLoading] = React.useState(false)
 
   const dummyRequest = async ({ file, onSuccess }) => {
     setTimeout(() => {
@@ -51,7 +52,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
       console.log('Dropped files', e.dataTransfer.files);
     },
   };
-  
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -80,6 +81,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
 
     onSubmit: async (values) => {
       try {
+        setLoading(true)
         let formData = new FormData();
         formData.append("name", values.name)
         formData.append("address_line1", values.address_line1)
@@ -89,18 +91,22 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
         formData.append("zip_code", values.zip_code)
         formData.append("phone", values.phone)
         formData.append("email", values.email)
-        formData.append("logo", file? file : new File([], ""))
+        if (file) {
+          formData.append("logo", file ? file : new File([], ""))
+        }
         await myApi
           .put(`api/company/${defaultValues?.id}/`, formData)
           .then((result) => {
+            setLoading(false)
             handleClose(false);
             callBack();
             popUp(result.response.data.message);
             setFile(null)
           });
       } catch (error) {
-        console.log(error.message);
+        console.log(error.response.data.message);
         formik.setSubmitting(false)
+        setLoading(false)
       }
     },
   });
@@ -314,25 +320,25 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
             </div>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-          <PhoneInput
-                value={formik.values.phone}
-                onChange={formik.handleChange}
-              >
-                {() => (
-                  <TextField
-                    id="phone"
-                    name="mobile"
-                    label="Enter phone number*"
-                    placeholder="E.g 212-456-7890"
-                    type="tel"
-                    error={Boolean(
-                      formik.touched.mobile && formik.errors.mobile
-                    )}
-                    helperText={formik.touched.mobile && formik.errors.mobile}
-                    sx={{ width: "auto", margin: "32px 5px" }}
-                  />
-                )}
-              </PhoneInput>
+            <PhoneInput
+              value={formik.values.phone}
+              onChange={formik.handleChange}
+            >
+              {() => (
+                <TextField
+                  id="phone"
+                  name="mobile"
+                  label="Enter phone number*"
+                  placeholder="E.g 212-456-7890"
+                  type="tel"
+                  error={Boolean(
+                    formik.touched.mobile && formik.errors.mobile
+                  )}
+                  helperText={formik.touched.mobile && formik.errors.mobile}
+                  sx={{ width: "auto", margin: "32px 5px" }}
+                />
+              )}
+            </PhoneInput>
             <TextField
               id="email"
               label="Enter email address"
@@ -358,21 +364,22 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
               alignItems: "center",
             }}
           >
-            <Muibtn
+            <LoadingButton
               variant="outlined"
               sx={{ textTransform: "capitalize", margin: "10px" }}
               color="primary"
               onClick={() => handleClose(false)}
             >
               Cancel
-            </Muibtn>
-            <Muibtn
+            </LoadingButton>
+            <LoadingButton
+              loading={loading}
               variant="contained"
               sx={{ textTransform: "capitalize" }}
               type="submit"
             >
               Save changes
-            </Muibtn>
+            </LoadingButton>
           </div>
         </form>
       </ThemeProvider>
