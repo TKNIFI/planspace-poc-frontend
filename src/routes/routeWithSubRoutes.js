@@ -9,7 +9,7 @@ export default function RouteWithSubRoutes(route) {
       render={(props) => {
         // debugger;
         // Check authentication
-        
+
         if (
           !route.authenticated ||
           (route.authenticated && User.isAuthenticated())
@@ -28,9 +28,7 @@ export default function RouteWithSubRoutes(route) {
           }
 
           if (hasRole) {
-            const component = (
-              <route.component {...props} route={route}/>
-            );
+            const component = <route.component {...props} route={route} />;
             return route.layout ? (
               <route.layout>{component}</route.layout>
             ) : (

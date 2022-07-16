@@ -1,5 +1,5 @@
 import React from "react";
-import Dashboard from "../features/dashboard/dashboard";
+import Dashboard from "../features/dashboard/Dashboard";
 import Login from "../features/login/login";
 import Locations from "../features/Locations/Locations";
 // import EditLocation from "../features/Locations/EditLocation";
@@ -9,6 +9,7 @@ import Unauthorized from "../features/unauthorized/unauthorized";
 import Users from "../features/users/users";
 import GuestPageLayout from "../layout/guestPageLayout";
 import LoggedInPageLayout from "../layout/loggedInPageLayout";
+import Website from "../features/integration/Website";
 import K from "../utilities/constants";
 import Companies from "../features/companies/companies";
 import ServicePack from "../features/servicePackages/servicePacakges";
