@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import { Paper, Grid } from "@mui/material";
@@ -22,37 +22,37 @@ const Input = styled("input")({
 const phoneRegExp = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
 function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
-  const [file, setFile] = React.useState(null)
-  const [loading, setLoading] = React.useState(false)
+  const [file, setFile] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
 
   const dummyRequest = async ({ file, onSuccess }) => {
     setTimeout(() => {
       onSuccess("ok");
     }, 0);
-  }
+  };
 
   const props = {
-    name: 'file',
+    name: "file",
     multiple: false,
     customRequest: dummyRequest,
 
     beforeUpload(file, fileList) {
-      console.log("file", file)
-      setFile(file)
+      console.log("file", file);
+      setFile(file);
     },
     onChange(info) {
       const { status } = info.file;
 
-      if (status === 'done') {
+      if (status === "done") {
         message.success(`${info.file.name} file uploaded successfully.`);
-        setFile(info.file.originFileObj)
-      } else if (status === 'error') {
+        setFile(info.file.originFileObj);
+      } else if (status === "error") {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
 
     onDrop(e) {
-      console.log('Dropped files', e);
+      console.log("Dropped files", e);
     },
   };
 
@@ -70,8 +70,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
       logo: defaultValues?.logo,
     },
     validationSchema: Yup.object({
-      name: Yup.string()
-        .required("Name is required"),
+      name: Yup.string().required("Name is required"),
       address_line1: Yup.string().nullable(),
       address_line2: Yup.string().nullable(),
       city: Yup.string().nullable(),
@@ -79,38 +78,39 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
       zip_code: Yup.number().positive().integer().nullable(),
       phone: Yup.string()
         .required("Phone number is required")
-        .matches(phoneRegExp, "Phone number is not valid").nullable(),
+        .matches(phoneRegExp, "Phone number is not valid")
+        .nullable(),
       email: Yup.string().email("Invalid email").nullable(),
     }),
 
     onSubmit: async (values) => {
       try {
-        setLoading(true)
+        setLoading(true);
         let formData = new FormData();
-        formData.append("name", values.name)
-        formData.append("address_line1", values.address_line1)
-        formData.append("address_line2", values.address_line2)
-        formData.append("city", values.city)
-        formData.append("state", values.state)
-        formData.append("zip_code", values.zip_code)
-        formData.append("phone", values.phone.replaceAll("-", ""))
-        formData.append("email", values.email)
+        formData.append("name", values.name);
+        formData.append("address_line1", values.address_line1);
+        formData.append("address_line2", values.address_line2);
+        formData.append("city", values.city);
+        formData.append("state", values.state);
+        formData.append("zip_code", values.zip_code);
+        formData.append("phone", values.phone.replaceAll("-", ""));
+        formData.append("email", values.email);
         if (file) {
-          formData.append("logo", file ? file : new File([], ""))
+          formData.append("logo", file ? file : new File([], ""));
         }
         await myApi
           .put(`api/company/${defaultValues?.id}/`, formData)
           .then((result) => {
-            setLoading(false)
+            setLoading(false);
             handleClose(false);
             callBack();
             popUp(result.response.data.message);
-            setFile(null)
+            setFile(null);
           });
       } catch (error) {
         console.log(error.response.data.message);
-        formik.setSubmitting(false)
-        setLoading(false)
+        formik.setSubmitting(false);
+        setLoading(false);
       }
     },
   });
@@ -153,7 +153,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                 sx={{ width: "42vw", margin: "32px 0px 0px 0px" }}
                 value={formik.values.name}
                 onChange={formik.handleChange}
-              // autoComplete="current"
+                // autoComplete="current"
               />
               {formik.touched.name && formik.errors.name ? (
                 <MuiAlert severity="error" sx={{ width: "25%" }}>
@@ -166,10 +166,10 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                 label="Address line 1"
                 placeholder="Address line 1"
                 type="text"
-                sx={{ width: "42vw", margin: "32px 0px 0px 0px" }}
+                sx={{ width: "42vw", margin: "48px 0px 0px 0px" }}
                 value={formik.values.address_line1}
                 onChange={formik.handleChange}
-              // autoComplete="current"
+                // autoComplete="current"
               />
               {formik.touched.address_line1 && formik.errors.address_line1 ? (
                 <MuiAlert severity="error" sx={{ width: "25%" }}>
@@ -181,11 +181,11 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                 id="address_line2"
                 label="Address line 2"
                 placeholder="Address line 2"
-                sx={{ width: "42vw", margin: "32px 0px 0px 0px" }}
+                sx={{ width: "42vw", margin: "48px 0px 0px 0px" }}
                 type="text"
                 value={formik.values.address_line2}
                 onChange={formik.handleChange}
-              // autoComplete="current"
+                // autoComplete="current"
               />
               {formik.touched.address_line2 && formik.errors.address_line2 ? (
                 <MuiAlert severity="error" sx={{ width: "25%" }}>
@@ -197,11 +197,11 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                   id="city"
                   label="City"
                   placeholder="City"
-                  sx={{ width: "20.8vw", margin: "32px 19px 32px 0px" }}
+                  sx={{ width: "20.8vw", margin: "48px 19px 32px 0px" }}
                   type="text"
                   value={formik.values.city}
                   onChange={formik.handleChange}
-                // autoComplete="current"
+                  // autoComplete="current"
                 />
                 {formik.touched.city && formik.errors.city ? (
                   <MuiAlert severity="error" sx={{ width: "25%" }}>
@@ -214,10 +214,10 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                   placeholder="State"
                   type="text"
                   required
-                  sx={{ width: "20.4vw", margin: "32px 19px 32px 0px" }}
+                  sx={{ width: "20.4vw", margin: "48px 19px 32px 0px" }}
                   value={formik.values.state}
                   onChange={formik.handleChange}
-                // autoComplete="current"
+                  // autoComplete="current"
                 />
                 {formik.touched.state && formik.errors.state ? (
                   <MuiAlert severity="error" sx={{ width: "25%" }}>
@@ -237,10 +237,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                 top: "4px",
               }}
             >
-
-              <Upload {...props}
-                accept=".jpg, .jpeg, .png"
-              >
+              <Upload {...props} accept=".jpg, .jpeg, .png">
                 <Paper
                   elevation={3}
                   sx={{
@@ -249,13 +246,15 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                     flexWrap: "wrap",
                     alignItems: "center",
                     justifyContent: "center",
-                    height: window.innerWidth > 1900 ? "250px" : "220px",
-                    width: window.innerWidth > 1900 ? "300px" : "231px",
-                    mt: window.innerWidth > 1900 ? "20px" : "27px",
+                    // height: window.innerWidth > 1900 ? "250px" : "220px",
+                    // width: window.innerWidth > 1900 ? "300px" : "231px",
+                    // mt: window.innerWidth > 1900 ? "20px" : "27px",
                     borderRadius: "8px",
                     cursor: "pointer",
                     border: "2px dashed #ccc",
                     boxShadow: "none",
+                    width: "17vw",
+                    height: "38vh",
                   }}
                 >
                   <Typography variant="p">Add Company Logo </Typography>
@@ -284,9 +283,9 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                     label="Zip code"
                     placeholder="Zip code"
                     required
-                    sx={{ marginTop: "44px", width: "19vw" }}
+                    sx={{ marginTop: "50px", width: "17vw" }}
                     // type=""
-                  // autoComplete="current"
+                    // autoComplete="current"
                   />
                 )}
               </ZipCodeInput>
@@ -297,7 +296,13 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
               ) : null}
             </div>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              marginTop: "30px",
+            }}
+          >
             <PhoneInput
               value={formik.values.phone}
               onChange={formik.handleChange}
@@ -308,11 +313,9 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                   name="phone"
                   label="Enter phone number*"
                   type="tel"
-                  error={Boolean(
-                    formik.touched.mobile && formik.errors.phone
-                  )}
+                  error={Boolean(formik.touched.mobile && formik.errors.phone)}
                   helperText={formik.touched.phone && formik.errors.phone}
-                  sx={{ width: "auto", margin: "32px 5px" }}
+                  sx={{ width: "auto", margin: "50px 17px 0px 0px" }}
                 />
               )}
             </PhoneInput>
@@ -322,10 +325,10 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
               placeholder="Enter email address"
               type="email"
               required
-              sx={{ width: "auto", margin: "32px 5px" }}
+              sx={{ width: "auto", margin: "50px 5px" }}
               value={formik.values.email}
               onChange={formik.handleChange}
-            // autoComplete="current"
+              // autoComplete="current"
             />
             {formik.touched.email && formik.errors.email ? (
               <MuiAlert severity="error" sx={{ width: "25%" }}>
