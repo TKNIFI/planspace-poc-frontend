@@ -2,6 +2,7 @@ import React from "react";
 // import axios from "axios";
 import { useFormik } from "formik";
 import { Box, Grid, Button, Typography, TextField } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
 import MuiAlert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
@@ -14,11 +15,8 @@ import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
     let history = useHistory();
-    // const dispatch = useDispatch();
     const [loading, setLoading] = React.useState(false);
-    const onFinish = async (values) => {
-        // await dispatch(User.loginCall(formData));
-    };
+    
     const formik = useFormik({
         initialValues: {
             primary_email_id: "",
@@ -118,7 +116,7 @@ const LoginForm = () => {
                     </Box>
                 )}
                 <Box className="container">
-                    <Button
+                    <LoadingButton
                         sx={{
                             mb: 2,
                             mt: 3,
@@ -132,23 +130,10 @@ const LoginForm = () => {
                         }}
                         variant="contained"
                         type="submit"
-                        disabled={loading}
+                        loading={loading}
                     >
                         <span style={{ fontSize: "16px" }}>Log In</span>
-                    </Button>
-                    {loading && (
-                        <CircularProgress
-                            size={24}
-                            sx={{
-                                color: green[500],
-                                position: "absolute",
-                                top: "50%",
-                                left: "50%",
-                                marginTop: "-12px",
-                                marginLeft: "-12px",
-                            }}
-                        />
-                    )}
+                    </LoadingButton>
                     <Typography>
                         <a><span
                             onClick={() => history.push("/forgot_password")}

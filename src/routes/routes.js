@@ -18,16 +18,6 @@ import ResetPassword from "../features/login/resetPassword";
 import PasswordResetMail from "../features/login/passwordResetMail";
 import ResetingPassword from "../features/resetingPassword/resetingPassword";
 import Verifiy from "../features/register/Register/verify";
-// Template for a route
-// {
-//   path: '/login',
-//   name: "Login",
-//   component: Login,
-//   authenticated: false,
-//   roles: [],
-//   children: [],
-//   layout: LoggedInPageLayout
-// },
 
 const defaultCrudChildren = [
   { path: "/details/:id", name: "Details" },

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "antd/dist/antd.css";
-import User from "../../models/user/user";
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import planLogo from "../../assets/images/plan.svg";
@@ -68,9 +67,7 @@ const SliderContent = () => {
 export default function ResetPassword() {
     const [check, setCheck] = useState();
     const [email, setEmail] = useState(null);
-    const dispatch = useDispatch();
     const history = useHistory();
-    const location = useLocation();
 
     const getEmail = (email) => {
         setEmail(email);

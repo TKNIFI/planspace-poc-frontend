@@ -5,6 +5,7 @@ import { Button as Muibtn } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { green } from "@mui/material/colors";
 import CircularProgress from "@mui/material/CircularProgress";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -211,7 +212,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 Cancel
               </Muibtn>
               <div>
-                <Muibtn
+                <LoadingButton
                   variant="contained"
                   className="submitBtn"
                   type="submit"
@@ -220,23 +221,10 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                     textTransform: "none",
                   }}
                   data-testid="submit-button"
-                  disabled={loading}
+                  loading={loading}
                 >
                   Submit
-                </Muibtn>
-                {loading && (
-                  <CircularProgress
-                    size={24}
-                    sx={{
-                      color: green[500],
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      marginTop: "-12px",
-                      marginLeft: "-12px",
-                    }}
-                  />
-                )}
+                </LoadingButton>
               </div>
             </Stack>
           </Box>

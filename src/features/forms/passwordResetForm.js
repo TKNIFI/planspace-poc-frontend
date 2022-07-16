@@ -3,15 +3,16 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { Box, Button, Typography, TextField } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import LoadingButton from '@mui/lab/LoadingButton';
 import { green } from "@mui/material/colors";
 import MuiAlert from "@mui/material/Alert";
 import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
 require("dotenv").config();
-// import User from "../../../../models/user/user";
+
 const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
   const [loading, setLoading] = React.useState(false);
-  // const [email, setEmail] = React.useState()
+  
   const timer = React.useRef();
   const history = useHistory();
   const formik = useFormik({
@@ -23,13 +24,6 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
       username: Yup.string()
         .email("must be valid email")
         .required("Email is required"),
-      // password: Yup.string()
-      //     .required("No password provided.")
-      //     .min(8, "Password is too short - should be 8 chars minimum.")
-      //     .matches(
-      //         /[a-zA-Z]/,
-      //         "Password can only contain Latin letters."
-      //     ),
     }),
     onSubmit: async (values, helpers) => {
       setLoading(true);
@@ -101,7 +95,7 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
         )}
         <Box className="container">
           <Box sx={{ m: 1, position: "relative" }}>
-            <Button
+            <LoadingButton
               sx={{
                 mb: 2,
                 mt: 3,
@@ -113,23 +107,10 @@ const PasswordResetForm = ({ onSubmiting, submittedEmail }) => {
               }}
               variant="contained"
               type="submit"
-              disabled={loading}
+              loading={loading}
             >
               <span style={{ fontSize: "16px" }}>Send instructions</span>
-            </Button>
-            {loading && (
-              <CircularProgress
-                size={24}
-                sx={{
-                  color: green[500],
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  marginTop: "-12px",
-                  marginLeft: "-12px",
-                }}
-              />
-            )}
+            </LoadingButton>
           </Box>
 
           <Typography sx={{ mt: 4 }}>

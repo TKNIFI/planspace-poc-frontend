@@ -4,12 +4,12 @@ import "./registerationFrom.css";
 import { useFormik } from "formik";
 import { Box, Grid, Button, Typography, TextField } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import LoadingButton from '@mui/lab/LoadingButton';
 import { green } from "@mui/material/colors";
 import User from "../../models/user/user";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import SocialButton from "../login/components/SocialButton";
-import CircularProgress from "@mui/material/CircularProgress";
 import gmailLogo from "../../assets/images/gmailLogo.png";
 import PhoneInput from "../../common/phoneNumber";
 
@@ -20,7 +20,6 @@ const phoneRegExp = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 const RegisterationForm = ({ onSubmiting, email }) => {
   let history = useHistory();
   const [loading, setLoading] = React.useState(false);
-  const [check, setCheck] = React.useState(false);
   const timer = React.useRef();
 
   const formik = useFormik({
@@ -60,7 +59,7 @@ const RegisterationForm = ({ onSubmiting, email }) => {
       await axios
         .post(`${process.env.REACT_APP_BASE_URL}api/auth/register/`, formData)
         .then((response) => {
-          const data = response.data.data;
+          setLoading(false)
           onSubmiting(true);
           email(values.username);
         })
@@ -201,7 +200,7 @@ const RegisterationForm = ({ onSubmiting, email }) => {
         )}
         <Box className="container">
           <Box sx={{ m: 1, position: "relative" }}>
-            <Button
+            <LoadingButton
               sx={{
                 mb: 2,
                 mt: 3,
@@ -214,25 +213,12 @@ const RegisterationForm = ({ onSubmiting, email }) => {
               }}
               variant="contained"
               type="submit"
-              disabled={loading}
+              loading={loading}
             >
               <span style={{ fontSize: "16px", fontFamily: "Fira Sans" }}>
                 Create account
               </span>
-            </Button>
-            {loading && (
-              <CircularProgress
-                size={24}
-                sx={{
-                  color: green[500],
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  marginTop: "-12px",
-                  marginLeft: "-12px",
-                }}
-              />
-            )}
+            </LoadingButton>
           </Box>
           <Typography
             sx={{ variant: "body1", color: "gray", fontFamily: "Fira Sans" }}

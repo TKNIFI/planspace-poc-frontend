@@ -2,21 +2,23 @@ import React,{useState} from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import { Alert, Box, Button, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-// import User from "../../../../models/user/user";
-// import { useDispatch } from "react-redux";
+
 require("dotenv").config();
 const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [loading, setLoading] = React.useState(false);
 
-const handleClickShowPassword = () => setShowPassword(!showPassword);
-const handleMouseDownPassword = () => setShowPassword(!showPassword);
-const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
-const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+    const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+
     const history = useHistory();
     const formik = useFormik({
         initialValues: {
@@ -42,6 +44,7 @@ const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirm
         }),
         onSubmit: async (values, helpers) => {
             try {
+                setLoading(true);
                 let formData = new FormData();
                 formData.append("uid", uid);
                 formData.append("token", token);
@@ -53,7 +56,7 @@ const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirm
                         formData
                     )
                     .then((result) => {
-                        console.log(result)
+                        setLoading(false)
                         toast.success(
                                 result?.data?.message
                         );
@@ -64,6 +67,7 @@ const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirm
                             : null;
                     });
             } catch (error) {
+                setLoading(false)
                 formik.setErrors({ submit: error.response.data.message });
                 helpers.setSubmitting(false);
                 onSubmiting(false);
@@ -146,7 +150,7 @@ const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirm
                     />
                 </Box>
                 <Box className="container">
-                    <Button
+                    <LoadingButton
                         sx={{
                             mb: 2,
                             mt: 3,
@@ -160,11 +164,11 @@ const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirm
                         }}
                         variant={formik.values.newpassword ? "contained" : "outlined"}
                         type="submit"
-                        disabled={formik.values.newpassword ? false : true}
+                        loading={loading}
                         // onClick={checkingFormFields}
                     >
                         Reset Password
-                    </Button>
+                    </LoadingButton>
                 </Box>
                 <Box sx={{textAlign: "center"}}>
                 <Typography

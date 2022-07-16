@@ -112,6 +112,14 @@ export default function Locations() {
   const gettingDataFromChild = (formDataFromParent) => {
     setFormData(formDataFromParent);
   };
+
+  const getFormattedPhoneNumber = (phone) => {
+    let phone_number = ""
+    phone_number += phone.slice(0, 3) + "-"
+    phone_number += phone.slice(3, 6) + "-"
+    phone_number += phone.slice(6)
+    return phone_number
+  }
   const getCompanyDetails = () => {
     setLoading(true)
     getCompany().then((res) => {
@@ -193,15 +201,6 @@ export default function Locations() {
                   }}
                 >
                   <CardContent sx={{ flex: "1 0 auto" }}>
-                    {/* <CardContent>
-                                    <Typography
-                                        variant="subtitle5"
-                                        color="text.secondary"
-                                        component="span"
-                                    >
-                                        <LocationIcon /> {userInfo?.address}
-                                    </Typography>
-                                </CardContent> */}
                     <CardContent>
                       <Box
                         sx={{
@@ -265,7 +264,7 @@ export default function Locations() {
                           color="text.secondary"
                           component="span"
                         >
-                          {company[0]?.phone || "(229)555-0199"}
+                          {getFormattedPhoneNumber(company[0]?.phone) || "(229)555-0199"}
                         </Typography>
                       </Box>
                     </CardContent>

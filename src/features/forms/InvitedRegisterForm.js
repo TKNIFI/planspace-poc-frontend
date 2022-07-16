@@ -3,6 +3,7 @@ import axios from "axios";
 import "./registerationFrom.css";
 import { useFormik } from "formik";
 import { Box, Grid, Button, Typography, TextField } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
 import MuiAlert from "@mui/material/Alert";
 import { green } from "@mui/material/colors";
 import User from "../../models/user/user";
@@ -239,7 +240,7 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                 )}
                 <Box className="container">
                     <Box sx={{ m: 1, position: "relative" }}>
-                        <Button
+                        <LoadingButton
                             sx={{
                                 mb: 2,
                                 mt: 3,
@@ -252,25 +253,12 @@ const InvitedRegisterForm = ({ onSubmiting, uid, token, user }) => {
                             }}
                             variant="contained"
                             type="submit"
-                            disabled={loading}
+                            loading={loading}
                         >
                             <span style={{ fontSize: "16px" }}>
                                 Create account
                             </span>
-                        </Button>
-                        {loading && (
-                            <CircularProgress
-                                size={24}
-                                sx={{
-                                    color: green[500],
-                                    position: "absolute",
-                                    top: "50%",
-                                    left: "50%",
-                                    marginTop: "-12px",
-                                    marginLeft: "-12px",
-                                }}
-                            />
-                        )}
+                        </LoadingButton>
                     </Box>
                     <Typography sx={{ variant: "body1", color: "gray" }}>
                         Or login using

@@ -68,7 +68,6 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
     },
     validationSchema: Yup.object({
       name: Yup.string()
-        .max(15, "Must be 15 characters or less")
         .required("Name is required"),
       address_line1: Yup.string().nullable(),
       address_line2: Yup.string().nullable(),
@@ -233,39 +232,9 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                 top: "4px",
               }}
             >
-              {/* <Typography sx={{ ml: 2, flex: 1 }} variant="p">
-            Add Business images
-          </Typography>
-          <label htmlFor="image">
-            <Input
-              accept=".png, .jpg, .jpeg"
-              id="image"
-              type="file"
-              value={formik.values.logo_url}
-              onChange={formik.handleChange}
-            />
-            <IconButton
-              color="primary"
-              aria-label="upload picture"
-              component="span"
-              variant="outlined"
-              sx={{ display: "flex", flexWrap: "wrap" }}
-            >
-              <PhotoCamera />
-            </IconButton>
-          </label>
-          {formik.values.logo_url}
-          {formik.touched.logo_url && formik.errors.logo_url ? (
-            <MuiAlert severity="error">
-              <div>{formik.errors.logo_url}</div>
-            </MuiAlert>
-          ) : null} */}
 
               <Upload {...props}
                 accept=".jpg, .jpeg, .png"
-              // action={() => fileHandler}
-              // onChange={fileHandler}
-              // name="logo"
               >
                 <Paper
                   elevation={3}
@@ -327,14 +296,14 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
               {() => (
                 <TextField
                   id="phone"
-                  name="mobile"
+                  name="phone"
                   label="Enter phone number*"
                   placeholder="E.g 212-456-7890"
                   type="tel"
                   error={Boolean(
-                    formik.touched.mobile && formik.errors.mobile
+                    formik.touched.mobile && formik.errors.phone
                   )}
-                  helperText={formik.touched.mobile && formik.errors.mobile}
+                  helperText={formik.touched.phone && formik.errors.phone}
                   sx={{ width: "auto", margin: "32px 5px" }}
                 />
               )}
