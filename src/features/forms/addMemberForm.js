@@ -28,7 +28,6 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
     validationSchema: Yup.object({
       // owner: Yup.string().required("owner is required"),
       name: Yup.string()
-        .max(15, "Must be 15 characters or less")
         .required("Name is required"),
       userId: Yup.string().required("user id is required"),
       username: Yup.string()
@@ -55,6 +54,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
           handleClose(false);
           popUp(result.data.message);
           callBack();
+          formik.resetForm()
         })
         .catch((error) => {
           let message = error.response.data.message;
@@ -65,10 +65,8 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
             }
           }
           setLoading(false);
-          helpers.setSubmitting(false);
-          handleClose(true);
+          formik.setSubmitting(false);
         });
-      formik.resetForm();
     },
   });
 
@@ -102,7 +100,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 helperText={formik.touched.name && formik.errors.name}
                 onChange={formik.handleChange}
                 autoFocus={true}
-                // autoComplete="current"
+              // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -114,7 +112,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 error={Boolean(formik.touched.userId && formik.errors.userId)}
                 helperText={formik.touched.userId && formik.errors.userId}
                 onChange={formik.handleChange}
-                // autoComplete="current"
+              // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -128,7 +126,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 )}
                 helperText={formik.touched.username && formik.errors.username}
                 onChange={formik.handleChange}
-                // autoComplete="current"
+              // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -152,29 +150,6 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 )}
               </PhoneInput>
             </Grid>
-            {/* <Box
-              sx={{
-                "& .MuiTextField-root": {
-                  width: "813px",
-                  marginTop: 3,
-                  marginLeft: 0.7,
-                },
-              }}
-            >
-              <Grid item xs={8}>
-                <TextField
-                  name="address"
-                  label="Address"
-                  value={formik.values.address}
-                  error={Boolean(
-                    formik.touched.address && formik.errors.address
-                  )}
-                  helperText={formik.touched.address && formik.errors.address}
-                  onChange={formik.handleChange}
-                // autoComplete="current"
-                />
-              </Grid>
-            </Box> */}
           </Grid>
           {formik.errors.submit && (
             <Box sx={{ mt: 2, mb: 2 }}>
@@ -207,7 +182,10 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                   fontFamily: "Fira Sans",
                   textTransform: "none",
                 }}
-                onClick={() => handleClose(false)}
+                onClick={() => {
+                  handleClose(false)
+                  formik.resetForm()
+                }}
               >
                 Cancel
               </Muibtn>

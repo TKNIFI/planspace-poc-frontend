@@ -225,14 +225,14 @@ const RegisterationForm = ({ onSubmiting, email }) => {
           >
             Or login using
           </Typography>
-          <SocialButton
+          {/* <SocialButton
             provider="google"
             appId={process.env.REACT_APP_GOOGLE_API_KEY}
             onLoginSuccess={handleGoogleLogin}
             onLoginFailure={handleSocialLoginFailure}
-          >
+          > */}
             <img src={gmailLogo} height="35px" width="35px" />
-          </SocialButton>
+          {/* </SocialButton> */}
           <Typography
             sx={{ variant: "body1", color: "gray", fontFamily: "Fira Sans" }}
           >
