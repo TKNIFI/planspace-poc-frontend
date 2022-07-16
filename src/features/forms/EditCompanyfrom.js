@@ -250,15 +250,15 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                     flexWrap: "wrap",
                     alignItems: "center",
                     justifyContent: "center",
-                    // height: window.innerWidth > 1900 ? "250px" : "220px",
-                    // width: window.innerWidth > 1900 ? "300px" : "231px",
-                    // mt: window.innerWidth > 1900 ? "20px" : "27px",
+                    height: window.innerWidth > 1900 ? "250px" : "220px",
+                    width: window.innerWidth > 1900 ? "300px" : "231px",
+                    mt: window.innerWidth > 1900 ? "20px" : "27px",
                     borderRadius: "8px",
                     cursor: "pointer",
                     border: "2px dashed #ccc",
                     boxShadow: "none",
-                    width: "17vw",
-                    height: "38vh",
+                    // width: "17vw",
+                    // height: "38vh",
                   }}
                 >
                   <Typography variant="p">Add Company Logo </Typography>
@@ -286,7 +286,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                     id="zip_code"
                     label="Zip code"
                     required
-                    sx={{ marginTop: "50px", width: "17vw" }}
+                    sx={{ marginTop: "94px", width: "17vw" }}
                     placeholder="E.g 20001 (Washington DC)"
 
                     // type=""
