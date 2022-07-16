@@ -7,8 +7,8 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-
 require("dotenv").config();
+
 const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -116,6 +116,18 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         autoFocus="true"
                         sx={{ width: "100%" }}
                     />
+                        <Popover 
+                         anchorOrigin={{
+                           vertical: 'bottom',
+                           horizontal: 'center',
+                         }}
+                         transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'center',
+                        }}
+                        >
+                            <PasswordStrengthBar password={formik.values.newpassword} />
+                        </Popover>
                     <TextField
                         id="confirmpassword"
                         label="Confirm new password*"
@@ -160,7 +172,6 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                             paddingBottom: "9px",
                             textTransform: "none !important",
                             fontFamily: "Fira Sans",
-                            background: "#0073EA !important",
                         }}
                         variant={formik.values.newpassword ? "contained" : "outlined"}
                         type="submit"

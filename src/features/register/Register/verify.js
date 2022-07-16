@@ -15,7 +15,7 @@ import "swiper/swiper.min.css";
 import "swiper/swiper-bundle.min.css";
 import RegisterationForm from "../../forms/registerationform";
 import RegisterSuccess from "./registerSuccess";
-import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import InvalidLink from "../../login/invalidLink";
 import sliderImage from "../../../assets/images/sliderImage.png";
 import elipseOuter from "../../../assets/images/Ellipse125.png";
@@ -32,26 +32,31 @@ function CircularProgressWithLabel(props) {
       <CountdownCircleTimer
         isPlaying
         duration={5}
-        colors={['#2576b8']}
+        colors={["#2576b8"]}
         colorsTime={[0]}
         onComplete={() => {
-          history.push("/login")
+          history.push("/login");
         }}
       >
         {({ remainingTime }) => {
           return (
             <Box sx={{ marginLeft: 5 }}>
-              <Typography>
-                Redirecting to login page in
+              <Typography>Redirecting to login page in</Typography>
+              <Typography
+                variant="h3"
+                sx={{ textAlign: "center", marginRight: 2 }}
+              >
+                {" "}
+                {remainingTime}
               </Typography>
-              <Typography variant="h3" sx={{ textAlign: "center", marginRight: 2 }}> {remainingTime}</Typography>
-              <Typography sx={{ textAlign: "center", marginRight: 2 }}>Seconds</Typography>
+              <Typography sx={{ textAlign: "center", marginRight: 2 }}>
+                Seconds
+              </Typography>
             </Box>
-          )
-        }
-        }
+          );
+        }}
       </CountdownCircleTimer>
-    </Box >
+    </Box>
   );
 }
 
@@ -208,20 +213,10 @@ function Verify() {
 
               <Box sx={{ mt: 3, p: 1 }}>
                 <Typography variant="h5" sx={{ color: "#003399" }}>
-                  {isLoading
-                    ? "Verifying ..."
-                    : ""}
-                  {isValid
-                    ? "Your Account is Verified Successfully"
-                    : ""}
-                  {!isLoading && !isValid ?
-                    "Token is Invalid or Expired" : ""}
+                  {isLoading ? "Verifying ..." : ""}
+                  {isValid ? "Your Account has been Verified Successfully" : ""}
+                  {!isLoading && !isValid ? "Token is Invalid or Expired" : ""}
                 </Typography>
-                {isValid && (
-                  <Typography variant="span" sx={{ mt: 2, color: "gray" }}>
-                    Your Account has been verified Successfully
-                  </Typography>
-                )}
               </Box>
 
               {isLoading && (
@@ -238,7 +233,7 @@ function Verify() {
                         justifyContent: "center",
                         alignItems: "center",
                         fontSize: "25px",
-                        marginBottom: 5
+                        marginBottom: 5,
                       }}
                     >
                       <Link href="/login">Click here to Login</Link>

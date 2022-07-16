@@ -1,17 +1,11 @@
 import React from "react";
-// import axios from "axios";
 import { useFormik } from "formik";
 import { Box, Grid, Button, Typography, TextField } from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 import MuiAlert from "@mui/material/Alert";
-import CircularProgress from "@mui/material/CircularProgress";
-import { green } from "@mui/material/colors";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
-// import User from "../../../../models/user/user";
-// import { login } from "../../../../slices/user";
-import { login, loginUser } from "../../login.service";
-import { useDispatch } from "react-redux";
+import { loginUser } from "../../login.service";
 
 const LoginForm = () => {
     let history = useHistory();
