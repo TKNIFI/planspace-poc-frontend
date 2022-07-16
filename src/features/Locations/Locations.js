@@ -189,7 +189,7 @@ export default function Locations() {
                     alt="Live from space"
                   />
                   <strong style={{ marginTop: "10px" }}>
-                    {company[0]?.name}
+                    {company[0]?.name ? company[0]?.name : ""}
                   </strong>
                 </Box>
                 <Box
@@ -244,7 +244,7 @@ export default function Locations() {
                           color="text.secondary"
                           component="span"
                         >
-                          {company[0]?.email}
+                          {company[0]?.email ? company[0]?.email : ""}
                         </Typography>
                       </Box>
                     </CardContent>
@@ -265,7 +265,7 @@ export default function Locations() {
                           color="text.secondary"
                           component="span"
                         >
-                          {getFormattedPhoneNumber(company[0]?.phone) || "(229)555-0199"}
+                          {company[0]?.phone ? getFormattedPhoneNumber(company[0]?.phone) : ""}
                         </Typography>
                       </Box>
                     </CardContent>
