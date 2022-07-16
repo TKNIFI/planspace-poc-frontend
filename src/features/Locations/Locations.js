@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Drawer, Typography } from "antd";
+import { Button, Drawer, Typography, Skeleton, Space } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { Box, Card, CardContent, CardMedia, IconButton } from "@mui/material";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
@@ -87,6 +87,7 @@ const EmailIcon = () => {
 };
 
 export default function Locations() {
+
   const [formData, setFormData] = useState();
   const [editRecordValues, setEditRecordValues] = useState(null);
   const [openEditForm, setOpenEditForm] = useState(false);
@@ -95,7 +96,8 @@ export default function Locations() {
   const [locations, setLocations] = useState([]);
   const [company, setCompany] = useState([]);
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  console.log(company);
+  const [loading, setLoading] = React.useState(false)
+
   const history = useHistory();
   const handleClickOpen = () => {
     setOpen(true);
@@ -103,18 +105,22 @@ export default function Locations() {
   const handleClose = (close) => {
     setOpen(close);
   };
-  // const makeAToast = (message) => {
-  //     toast.success(message)
-  // }
+  const makeAToast = (message) => {
+    toast.success(message)
+  }
   const innerWidth = window.innerWidth;
   const gettingDataFromChild = (formDataFromParent) => {
     setFormData(formDataFromParent);
   };
   const getCompanyDetails = () => {
-    getCompany().then((res) => setCompany(res?.data?.results));
+    setLoading(true)
+    getCompany().then((res) => {
+      setCompany(res?.data?.results)
+      setLoading(false)
+    });
   };
-  useEffect(() => {
-    getCompanyDetails();
+
+  const getLocation = () => {
     Location.GetLocations()
       .then((res) => {
         setLocations(res.results);
@@ -122,6 +128,10 @@ export default function Locations() {
       .catch((err) => {
         console.log(err);
       });
+  }
+  useEffect(() => {
+    getCompanyDetails();
+    getLocation();
   }, [innerWidth, open]);
 
   return (
@@ -150,43 +160,40 @@ export default function Locations() {
             <Button onClick={() => history.push("/")}>Finish Setup</Button>
           </div>
         </div>
-        {userInfo && (
-          // locations?.map((item) => (
-          <div data-testid="card">
-            <Card
-              sx={{ display: "grid", gridTemplateColumns: "291px 500px 1fr" }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  textAlign: "center",
-                  padding: "20px",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  sx={{ width: "250px", height: "250px" }}
-                  image={company[0]?.logo? company[0].logo : locImage}
-                  alt="Live from space"
-                />
-                <strong style={{ marginTop: "10px" }}>
-                  {company[0]?.name}
-                </strong>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  mt: 0,
-
-                  width: "330px",
-                }}
-              >
-                <CardContent sx={{ flex: "1 0 auto" }}>
-                  {/* <CardContent>
+        <div data-testid="card">
+          <Card>
+            {!loading && company.length > 0 ? (
+              <Box sx={{ display: "grid", gridTemplateColumns: "291px 500px 1fr" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    textAlign: "center",
+                    padding: "20px",
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    sx={{ width: "250px", height: "250px" }}
+                    image={company[0]?.logo ? company[0].logo : locImage}
+                    alt="Live from space"
+                  />
+                  <strong style={{ marginTop: "10px" }}>
+                    {company[0]?.name}
+                  </strong>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    mt: 0,
+                    width: "330px",
+                  }}
+                >
+                  <CardContent sx={{ flex: "1 0 auto" }}>
+                    {/* <CardContent>
                                     <Typography
                                         variant="subtitle5"
                                         color="text.secondary"
@@ -195,106 +202,111 @@ export default function Locations() {
                                         <LocationIcon /> {userInfo?.address}
                                     </Typography>
                                 </CardContent> */}
-                  <CardContent>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        // justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div style={{ width: "50px" }}>
-                        <LocationIcon />
-                      </div>
-                      <Typography
-                        style={{ marginLeft: "10px" }}
-                        variant="subtitle5"
-                        color="text.secondary"
-                        component="span"
+                    <CardContent>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          // justifyContent: "center",
+                          alignItems: "center",
+                        }}
                       >
-                        {company[0]?.address_line1
-                          ? company[0]?.address_line1
-                          : "" + " " + company[0]?.address_line2
-                          ? company[0]?.address_line2
-                          : ""}
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                  <CardContent>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        //   // justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div style={{ width: "50px" }}>
-                        <EmailIcon />
-                      </div>
-                      <Typography
-                        style={{ marginLeft: "10px" }}
-                        variant="subtitle5"
-                        color="text.secondary"
-                        component="span"
+                        <div style={{ width: "50px" }}>
+                          <LocationIcon />
+                        </div>
+                        <Typography
+                          style={{ marginLeft: "10px" }}
+                          variant="subtitle5"
+                          color="text.secondary"
+                          component="span"
+                        >
+                          {company[0]?.address_line1
+                            ? company[0]?.address_line1
+                            : "" + " " + company[0]?.address_line2
+                              ? company[0]?.address_line2
+                              : ""}
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                    <CardContent>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          //   // justifyContent: "center",
+                          alignItems: "center",
+                        }}
                       >
-                        {company[0]?.email}
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                  <CardContent>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        // justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div style={{ width: "50px" }}>
-                        <LocalPhoneIcon />
-                      </div>
-                      <Typography
-                        style={{ marginLeft: "10px" }}
-                        variant="subtitle5"
-                        color="text.secondary"
-                        component="span"
+                        <div style={{ width: "50px" }}>
+                          <EmailIcon />
+                        </div>
+                        <Typography
+                          style={{ marginLeft: "10px" }}
+                          variant="subtitle5"
+                          color="text.secondary"
+                          component="span"
+                        >
+                          {company[0]?.email}
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                    <CardContent>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          // justifyContent: "center",
+                          alignItems: "center",
+                        }}
                       >
-                        {company[0]?.phone || "(229)555-0199"}
-                      </Typography>
-                    </Box>
+                        <div style={{ width: "50px" }}>
+                          <LocalPhoneIcon />
+                        </div>
+                        <Typography
+                          style={{ marginLeft: "10px" }}
+                          variant="subtitle5"
+                          color="text.secondary"
+                          component="span"
+                        >
+                          {company[0]?.phone || "(229)555-0199"}
+                        </Typography>
+                      </Box>
+                    </CardContent>
                   </CardContent>
-                </CardContent>
-              </Box>
-              <Box
-                style={{
-                  // marginLeft: innerWidth > 1900 ? "1450px" : "690px",
-                  cursor: "pointer",
-                  display: "flex",
-                  justifyContent: "end",
-                  padding: "30px",
-                }}
-              >
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 15 15"
-                  fill="none"
-                  onClick={() => setOpenCompanyEditForm(true)}
-                  xmlns="http://www.w3.org/2000/svg"
+                </Box>
+                <Box
+                  style={{
+                    // marginLeft: innerWidth > 1900 ? "1450px" : "690px",
+                    cursor: "pointer",
+                    display: "flex",
+                    justifyContent: "end",
+                    padding: "30px",
+                  }}
                 >
-                  <path
-                    d="M14.7189 3.03922L11.9801 0.281641C11.7992 0.10126 11.5543 0 11.299 0C11.0437 0 10.7988 0.10126 10.6178 0.281641L0.90865 9.99391L0.0221836 13.8265C-0.00839653 13.9666 -0.00734822 14.1118 0.0252518 14.2514C0.0578519 14.391 0.12118 14.5216 0.210611 14.6336C0.300041 14.7456 0.413314 14.8361 0.542155 14.8987C0.670996 14.9612 0.81215 14.9941 0.955306 14.9949C1.02201 15.0017 1.08922 15.0017 1.15593 14.9949L5.02372 14.1069L14.7189 4.40398C14.8989 4.22268 15 3.97734 15 3.7216C15 3.46585 14.8989 3.22051 14.7189 3.03922ZM4.55716 13.2656L0.931978 14.0274L1.75779 10.466L9.02215 3.21682L11.8215 6.02114L4.55716 13.2656ZM12.4467 5.34343L9.64734 2.53911L11.271 0.921959L14.0237 3.72627L12.4467 5.34343Z"
-                    fill="#676879"
-                  />
-                </svg>
-
-                {/* <EditLocationAltIcon
-                onClick={() => setOpenCompanyEditForm(true)}
-                color="disabled"
-              /> */}
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 15 15"
+                    fill="none"
+                    onClick={() => setOpenCompanyEditForm(true)}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M14.7189 3.03922L11.9801 0.281641C11.7992 0.10126 11.5543 0 11.299 0C11.0437 0 10.7988 0.10126 10.6178 0.281641L0.90865 9.99391L0.0221836 13.8265C-0.00839653 13.9666 -0.00734822 14.1118 0.0252518 14.2514C0.0578519 14.391 0.12118 14.5216 0.210611 14.6336C0.300041 14.7456 0.413314 14.8361 0.542155 14.8987C0.670996 14.9612 0.81215 14.9941 0.955306 14.9949C1.02201 15.0017 1.08922 15.0017 1.15593 14.9949L5.02372 14.1069L14.7189 4.40398C14.8989 4.22268 15 3.97734 15 3.7216C15 3.46585 14.8989 3.22051 14.7189 3.03922ZM4.55716 13.2656L0.931978 14.0274L1.75779 10.466L9.02215 3.21682L11.8215 6.02114L4.55716 13.2656ZM12.4467 5.34343L9.64734 2.53911L11.271 0.921959L14.0237 3.72627L12.4467 5.34343Z"
+                      fill="#676879"
+                    />
+                  </svg>
+                </Box>
               </Box>
-            </Card>
-          </div>
-        )}
+            ) : (
+              <Box sx={{
+                display: "flex",
+                // justifyContent: "center",
+                alignItems: "center",
+              }}
+              >
+                <Skeleton paragraph={{ rows: 4 }} avatar active={loading} size="default" />
+              </Box>
+            )}
+          </Card>
+        </div>
         <Button
           style={{
             width: "250px",
@@ -341,6 +353,9 @@ export default function Locations() {
         <AddLocationForm
           setOpen={setOpen}
           sendChildToParent={gettingDataFromChild}
+          callBack={() => getLocation()}
+          handleClose={() => setOpen(false)}
+          popUp={(message) => toast.success(message)}
         />
       </Drawer>
       <Drawer
@@ -396,7 +411,7 @@ export default function Locations() {
         <EditCompanyForm
           defaultValues={company[0]}
           callBack={() => getCompanyDetails()}
-          handleClose={(close) => handleClose(close)}
+          handleClose={() => setOpenCompanyEditForm(false)}
           popUp={(message) => toast.success(message)}
         />
       </Drawer>
