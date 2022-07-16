@@ -202,8 +202,8 @@ const RegisterationForm = ({ onSubmiting, email }) => {
           <Box sx={{ m: 1, position: "relative" }}>
             <LoadingButton
               sx={{
-                mb: 2,
-                mt: 3,
+                // mb: 2,
+                mt: 1.5,
                 paddingLeft: "90px",
                 paddingRight: "90px",
                 paddingTop: "10px",
@@ -231,7 +231,7 @@ const RegisterationForm = ({ onSubmiting, email }) => {
             onLoginSuccess={handleGoogleLogin}
             onLoginFailure={handleSocialLoginFailure}
           >
-            <img src={gmailLogo} height="45px" width="45px" />
+            <img src={gmailLogo} height="35px" width="35px" />
           </SocialButton>
           <Typography
             sx={{ variant: "body1", color: "gray", fontFamily: "Fira Sans" }}
