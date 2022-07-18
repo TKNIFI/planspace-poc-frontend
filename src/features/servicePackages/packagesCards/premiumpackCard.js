@@ -36,6 +36,18 @@ export default function PremiumPackCard() {
           does'nt give you that feeling of living in a city...
         </Typography>
         <Grid spacing={2} sx={{ mt: 2 }}>
+        <Stack
+          spacing={2}
+          direction="row"
+          sx={{
+            mt: 2,
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "start",
+            justifyContent: "start",
+          }}
+        >
           <Grid item xs={2}>
             <AccessTimeIcon />
           </Grid>
@@ -47,15 +59,30 @@ export default function PremiumPackCard() {
             >
               Package Duration
             </Typography>
-            <Typography variant="p" display="block">
+            <Typography variant="p" display="block" maxWidth="328px">
               This pacakge is legnth is UP TO 8 hours
             </Typography>
           </Grid>
+          </Stack>
+
+          
+          <Stack
+          spacing={2}
+          direction="row"
+          sx={{
+            mt: 2,
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "start",
+            justifyContent: "start",
+          }}
+        >
           <Grid item xs={2}>
             <DateRangeIcon />
           </Grid>
           <Grid item xs={4}>
-            {" "}
+            {/* {" "} */}
             <Typography
               variant="span"
               display="block"
@@ -63,12 +90,25 @@ export default function PremiumPackCard() {
             >
               Date & Time Availability
             </Typography>
-            <Typography variant="p" display="block">
+            <Typography variant="p" display="block" maxWidth="328px">
               This pacakge is ONLY available from Friday, from 11:00 AM to 11:00
               PM
             </Typography>
           </Grid>
+          </Stack>
 
+          <Stack
+          spacing={2}
+          direction="row"
+          sx={{
+            mt: 2,
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "start",
+            justifyContent: "start",
+          }}
+        >
           <Grid item xs={2}>
             <DateRangeIcon />
           </Grid>
@@ -80,10 +120,11 @@ export default function PremiumPackCard() {
             >
               Package length
             </Typography>
-            <Typography variant="p" display="block">
+            <Typography variant="p" display="block" maxWidth="328px">
               This pacakge is ONLY available from June 1, 2022 to Sep 30, 2022
             </Typography>
           </Grid>
+          </Stack>
         </Grid>
       </CardContent>
       <CardActions>

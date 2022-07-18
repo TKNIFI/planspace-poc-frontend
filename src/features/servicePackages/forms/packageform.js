@@ -1,3 +1,4 @@
+//import "./packageForm.css";
 import React, { useState } from "react";
 import { Upload } from "antd";
 import {
@@ -10,12 +11,14 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
+  Autocomplete,
 } from "@mui/material";
 import clarityimageline from "../../../assets/images/clarity_image-line.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const PackagesForm = () => {
+
   const [copyIsChecked, setCopyIsChecked] = useState();
   const formik = useFormik({
     initialValues: {
@@ -39,6 +42,8 @@ const PackagesForm = () => {
       Location.CreateLocation(formValues);
     },
   });
+
+
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -47,11 +52,11 @@ const PackagesForm = () => {
             "& .MuiTextField-root": { width: "50ch" },
           }}
         >
-          <FormControlLabel
+          {/* <FormControlLabel
             sx={{}}
             control={<Checkbox checked={copyIsChecked} />}
             label="Copy address & contacts from company profile"
-          />
+          /> */}
           <Grid container spacing={2}>
             <Grid item xs={8}>
               <Box
@@ -62,6 +67,7 @@ const PackagesForm = () => {
                 <TextField
                   id="name"
                   label="Package Name"
+                  required
                   type="text"
                   value={formik.values.name}
                   onChange={formik.handleChange}
@@ -69,6 +75,18 @@ const PackagesForm = () => {
                   helperText={formik.touched.name && formik.errors.name}
                   // autoComplete="current"
                 />
+
+                <TextField
+                  id="textarea"
+                  label="Multiline Placeholder"
+                  required
+                  multiline
+                  rows={4}
+                  sx={{
+                    backgroundColor: "#F4F6F9",
+                  }}
+                />
+
               </Box>
             </Grid>
             <Grid item xs={4}>
@@ -94,7 +112,7 @@ const PackagesForm = () => {
                   }}
                 >
                   <Typography variant="p">Add Package Image </Typography>
-                  <img src={clarityimageline} />
+                  <img src={clarityimageline} style={{width: "auto" , height: "auto"}}/>
                   <Typography variant="p" sx={{ fontSize: "10px" }}>
                     Supports , JPG, JPG2000, PNG Less than 2 MB
                   </Typography>
@@ -113,7 +131,7 @@ const PackagesForm = () => {
             <Grid item xs={12}>
               <Box
                 sx={{
-                  "& .MuiTextField-root": { width: "50ch" },
+                  "& .MuiTextField-root": { width: "31.5ch" },
                   ml: -6,
                 }}
               >
@@ -132,7 +150,8 @@ const PackagesForm = () => {
                   <TextField
                     id="price"
                     label="Package Price"
-                    type="tel"
+                    required
+                    type="text"
                     value={formik.values.price}
                     error={Boolean(formik.touched.price && formik.errors.price)}
                     helperText={formik.touched.price && formik.errors.price}
@@ -140,14 +159,22 @@ const PackagesForm = () => {
                     // autoComplete="current"
                   />
                   <TextField
-                    id="email"
-                    label="Total No. of Guests"
-                    type="email"
-                    value={formik.values.email}
+                    id="adults"
+                    label="No. of Guests(Adults)"
+                    required
+                    type="text"
+                    //value={formik.values.email}
                     onChange={formik.handleChange}
-                    error={Boolean(formik.touched.email && formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
+                    // error={Boolean(formik.touched.email && formik.errors.email)}
+                    // helperText={formik.touched.email && formik.errors.email}
                     // autoComplete="current"
+                  />
+                  <TextField
+                    id="kids"
+                    label="No. of Guests(Kids)"
+                    required
+                    type="text"
+                    onChange={formik.handleChange}
                   />
                 </Stack>
               </Box>
@@ -174,6 +201,7 @@ const PackagesForm = () => {
                   <TextField
                     id="noOfGuests"
                     label="Date and Time"
+                    required
                     type="tel"
                     value={formik.values.noOfGuests}
                     error={Boolean(
@@ -188,6 +216,7 @@ const PackagesForm = () => {
                   <TextField
                     id="email"
                     label="Package Duration"
+                    required
                     type="email"
                     value={formik.values.email}
                     onChange={formik.handleChange}
@@ -203,8 +232,30 @@ const PackagesForm = () => {
                 Add-On Packages
               </Typography>
             </Grid>
-            <Grid item xs={12}></Grid>
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  "& .MuiTextField-root": { width: "96%" },
+                  ml: "100",
+                }}
+              >
+                <Autocomplete
+                  multiple
+                  limitTags={2}
+                  id="multiple-limit-tags"
+                  options={top100Films}
+                  getOptionLabel={(option) => option.title}
+                  //defaultValue={[top100Films[13], top100Films[12], top100Films[11]]}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Search and add" />
+                  )}
+                />
+              </Box>
+
+            </Grid>
           </Grid>
+
+          
 
           <Stack
             spacing={2}
@@ -244,5 +295,13 @@ const PackagesForm = () => {
     </>
   );
 };
+
+const top100Films = [
+  { title: 'The Shawshank Redemption', year: 1994 },
+  { title: 'The Godfather', year: 1972 },
+  { title: 'The Godfather: Part II', year: 1974 },
+  { title: 'The Dark Knight', year: 2008 },
+];
+
 
 export default PackagesForm;
