@@ -13,22 +13,21 @@ class User extends BaseModel {
   // Registeration api call by using thunk
   static async registerationCall(data) {
     return await NetworkCall.fetch(
-        Request.registerationUser(
-          data.first_name,
-          data.last_name,
-          data.email,
-          data.mobile,
-          data.company_name,
-          data.password
-        )
+      Request.registerationUser(
+        data.first_name,
+        data.last_name,
+        data.email,
+        data.mobile,
+        data.company_name,
+        data.password
       )
-        .then((response) => {
-          const data = response.data.data;
-          localStorage.setItem("userInfo", JSON.stringify(data));
-          // upsertModel(User, response.data.data);
-          // useHistory.push("/login");
-        })
-    };
+    ).then((response) => {
+      const data = response.data.data;
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      // upsertModel(User, response.data.data);
+      // useHistory.push("/login");
+    });
+  }
   // }
 
   // API call using thunk

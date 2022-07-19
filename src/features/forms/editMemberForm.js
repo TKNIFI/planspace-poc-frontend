@@ -77,22 +77,36 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
 
   return (
     <>
-      <form onSubmit={formik.handleSubmit} style={{ padding: "2%" }}>
+      <form
+        onSubmit={formik.handleSubmit}
+        data-testid="form"
+        style={{ padding: "2%" }}
+      >
         <Box
           sx={{
             "& .MuiTextField-root": {
               width: "60ch",
               marginTop: 3,
-              width: "381px",
+              width: "29vw",
             },
           }}
         >
           <Grid container spacing={1}>
-            <Grid item xs={6}>
+            <Grid
+              item
+              xs={6}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <TextField
                 name="name"
                 label="Name*"
                 value={formik.values.name}
+                placeholder="Name"
+                sx={{ width: "" }}
                 error={Boolean(formik.touched.name && formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
                 onChange={formik.handleChange}
@@ -100,10 +114,19 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 // autoComplete="current"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid
+              item
+              xs={6}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <TextField
                 name="userId"
                 label="User ID"
+                placeholder="User"
                 value={formik.values.userId}
                 error={Boolean(formik.touched.userId && formik.errors.userId)}
                 helperText={formik.touched.userId && formik.errors.userId}
@@ -112,11 +135,20 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 // autoComplete="current"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid
+              item
+              xs={6}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <TextField
                 name="username"
                 label="Email"
                 value={formik.values.username}
+                placeholder="Email"
                 error={Boolean(
                   formik.touched.username && formik.errors.username
                 )}
@@ -125,7 +157,15 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 // autoComplete="current"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid
+              item
+              xs={6}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <PhoneInput
                 value={formik.values.mobile}
                 onChange={formik.handleChange}
@@ -185,6 +225,9 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                 position: "fixed",
                 top: "50%",
                 left: "50%",
+                display: "flex",
+
+                justifyContent: "center",
                 marginTop: "-100px",
                 marginLeft: "-100px",
               },
@@ -193,7 +236,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
             <Stack
               spacing={2}
               direction="row"
-              sx={{ marginTop: 10, marginLeft: "317px" }}
+              sx={{ marginTop: 10, display: "flex", justifyContent: "center" }}
             >
               <Muibtn
                 variant="outlined"
@@ -216,6 +259,7 @@ const EditMemberForm = ({ editRecordValues, handleClose, callBack, popUp }) => {
                   style={{ textTransform: "none" }}
                   type="submit"
                   disabled={loading}
+                  data-testid="submit-button"
                 >
                   Submit
                 </Muibtn>

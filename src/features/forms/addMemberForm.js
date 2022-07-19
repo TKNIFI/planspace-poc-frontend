@@ -5,9 +5,11 @@ import { Button as Muibtn } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { green } from "@mui/material/colors";
 import CircularProgress from "@mui/material/CircularProgress";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+// import { Toaster } from "react-hot-toast";
 import myApi from "../../network/axios";
 import PhoneInput from "../../common/phoneNumber";
 import "./addMemberForm.css";
@@ -26,7 +28,6 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
     validationSchema: Yup.object({
       // owner: Yup.string().required("owner is required"),
       name: Yup.string()
-        .max(15, "Must be 15 characters or less")
         .required("Name is required"),
       userId: Yup.string().required("user id is required"),
       username: Yup.string()
@@ -38,7 +39,6 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
     }),
     onSubmit: async (values, helpers) => {
       setLoading(true);
-
       let formData = new FormData();
       let name = values.name.split(" ");
       formData.append("first_name", name[0]);
@@ -54,6 +54,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
           handleClose(false);
           popUp(result.data.message);
           callBack();
+          formik.resetForm()
         })
         .catch((error) => {
           let message = error.response.data.message;
@@ -64,18 +65,16 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
             }
           }
           setLoading(false);
-          helpers.setSubmitting(false);
-          handleClose(true);
+          formik.setSubmitting(false);
         });
-      formik.resetForm();
     },
   });
 
   return (
     <>
       <form
+        data-testid="form"
         onSubmit={formik.handleSubmit}
-        id="myForm"
         style={{ padding: "2%" }}
       >
         <Box
@@ -84,6 +83,9 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
               width: "60ch",
               marginTop: 3,
               width: "381px",
+              width: "-webkit-fill-available",
+
+              marginRight: "23px",
             },
           }}
         >
@@ -92,12 +94,13 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
               <TextField
                 name="name"
                 label="Name*"
+                placeholder="Name"
                 value={formik.values.name}
                 error={Boolean(formik.touched.name && formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
                 onChange={formik.handleChange}
                 autoFocus={true}
-                // autoComplete="current"
+              // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -105,10 +108,11 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 name="userId"
                 label="User ID*"
                 value={formik.values.userId}
+                placeholder="User"
                 error={Boolean(formik.touched.userId && formik.errors.userId)}
                 helperText={formik.touched.userId && formik.errors.userId}
                 onChange={formik.handleChange}
-                // autoComplete="current"
+              // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -116,12 +120,13 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 name="username"
                 label="Email*"
                 value={formik.values.username}
+                placeholder="Email"
                 error={Boolean(
                   formik.touched.username && formik.errors.username
                 )}
                 helperText={formik.touched.username && formik.errors.username}
                 onChange={formik.handleChange}
-                // autoComplete="current"
+              // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -145,29 +150,6 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 )}
               </PhoneInput>
             </Grid>
-            {/* <Box
-              sx={{
-                "& .MuiTextField-root": {
-                  width: "813px",
-                  marginTop: 3,
-                  marginLeft: 0.7,
-                },
-              }}
-            >
-              <Grid item xs={8}>
-                <TextField
-                  name="address"
-                  label="Address"
-                  value={formik.values.address}
-                  error={Boolean(
-                    formik.touched.address && formik.errors.address
-                  )}
-                  helperText={formik.touched.address && formik.errors.address}
-                  onChange={formik.handleChange}
-                // autoComplete="current"
-                />
-              </Grid>
-            </Box> */}
           </Grid>
           {formik.errors.submit && (
             <Box sx={{ mt: 2, mb: 2 }}>
@@ -191,7 +173,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
             <Stack
               spacing={2}
               direction="row"
-              sx={{ marginTop: 8, marginLeft: "317px" }}
+              sx={{ marginTop: 8, display: "flex", justifyContent: "center" }}
             >
               <Muibtn
                 variant="outlined"
@@ -200,12 +182,15 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                   fontFamily: "Fira Sans",
                   textTransform: "none",
                 }}
-                onClick={() => handleClose(false)}
+                onClick={() => {
+                  handleClose(false)
+                  formik.resetForm()
+                }}
               >
                 Cancel
               </Muibtn>
               <div>
-                <Muibtn
+                <LoadingButton
                   variant="contained"
                   className="submitBtn"
                   type="submit"
@@ -213,27 +198,16 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                     fontFamily: "Fira Sans",
                     textTransform: "none",
                   }}
-                  disabled={loading}
+                  data-testid="submit-button"
+                  loading={loading}
                 >
                   Submit
-                </Muibtn>
-                {loading && (
-                  <CircularProgress
-                    size={24}
-                    sx={{
-                      color: green[500],
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      marginTop: "-12px",
-                      marginLeft: "-12px",
-                    }}
-                  />
-                )}
+                </LoadingButton>
               </div>
             </Stack>
           </Box>
         </Box>
+        {/* <Toaster position="top-right" /> */}
       </form>
     </>
   );

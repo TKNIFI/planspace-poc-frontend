@@ -2,17 +2,29 @@ import React,{useState} from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import { Alert, Box, Button, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import PasswordStrengthBar from 'react-password-strength-bar';
+
 // import User from "../../../../models/user/user";
 // import { useDispatch } from "react-redux";
 require("dotenv").config();
+
 const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
     const [showPassword, setShowPassword] = useState(false);
-const handleClickShowPassword = () => setShowPassword(!showPassword);
-const handleMouseDownPassword = () => setShowPassword(!showPassword);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [passwordScore,setPasswordScore] = useState(0);
+    const [loading, setLoading] = React.useState(false)
+    const passwordEnums = ["TOO SHORT", "WEAK","GOOD","STRONG","STRONG"];
+    const passwordColors=["#dddddd","#ef4836","#f6b44d","#2b90ef","#25c281"];
+
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+    const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
     const history = useHistory();
     const formik = useFormik({
         initialValues: {
@@ -38,6 +50,7 @@ const handleMouseDownPassword = () => setShowPassword(!showPassword);
         }),
         onSubmit: async (values, helpers) => {
             try {
+                setLoading(true);
                 let formData = new FormData();
                 formData.append("uid", uid);
                 formData.append("token", token);
@@ -49,7 +62,7 @@ const handleMouseDownPassword = () => setShowPassword(!showPassword);
                         formData
                     )
                     .then((result) => {
-                        console.log(result)
+                        setLoading(false)
                         toast.success(
                                 result?.data?.message
                         );
@@ -60,6 +73,7 @@ const handleMouseDownPassword = () => setShowPassword(!showPassword);
                             : null;
                     });
             } catch (error) {
+                setLoading(false)
                 formik.setErrors({ submit: error.response.data.message });
                 helpers.setSubmitting(false);
                 onSubmiting(false);
@@ -112,7 +126,7 @@ const handleMouseDownPassword = () => setShowPassword(!showPassword);
                         id="confirmpassword"
                         label="Confirm new password*"
                         placeholder="Confirm new password"
-                        type={showPassword ? "text" : "password"}
+                        type={showConfirmPassword ? "text" : "password"}
                         value={formik.values.confirmpassword}
                         InputProps={{
                             endAdornment:(
@@ -120,10 +134,10 @@ const handleMouseDownPassword = () => setShowPassword(!showPassword);
                                     <IconButton>
                                     <IconButton
                                     aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
+                                    onClick={handleClickShowConfirmPassword}
+                                    onMouseDown={handleMouseDownConfirmPassword}
         >
-          {showPassword ? <Visibility /> : <VisibilityOff />}
+          {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
         </IconButton>
                                     </IconButton>
                                 </InputAdornment>
@@ -140,21 +154,30 @@ const handleMouseDownPassword = () => setShowPassword(!showPassword);
                         onChange={formik.handleChange}
                         sx={{ width: "100%" }}
                     />
+                    {/* <div>
+                        <strong>Password Strength <span style={{color:passwordColors[passwordScore]}}>{passwordEnums[passwordScore]}</span></strong>
+                        <PasswordStrengthBar className="passwordMeter" scoreWordStyle={{display: "none"}} password={formik.values.newpassword} onChangeScore={(score) => setPasswordScore(score)} />
+                    </div> */}
                 </Box>
                 <Box className="container">
-                    <Button
+                    <LoadingButton
                         sx={{
-                            fontSize: 16,
-                            textTransform: "capitalize",
-                            pl: 10,
-                            pr: 10,
+                            mb: 2,
+                            mt: 3,
+                            paddingLeft: "100px",
+                            paddingRight: "100px",
+                            paddingTop: "9px",
+                            paddingBottom: "9px",
+                            textTransform: "none !important",
+                            fontFamily: "Fira Sans",
                         }}
-                        variant="contained"
+                        variant={formik.values.newpassword ? "contained" : "outlined"}
                         type="submit"
+                        loading={loading}
                         // onClick={checkingFormFields}
                     >
                         Reset Password
-                    </Button>
+                    </LoadingButton>
                 </Box>
                 <Box sx={{textAlign: "center"}}>
                 <Typography

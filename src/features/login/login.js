@@ -1,9 +1,6 @@
 import React from "react";
 import "./login.module.scss";
 import "antd/dist/antd.css";
-import User from "../../models/user/user";
-import { useDispatch } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
 import planLogo from "../../assets/images/plan.svg";
 import { Typography, Grid, Paper, Box } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -68,17 +65,6 @@ const SliderContent = () => {
     );
 };
 export default function Login() {
-    // const dispatch = useDispatch();
-    const history = useHistory();
-    // const location = useLocation();
-
-    const onFinish = async (values) => {
-        // await dispatch(User.loginCall(values.username, values.password));
-
-        // Logged in.
-        // const { from } = location.state || { from: { path: "dashboard" } };
-        // history.replace(from);
-    };
     SwiperCore.use([EffectCoverflow, Pagination]);
 
     return (
@@ -90,7 +76,7 @@ export default function Login() {
                 columns={16}
                 sx={{ ml: 12 }}
             >
-                {/* carousal  */}
+                
                 <Grid item xs={6}>
                     <Paper>
                         <Swiper
@@ -119,7 +105,7 @@ export default function Login() {
                         </Swiper>
                     </Paper>
                 </Grid>
-                {/* create account formik form  */}
+                
                 <Grid item xs={8}>
                     <Paper sx={{ p: 5, borderRadius: "0px 4px 4px 0px" }}>
                         <Box>

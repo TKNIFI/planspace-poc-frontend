@@ -85,12 +85,11 @@ function RegisterInvited() {
         return React.useMemo(() => new URLSearchParams(search), [search]);
     }
     let query = useQuery();
-    const uid = query.get("uid");
     const token = query.get("token");
     async function checkToken() {
         await axios
             .get(
-                `${process.env.REACT_APP_BASE_URL}api/auth/user/invited/?uid=${uid}&token=${token}`
+                `${process.env.REACT_APP_BASE_URL}api/auth/user/invited/?token=${token}`
             )
             .then((result) => {
                 setIsValid(true);
@@ -183,7 +182,6 @@ function RegisterInvited() {
                                                     setCheck(val);
                                                 }}
                                                 user={userDetails}
-                                                uid={uid}
                                                 token={token}
                                             />
                                         </Box>

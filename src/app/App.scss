@@ -1,6 +1,7 @@
-*{
+* {
   font-family: "Fira Sans" !important;
 }
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -29,56 +30,84 @@
   0% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(10px);
   }
+
   100% {
     transform: translateY(0px);
   }
 }
 
 
-input::placeholder,label.MuiInputLabel-root,label.MuiInputLabel-formControl{
+// label.MuiInputLabel-root,
+label.MuiInputLabel-formControl {
+  font-weight: bold !important;
+}
+
+.css-u9osun.Mui-focused {
+  font-weight: bold !important;
+  opacity: 1 !important;
+}
+
+.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+  font-weight: bold !important;
+  opacity: 1 !important;
+}
+
+input::placeholder,
+label.MuiInputLabel-root {
   font-weight: bold !important;
   opacity: 0.5 !important;
 }
-label.MuiInputLabel-formControl::first-letter{
-  color:"red"!important
+
+label.MuiInputLabel-formControl::first-letter {
+  color: "red" !important
 }
-legend.css-1ftyaf0 span{
+
+legend.css-1ftyaf0 span {
   font-weight: bold !important;
   background: white !important;
 }
 
-.help-div{
+.help-div {
   display: flex;
   justify-content: end;
 }
 
-.help-svg{
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
+.help-svg {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
 }
 
 // .ant-layout-content{
 //   background-color: #F5F7FB;
 // }
 
-.swiper {
-  width: 100%;
-  padding-top: 50px;
-  padding-bottom: 50px;
-}
+// .swiper {
+//   width: 100%;
+//   padding-top: 50px;
+//   padding-bottom: 50px;
+// }
 
-.swiper-slide {
-  background-position: center;
-  background-size: cover;
-  width: 400px;
-  height: 400px;
-}
+// .swiper-slide {
+//   background-position: center;
+//   background-size: cover;
+//   width: 400px;
+//   height: 400px;
+// }
 
 // .swiper-slide img {
 //   display: block;
 //   width: 100%;
 // }
+
+.passwordMeter {
+  div {
+    div {
+      height: 4px !important;
+    }
+  }
+}

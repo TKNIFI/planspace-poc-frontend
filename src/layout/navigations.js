@@ -23,7 +23,7 @@ const childrenForCompanyProfile = (basePath) => [
   //   path: `${basePath}/Company Settings`,
   //   name: "Company Settings",
   // },
-  { path: `${basePath}/locations`, name: "Locations" },
+  { path: `${basePath}/locations`, name: "Venues" },
   {
     path: `${basePath}/packages`,
     name: "Packages",
@@ -34,7 +34,7 @@ const childrenForCompanyProfile = (basePath) => [
   },
   {
     path: `${basePath}/team`,
-    name: "Invite Team Members",
+    name: "Team",
   },
 ];
 

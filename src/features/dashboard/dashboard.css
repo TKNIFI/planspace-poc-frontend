@@ -1,0 +1,7 @@
+.img-dashboard{
+    background: url("./dashboard.svg");
+     height: 32vw;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

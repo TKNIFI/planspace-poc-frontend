@@ -127,19 +127,7 @@ export default class Request {
     }
 
     static CreateLocation(requestbody) {
-        const body = {
-            name: requestbody.name,
-            location_image: requestbody.location_image,
-            address_line1: requestbody.address_line1,
-            address_line2: requestbody.address_line2,
-            city: requestbody.city,
-            state: requestbody.state,
-            zip_code: requestbody.zip_code,
-            is_physical_main_location: requestbody.is_physical_main_location,
-            define_space: requestbody.define_space,
-            phone: requestbody.phone_id,
-            email: requestbody.email,
-        };
+        const body = requestbody;
         return new Request(
             K.Network.URL.CreateLocation,
             K.Network.Method.POST,

@@ -38,8 +38,8 @@ const SliderContent = () => {
                         sx={{
                             color: "white",
                             fontFamily: "Fira Sans",
-                         }}
-                        
+                        }}
+
                     >
                         Amet minim mollit non deserunt ullamco est sit <br />{" "}
                         aliqua dolor do amet sint. Velit officia consequat duis{" "}
@@ -79,13 +79,13 @@ export default function ResetingPassword() {
         return React.useMemo(() => new URLSearchParams(search), [search]);
     }
     let query = useQuery();
-    const uid = query.get("uid");
     const token = query.get("token");
-    console.log(uid);
+    const uid = query.get("uid");
+    
     async function checkToken() {
         let formData = new FormData();
-        formData.append("uid", uid);
         formData.append("token", token);
+        formData.append("uid", uid);
         await axios
             .post(
                 `${process.env.REACT_APP_BASE_URL}api/auth/password_reset/validate_token/`,

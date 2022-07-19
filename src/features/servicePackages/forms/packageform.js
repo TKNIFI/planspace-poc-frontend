@@ -25,7 +25,7 @@ const PackagesForm = () => {
       name: "",
       logo_url: "",
       price: "",
-      noOfGuests:"",
+      noOfGuests: "",
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -35,7 +35,7 @@ const PackagesForm = () => {
       price: Yup.string()
         .max(15, "Must be 15 characters or less")
         .required("Package Price is required"),
-      noOfGuests: Yup.string().required("No. of Guests required")
+      noOfGuests: Yup.string().required("No. of Guests required"),
     }),
     onSubmit: (values) => {
       const formValues = values;
