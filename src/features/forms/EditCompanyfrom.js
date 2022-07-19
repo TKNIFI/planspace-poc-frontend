@@ -138,65 +138,116 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
     <>
       <ThemeProvider theme={theme}>
         <form onSubmit={formik.handleSubmit}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div>
             <div
               className="fields"
               style={{
-                display: "flex",
-                height: "370px",
-                width: "745px",
-                flexDirection: "column",
+                display: "grid",
+                height: "331px",
+                gridTemplateColumns: "1fr 300px",
               }}
             >
-              <TextField
-                id="name"
-                label="Enter the business name"
-                placeholder="Enter the business name"
-                type="text"
-                required
-                sx={{ width: "42vw", margin: "32px 0px 0px 0px" }}
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                // autoComplete="current"
-              />
-              {formik.touched.name && formik.errors.name ? (
-                <MuiAlert severity="error" sx={{ width: "25%" }}>
-                  <p>{formik.errors.name}</p>
-                </MuiAlert>
-              ) : null}
+              <div
+                style={{
+                  display: "flex",
+                  height: "370px",
+                  flexDirection: "column",
+                }}
+              >
+                <TextField
+                  id="name"
+                  label="Enter the business name"
+                  placeholder="Enter the business name"
+                  type="text"
+                  required
+                  sx={{ width: "auto", margin: "32px 0px 0px 0px" }}
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  // autoComplete="current"
+                />
+                {formik.touched.name && formik.errors.name ? (
+                  <MuiAlert severity="error" sx={{ width: "25%" }}>
+                    <p>{formik.errors.name}</p>
+                  </MuiAlert>
+                ) : null}
 
-              <TextField
-                id="address_line1"
-                label="Address line 1"
-                placeholder="Address line 1"
-                type="text"
-                sx={{ width: "42vw", margin: "48px 0px 0px 0px" }}
-                value={formik.values.address_line1}
-                onChange={formik.handleChange}
-                // autoComplete="current"
-              />
-              {formik.touched.address_line1 && formik.errors.address_line1 ? (
-                <MuiAlert severity="error" sx={{ width: "25%" }}>
-                  <p>{formik.errors.address_line1}</p>
-                </MuiAlert>
-              ) : null}
+                <TextField
+                  id="address_line1"
+                  label="Address line 1"
+                  placeholder="Address line 1"
+                  type="text"
+                  sx={{ width: "auto", margin: "48px 0px 0px 0px" }}
+                  value={formik.values.address_line1}
+                  onChange={formik.handleChange}
+                  // autoComplete="current"
+                />
+                {formik.touched.address_line1 && formik.errors.address_line1 ? (
+                  <MuiAlert severity="error" sx={{ width: "25%" }}>
+                    <p>{formik.errors.address_line1}</p>
+                  </MuiAlert>
+                ) : null}
 
-              <TextField
-                id="address_line2"
-                label="Address line 2"
-                placeholder="Address line 2"
-                sx={{ width: "42vw", margin: "48px 0px 0px 0px" }}
-                type="text"
-                value={formik.values.address_line2}
-                onChange={formik.handleChange}
-                // autoComplete="current"
-              />
-              {formik.touched.address_line2 && formik.errors.address_line2 ? (
-                <MuiAlert severity="error" sx={{ width: "25%" }}>
-                  <div>{formik.errors.address_line2}</div>
-                </MuiAlert>
-              ) : null}
-              <div style={{ display: "flex", width: "45vw" }}>
+                <TextField
+                  id="address_line2"
+                  label="Address line 2"
+                  placeholder="Address line 2"
+                  sx={{ width: "auto", margin: "48px 0px 0px 0px" }}
+                  type="text"
+                  value={formik.values.address_line2}
+                  onChange={formik.handleChange}
+                  // autoComplete="current"
+                />
+                {formik.touched.address_line2 && formik.errors.address_line2 ? (
+                  <MuiAlert severity="error" sx={{ width: "25%" }}>
+                    <div>{formik.errors.address_line2}</div>
+                  </MuiAlert>
+                ) : null}
+              </div>
+
+              <div
+                className="img-comp"
+                style={{ color: "black", marginLeft: "14px" }}
+              >
+                <Upload {...props} accept=".jpg, .jpeg, .png">
+                  <Paper
+                    elevation={3}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: window.innerWidth > 1900 ? "250px" : "220px",
+                      width: window.innerWidth > 1900 ? "300px" : "231px",
+                      mt: window.innerWidth > 1900 ? "20px" : "27px",
+                      borderRadius: "8px",
+                      cursor: "pointer",
+                      border: "2px dashed #ccc",
+                      boxShadow: "none",
+                      // width: "17vw",
+                      // height: "38vh",
+                    }}
+                  >
+                    <Typography variant="p">Add Company Logo </Typography>
+                    <img src={clarityimageline} />
+                    <Typography variant="p" sx={{ fontSize: "10px" }}>
+                      Supports , JPG, JPG2000, PNG Less than 2 MB
+                    </Typography>
+                    <Typography
+                      variant="p"
+                      sx={{
+                        fontSize: "10px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Drop your images here or <a>Browse</a>
+                    </Typography>
+                  </Paper>
+                </Upload>
+              </div>
+            </div>
+          </div>
+          {/* <div style={{ display: "flex", width: "auto" }}>
                 <TextField
                   id="city"
                   label="City"
@@ -228,9 +279,9 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                     <p>{formik.errors.state}</p>
                   </MuiAlert>
                 ) : null}
-              </div>
-            </div>
-            <div
+              </div> */}
+          {/* </div> */}
+          {/* <div
               className="img"
               style={{
                 display: "flex",
@@ -299,13 +350,74 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                   <p>{formik.errors.zip_code}</p>
                 </MuiAlert>
               ) : null}
-            </div>
+            </div> */}
+          {/* </div> */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+            }}
+          >
+            <TextField
+              id="city"
+              label="City"
+              placeholder="City"
+              sx={{ width: "auto", margin: "0px 10px 0px 0px" }}
+              type="text"
+              value={formik.values.city}
+              onChange={formik.handleChange}
+              // autoComplete="current"
+            />
+            {formik.touched.city && formik.errors.city ? (
+              <MuiAlert severity="error" sx={{ width: "25%" }}>
+                <p>{formik.errors.city}</p>
+              </MuiAlert>
+            ) : null}
+            <TextField
+              id="state"
+              label="State"
+              placeholder="State"
+              type="text"
+              required
+              sx={{ width: "auto", margin: "0px 10px 0px 0px" }}
+              value={formik.values.state}
+              onChange={formik.handleChange}
+              // autoComplete="current"
+            />
+            {formik.touched.state && formik.errors.state ? (
+              <MuiAlert severity="error" sx={{ width: "25%" }}>
+                <p>{formik.errors.state}</p>
+              </MuiAlert>
+            ) : null}
+
+            <ZipCodeInput
+              value={formik.values.zip_code}
+              onChange={formik.handleChange}
+            >
+              {() => (
+                <TextField
+                  id="zip_code"
+                  label="Zip code"
+                  required
+                  sx={{ width: "auto" }}
+                  placeholder="E.g 20001 (Washington DC)"
+
+                  // type=""
+                  // autoComplete="current"
+                />
+              )}
+            </ZipCodeInput>
+            {formik.touched.zip_code && formik.errors.zip_code ? (
+              <MuiAlert severity="error" sx={{ width: "25%" }}>
+                <p>{formik.errors.zip_code}</p>
+              </MuiAlert>
+            ) : null}
           </div>
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
-              marginTop: "30px",
+              margin: "25px 0px",
             }}
           >
             <PhoneInput
@@ -321,7 +433,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                   type="tel"
                   error={Boolean(formik.touched.mobile && formik.errors.phone)}
                   helperText={formik.touched.phone && formik.errors.phone}
-                  sx={{ width: "auto", margin: "50px 17px 0px 0px" }}
+                  sx={{ width: "auto", margin: "0px 17px 0px 0px" }}
                 />
               )}
             </PhoneInput>
@@ -331,7 +443,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
               placeholder="Enter email address"
               type="email"
               required
-              sx={{ width: "auto", margin: "50px 5px" }}
+              sx={{ width: "auto", margin: "0px 5px" }}
               value={formik.values.email}
               onChange={formik.handleChange}
               // autoComplete="current"
