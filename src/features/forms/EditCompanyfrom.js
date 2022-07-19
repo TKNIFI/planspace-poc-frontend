@@ -11,6 +11,7 @@ import MuiAlert from "@mui/material/Alert";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import "./EditCompanyForm.css";
 import myApi from "../../network/axios";
 import PhoneInput from "../../common/phoneNumber";
 import ZipCodeInput from "../../common/zipcodeInput";
@@ -217,14 +218,14 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                       flexWrap: "wrap",
                       alignItems: "center",
                       justifyContent: "center",
-                      height: window.innerWidth > 1900 ? "250px" : "220px",
-                      width: window.innerWidth > 1900 ? "300px" : "231px",
+                      height: window.innerWidth > 1900 ? "268px" : "267px",
+                      // width: window.innerWidth > 1900 ? "300px" : "231px",
                       mt: window.innerWidth > 1900 ? "20px" : "27px",
                       borderRadius: "8px",
                       cursor: "pointer",
                       border: "2px dashed #ccc",
                       boxShadow: "none",
-                      // width: "17vw",
+                      width: "auto",
                       // height: "38vh",
                     }}
                   >
