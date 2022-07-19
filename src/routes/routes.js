@@ -29,53 +29,53 @@ const defaultCrudChildren = [
 const userExist = () => {
   let userInfo = localStorage.getItem("userInfo");
   if (userInfo) {
-    return true
+    return true;
   } else {
-    return false
+    return false;
   }
-}
+};
 const routes = [
   {
     path: "/login",
     name: "Login",
     component: Login,
     layout: GuestPageLayout,
-    exact: true
+    exact: true,
   },
   {
     path: "/register/invited",
     name: "Register",
     component: RegisterInvited,
     layout: GuestPageLayout,
-    exact: true
+    exact: true,
   },
   {
     path: "/register/activate",
     name: "Activate",
     component: Verifiy,
     layout: GuestPageLayout,
-    exact: true
+    exact: true,
   },
   {
     path: "/register",
     name: "Register",
     component: Register,
     layout: GuestPageLayout,
-    exact: true
+    exact: true,
   },
   {
     path: "/forgot_password",
     name: "Forgot Password",
     component: ResetPassword,
     layout: GuestPageLayout,
-    exact: true
+    exact: true,
   },
   {
     path: "/account/password/change",
     name: "reset password",
     component: ResetingPassword,
     layout: GuestPageLayout,
-    exact: true
+    exact: true,
   },
   // {
   //   path: "/pwdresetmail",
@@ -99,7 +99,7 @@ const routes = [
     roles: [K.Roles.Admin],
     children: defaultCrudChildren,
     layout: LoggedInPageLayout,
-    exact: true
+    exact: true,
   },
   {
     path: "/Locations/:id",
@@ -109,7 +109,7 @@ const routes = [
     roles: [K.Roles.Admin],
     children: defaultCrudChildren,
     layout: LoggedInPageLayout,
-    exact: true
+    exact: true,
   },
   // {
   //   path: "/editlocation/:id",
@@ -128,14 +128,14 @@ const routes = [
     name: "Service Package",
     component: Addons,
     layout: LoggedInPageLayout,
-    exact: true
+    exact: true,
   },
   {
     path: "/company_settings/team",
     name: "Service Package",
     component: TeamInvitation,
     layout: LoggedInPageLayout,
-    exact: true
+    exact: true,
   },
   {
     path: "/users",
@@ -145,7 +145,7 @@ const routes = [
     roles: [],
     children: defaultCrudChildren,
     layout: LoggedInPageLayout,
-    exact: true
+    exact: true,
   },
   {
     path: "/unauthorized",
@@ -154,7 +154,7 @@ const routes = [
     authenticated: false,
     roles: [],
     layout: GuestPageLayout,
-    exact: true
+    exact: true,
   },
   {
     path: "/",
@@ -162,9 +162,8 @@ const routes = [
     component: Dashboard,
     authenticated: false,
     layout: LoggedInPageLayout,
-    exact: true
+    exact: true,
   },
-
 ];
 
 routes.push({
@@ -172,6 +171,6 @@ routes.push({
   name: "404",
   component: PageNotFound,
   layout: userExist() ? LoggedInPageLayout : GuestPageLayout,
-})
+});
 
 export default routes;
