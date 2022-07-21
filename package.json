@@ -26,7 +26,6 @@
         "js-cookie": "^2.2.1",
         "jsx-runtime": "^1.2.0",
         "moment": "^2.29.1",
-        "node-sass": "^4.14.1",
         "pusher-js": "^7.1.1-beta",
         "react": "^16.13.1",
         "react-countdown-circle-timer": "^3.0.9",
@@ -65,5 +64,8 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "sass": "^1.53.0"
     }
 }
