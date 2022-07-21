@@ -126,6 +126,8 @@ export default function Locations() {
     getCompany().then((res) => {
       setCompany(res?.data?.results)
       setLoading(false)
+    }).catch((error) => {
+      setLoading(false)
     });
   };
 
