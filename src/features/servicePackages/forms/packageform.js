@@ -24,7 +24,9 @@ const PackagesForm = () => {
       name: "",
       logo_url: "",
       price: "",
-      noOfGuests: "",
+      room: "",
+      dateAndTime: "",
+      packageDuration: "",
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -32,13 +34,23 @@ const PackagesForm = () => {
         .required("Location Name is required"),
       logo_url: Yup.mixed().required("location image is required"),
       price: Yup.string()
-        .max(15, "Must be 15 characters or less")
+        .max(1, "Must be 15 characters or less")
         .required("Package Price is required"),
-      noOfGuests: Yup.string().required("No. of Guests required"),
+      room: Yup.string()
+        .max(1, "Must be 15 characters or less")
+        .required("Package Price is required"),
+      dateAndTime: Yup.string()
+        .max(1, "Must be 15 characters or less")
+        .required("Package Price is required"),
+      packageDuration: Yup.string()
+        .max(1, "Must be 15 characters or less")
+        .required("Package Price is required"),
     }),
     onSubmit: (values) => {
       const formValues = values;
-      Location.CreateLocation(formValues);
+
+      console.log("form values => ", values);
+      // Location.CreateLocation(formValues);
     },
   });
 
@@ -73,8 +85,8 @@ const PackagesForm = () => {
                   type="text"
                   value={formik.values.name}
                   onChange={formik.handleChange}
-                  error={Boolean(formik.touched.name && formik.errors.name)}
-                  helperText={formik.touched.name && formik.errors.name}
+                  // error={Boolean(formik.touched.name && formik.errors.name)}
+                  // helperText={formik.touched.name && formik.errors.name}
                   // autoComplete="current"
                 />
 
@@ -94,6 +106,7 @@ const PackagesForm = () => {
               <Upload
                 id="logo_url"
                 accept="image"
+                type="file"
                 action={formik.values.logo_url}
                 onChange={formik.handleChange}
               >
@@ -154,13 +167,13 @@ const PackagesForm = () => {
                     type="text"
                     style={{ width: "-webkit-fill-available" }}
                     value={formik.values.price}
-                    error={Boolean(formik.touched.price && formik.errors.price)}
-                    helperText={formik.touched.price && formik.errors.price}
+                    // error={Boolean(formik.touched.price && formik.errors.price)}
+                    // helperText={formik.touched.price && formik.errors.price}
                     onChange={formik.handleChange}
                     // autoComplete="current"
                   />
                   <TextField
-                    id="price"
+                    id="room"
                     label="Select Room"
                     required
                     type="text"
@@ -168,9 +181,9 @@ const PackagesForm = () => {
                       width: "-webkit-fill-available",
                       marginLeft: "15px",
                     }}
-                    value={formik.values.price}
-                    error={Boolean(formik.touched.price && formik.errors.price)}
-                    helperText={formik.touched.price && formik.errors.price}
+                    value={formik.values.room}
+                    // error={Boolean(formik.touched.room && formik.errors.room)}
+                    // helperText={formik.touched.room && formik.errors.room}
                     onChange={formik.handleChange}
                     // autoComplete="current"
                   />
@@ -193,40 +206,46 @@ const PackagesForm = () => {
                   }}
                 >
                   <TextField
-                    id="noOfGuests"
+                    id="dateAndTime"
                     label="Date and Time"
                     required
                     type="tel"
                     style={{ width: "-webkit-fill-available" }}
-                    value={formik.values.noOfGuests}
-                    error={Boolean(
-                      formik.touched.noOfGuests && formik.errors.noOfGuests
-                    )}
-                    helperText={
-                      formik.touched.noOfGuests && formik.errors.noOfGuests
-                    }
+                    value={formik.values.dateAndTime}
+                    // error={Boolean(
+                    //   formik.touched.dateAndTime && formik.errors.dateAndTime
+                    // )}
+                    // helperText={
+                    //   formik.touched.dateAndTime && formik.errors.dateAndTime
+                    // }
                     onChange={formik.handleChange}
                     // autoComplete="current"
                   />
                   <TextField
-                    id="email"
+                    id="packageDuration"
                     label="Package Duration"
                     style={{
                       width: "-webkit-fill-available",
                       marginLeft: "15px",
                     }}
                     required
-                    type="email"
-                    value={formik.values.email}
+                    type="text"
+                    value={formik.values.packageDuration}
                     onChange={formik.handleChange}
-                    error={Boolean(formik.touched.email && formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
+                    // error={Boolean(
+                    //   formik.touched.packageDuration &&
+                    //     formik.errors.packageDuration
+                    // )}
+                    // helperText={
+                    //   formik.touched.packageDuration &&
+                    //   formik.errors.packageDuration
+                    // }
                     // autoComplete="current"
                   />
                 </Stack>
               </Box>
             </Grid>
-            <Grid item xs={12} sx={{ ml: "5px" }}>
+            {/* <Grid item xs={12} sx={{ ml: "5px" }}>
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                 Add-On Packages
               </Typography>
@@ -250,7 +269,7 @@ const PackagesForm = () => {
                   )}
                 />
               </Box>
-            </Grid>
+            </Grid> */}
           </Grid>
 
           <Stack
@@ -275,7 +294,11 @@ const PackagesForm = () => {
             >
               cancel
             </Button>
-            <Button variant="outlined" sx={{ textTransform: "capitalize" }}>
+            <Button
+              variant="outlined"
+              type="submit"
+              sx={{ textTransform: "capitalize" }}
+            >
               Save
             </Button>
             <Button

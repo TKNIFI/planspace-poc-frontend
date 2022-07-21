@@ -16,6 +16,7 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import "./servicePackages.css";
 import AddTaskRoundedIcon from "@mui/icons-material/AddTaskRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
@@ -49,7 +50,7 @@ const ServicePack = () => {
       <Box sx={{ flexGrow: 1, display: "inline" }}>
         <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
           <Grid item xs={8}>
-            <Button sx={ButtonStyle}>
+            <Button className="packages-nav-active" sx={ButtonStyle}>
               <Stack spacing={4} direction="row">
                 <AddTaskRoundedIcon />
                 Active
@@ -192,10 +193,17 @@ const ServicePack = () => {
           </Button>
         </div>
       </Modal>
-
-      <Box sx={{ mt: 3 }}>
-        <PremiumPackCard />
-      </Box>
+      <div style={{ justifyContent: "space-between", display: "flex" }}>
+        <Box sx={{ mt: 3 }}>
+          <PremiumPackCard />
+        </Box>
+        <Box sx={{ mt: 3 }}>
+          <PremiumPackCard />
+        </Box>
+        <Box sx={{ mt: 3 }}>
+          <PremiumPackCard />
+        </Box>
+      </div>
 
       {/* Model html */}
       <Drawer
