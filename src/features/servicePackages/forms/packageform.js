@@ -22,29 +22,23 @@ const PackagesForm = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      logo_url: "",
       price: "",
       room: "",
-      dateAndTime: "",
-      packageDuration: "",
+      date_time: "",
+      duration_minutes: "",
+      description: "",
     },
     validationSchema: Yup.object({
       name: Yup.string()
-        .max(15, "Must be 15 characters or less")
-        .required("Location Name is required"),
-      logo_url: Yup.mixed().required("location image is required"),
+        .required("Package Name is required"),
       price: Yup.string()
-        .max(1, "Must be 15 characters or less")
         .required("Package Price is required"),
       room: Yup.string()
-        .max(1, "Must be 15 characters or less")
-        .required("Package Price is required"),
-      dateAndTime: Yup.string()
-        .max(1, "Must be 15 characters or less")
-        .required("Package Price is required"),
-      packageDuration: Yup.string()
-        .max(1, "Must be 15 characters or less")
-        .required("Package Price is required"),
+        .required("Room is required"),
+      date_time: Yup.string()
+        .required("Package date and time is required"),
+      duration_minutes: Yup.string()
+        .required("Package duration is required"),
     }),
     onSubmit: (values) => {
       const formValues = values;
@@ -81,21 +75,22 @@ const PackagesForm = () => {
                 <TextField
                   id="name"
                   label="Package Name"
-                  required
                   type="text"
                   value={formik.values.name}
                   onChange={formik.handleChange}
-                  // error={Boolean(formik.touched.name && formik.errors.name)}
-                  // helperText={formik.touched.name && formik.errors.name}
-                  // autoComplete="current"
+                  error={Boolean(formik.touched.name && formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
                 />
 
                 <TextField
-                  id="textarea"
+                  id="description"
                   label="Multiline Placeholder"
-                  required
                   multiline
                   rows={4}
+                  value={formik.values.description}
+                  onChange={formik.handleChange}
+                  error={Boolean(formik.touched.description && formik.errors.description)}
+                  helperText={formik.touched.description && formik.errors.description}
                   sx={{
                     backgroundColor: "#F4F6F9",
                   }}
@@ -104,7 +99,7 @@ const PackagesForm = () => {
             </Grid>
             <Grid item xs={4}>
               <Upload
-                id="logo_url"
+                id="image"
                 accept="image"
                 type="file"
                 action={formik.values.logo_url}
@@ -163,29 +158,27 @@ const PackagesForm = () => {
                   <TextField
                     id="price"
                     label="Package Price"
-                    required
                     type="text"
                     style={{ width: "-webkit-fill-available" }}
                     value={formik.values.price}
-                    // error={Boolean(formik.touched.price && formik.errors.price)}
-                    // helperText={formik.touched.price && formik.errors.price}
+                    error={Boolean(formik.touched.price && formik.errors.price)}
+                    helperText={formik.touched.price && formik.errors.price}
                     onChange={formik.handleChange}
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />
                   <TextField
                     id="room"
                     label="Select Room"
-                    required
                     type="text"
                     style={{
                       width: "-webkit-fill-available",
                       marginLeft: "15px",
                     }}
                     value={formik.values.room}
-                    // error={Boolean(formik.touched.room && formik.errors.room)}
-                    // helperText={formik.touched.room && formik.errors.room}
+                    error={Boolean(formik.touched.room && formik.errors.room)}
+                    helperText={formik.touched.room && formik.errors.room}
                     onChange={formik.handleChange}
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />
                 </Stack>
               </Box>
@@ -206,41 +199,39 @@ const PackagesForm = () => {
                   }}
                 >
                   <TextField
-                    id="dateAndTime"
+                    id="date_time"
                     label="Date and Time"
-                    required
-                    type="tel"
+                    type="datetime"
                     style={{ width: "-webkit-fill-available" }}
-                    value={formik.values.dateAndTime}
-                    // error={Boolean(
-                    //   formik.touched.dateAndTime && formik.errors.dateAndTime
-                    // )}
-                    // helperText={
-                    //   formik.touched.dateAndTime && formik.errors.dateAndTime
-                    // }
+                    value={formik.values.date_time}
+                    error={Boolean(
+                      formik.touched.date_time && formik.errors.date_time
+                    )}
+                    helperText={
+                      formik.touched.date_time && formik.errors.date_time
+                    }
                     onChange={formik.handleChange}
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />
                   <TextField
-                    id="packageDuration"
+                    id="duration_minutes"
                     label="Package Duration"
                     style={{
                       width: "-webkit-fill-available",
                       marginLeft: "15px",
                     }}
-                    required
                     type="text"
-                    value={formik.values.packageDuration}
+                    value={formik.values.duration_minutes}
                     onChange={formik.handleChange}
-                    // error={Boolean(
-                    //   formik.touched.packageDuration &&
-                    //     formik.errors.packageDuration
-                    // )}
-                    // helperText={
-                    //   formik.touched.packageDuration &&
-                    //   formik.errors.packageDuration
-                    // }
-                    // autoComplete="current"
+                    error={Boolean(
+                      formik.touched.duration_minutes &&
+                      formik.errors.duration_minutes
+                    )}
+                    helperText={
+                      formik.touched.duration_minutes &&
+                      formik.errors.duration_minutes
+                    }
+                  // autoComplete="current"
                   />
                 </Stack>
               </Box>
@@ -303,7 +294,7 @@ const PackagesForm = () => {
             </Button>
             <Button
               variant="contained"
-              type="submit"
+              // type="submit"
               sx={{ textTransform: "capitalize" }}
             >
               Save & Activate
