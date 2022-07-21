@@ -1,13 +1,14 @@
 import React,{useState} from "react";
 import axios from "axios";
 import { useFormik } from "formik";
-import { Alert, Box, Button, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { Box, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { ContentCopy, Visibility, VisibilityOff } from "@mui/icons-material";
 import PasswordStrengthBar from 'react-password-strength-bar';
+import {generatedPassword} from "../../utilities/generatePassword";
 
 // import User from "../../../../models/user/user";
 // import { useDispatch } from "react-redux";
@@ -18,6 +19,8 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [passwordScore,setPasswordScore] = useState(0);
     const [loading, setLoading] = React.useState(false)
+    const[showNewPassMeter, setShowNewPassMeter] = useState(false);
+    const [generatedPass,setGeneratedPass] = useState("");
     const passwordEnums = ["TOO SHORT", "WEAK","GOOD","STRONG","STRONG"];
     const passwordColors=["#dddddd","#ef4836","#f6b44d","#2b90ef","#25c281"];
 
@@ -80,7 +83,6 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
             }
         },
     });
-
     return (
         <>
             <form onSubmit={formik.handleSubmit}>
@@ -89,10 +91,12 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         "& .MuiTextField-root": { pb: 2, marginTop: 1 },
                     }}
                 >
-                    <TextField
+                    <div style={{position:"relative"}}><TextField
                         id="newpassword"
                         label="Enter new password*"
                         placeholder="Enter new password"
+                        onFocus={() => setShowNewPassMeter(true)}
+                        onBlur={() => formik.values.newpassword ? setShowNewPassMeter(true):setShowNewPassMeter(false)}
                         type={showPassword ? "text" : "password"}
                         InputProps={{
                             endAdornment:(
@@ -122,23 +126,62 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         autoFocus="true"
                         sx={{ width: "100%" }}
                     />
+                     {showNewPassMeter && formik.values.newpassword &&
+                     <div style={{maxWidth: "350px", padding:"10px", boxShadow:"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px", position:"absolute", right:"0%", zIndex:"999", background:"white"}}>
+                        <strong>Password Strength <span style={{color:passwordColors[passwordScore]}}>{passwordEnums[passwordScore]}</span></strong>
+                        <PasswordStrengthBar className="passwordMeter" scoreWordStyle={{display: "none"}} password={formik.values.newpassword} onChangeScore={(score) => setPasswordScore(score)} />
+                        <div style={{display: 'flex', alignItems:'center', marginTop:"10px"}}><span>Atleast 8 character{"(s)"}</span></div>
+                        <div style={{display: 'flex', alignItems:'center',marginTop:"10px"}}><span>Atleast 1 numeric character{"(s)"}</span></div>
+                        <div style={{display: 'flex', alignItems:'center',marginTop:"10px"}}><span>Atleast 1 upper case character{"(s)"}</span></div>
+                        <div style={{display: 'flex', alignItems:'center',marginTop:"10px"}}><span>Not used in past 4 passwords{"(s)"}</span></div>
+                        <LoadingButton onClick={() => {
+                            setShowNewPassMeter(true);
+                            let pass = generatedPassword.shuffle();
+                            setGeneratedPass(pass);
+                        }} sx={{marginTop:"10px", background:"#ccc", border:"1px solid #ccc", color:"#777"}}>
+                            Generate a Strong Password
+                        </LoadingButton>
+                        {generatedPass && 
+                            <div style={{width:"100%",display: 'flex', alignItems:'center', marginTop:"5px",justifyContent:"center"}}>
+                                <span sx={{border:"1px solid #ccc"}}>{generatedPass}</span><ContentCopy sx={{cursor:"pointer"}} onClick={() => {
+                                     navigator.clipboard
+                                     .writeText(generatedPass)
+                                     .then(() => {
+                                         toast.success(
+                                             "Password Copied SuccessFully",
+                                             {
+                                                 position: "top-right",
+                                                 pauseOnHover: true,
+                                                 draggable: false,
+                                                 progress: undefined,
+                                             }
+                                         );
+                                         setGeneratedPass("")
+                                     });
+                                }}/>
+                            </div>
+                        }
+                    </div>
+                    }
+                    </div>
                     <TextField
                         id="confirmpassword"
                         label="Confirm new password*"
                         placeholder="Confirm new password"
+                        onFocus={() => setShowNewPassMeter(false)}
                         type={showConfirmPassword ? "text" : "password"}
                         value={formik.values.confirmpassword}
                         InputProps={{
                             endAdornment:(
                                 <InputAdornment position="end">
                                     <IconButton>
-                                    <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowConfirmPassword}
-                                    onMouseDown={handleMouseDownConfirmPassword}
-        >
-          {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
-        </IconButton>
+                                        <IconButton
+                                         aria-label="toggle password visibility"
+                                         onClick={handleClickShowConfirmPassword}
+                                         onMouseDown={handleMouseDownConfirmPassword}
+                    >
+                                            {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
                                     </IconButton>
                                 </InputAdornment>
                             )
@@ -154,10 +197,6 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         onChange={formik.handleChange}
                         sx={{ width: "100%" }}
                     />
-                    {/* <div>
-                        <strong>Password Strength <span style={{color:passwordColors[passwordScore]}}>{passwordEnums[passwordScore]}</span></strong>
-                        <PasswordStrengthBar className="passwordMeter" scoreWordStyle={{display: "none"}} password={formik.values.newpassword} onChangeScore={(score) => setPasswordScore(score)} />
-                    </div> */}
                 </Box>
                 <Box className="container">
                     <LoadingButton
