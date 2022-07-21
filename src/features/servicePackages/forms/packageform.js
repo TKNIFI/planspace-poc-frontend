@@ -18,7 +18,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const PackagesForm = () => {
-
   const [copyIsChecked, setCopyIsChecked] = useState();
   const formik = useFormik({
     initialValues: {
@@ -43,7 +42,6 @@ const PackagesForm = () => {
     },
   });
 
-
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -58,10 +56,14 @@ const PackagesForm = () => {
             label="Copy address & contacts from company profile"
           /> */}
           <Grid container spacing={2}>
-            <Grid item xs={8}>
+            <Grid item style={{ paddingLeft: "0" }} xs={8}>
               <Box
                 sx={{
-                  "& .MuiTextField-root": { m: 1, width: "70ch", marginTop: 3 },
+                  "& .MuiTextField-root": {
+                    m: 1,
+                    width: "-webkit-fill-available",
+                    marginTop: 3,
+                  },
                 }}
               >
                 <TextField
@@ -86,7 +88,6 @@ const PackagesForm = () => {
                     backgroundColor: "#F4F6F9",
                   }}
                 />
-
               </Box>
             </Grid>
             <Grid item xs={4}>
@@ -105,14 +106,17 @@ const PackagesForm = () => {
                     alignItems: "center",
                     justifyContent: "center",
                     height: "220px",
-                    width: "231px",
+                    width: "-webkit-fill-available",
                     mt: "27px",
                     borderRadius: "8px",
                     cursor: "pointer",
                   }}
                 >
                   <Typography variant="p">Add Package Image </Typography>
-                  <img src={clarityimageline} style={{width: "auto" , height: "auto"}}/>
+                  <img
+                    src={clarityimageline}
+                    style={{ width: "auto", height: "auto" }}
+                  />
                   <Typography variant="p" sx={{ fontSize: "10px" }}>
                     Supports , JPG, JPG2000, PNG Less than 2 MB
                   </Typography>
@@ -128,11 +132,10 @@ const PackagesForm = () => {
                 </Paper>
               </Upload>
             </Grid>
-            <Grid item xs={12}>
+            <Grid style={{ paddingLeft: "7px" }} item xs={12}>
               <Box
                 sx={{
                   "& .MuiTextField-root": { width: "31.5ch" },
-                  ml: -6,
                 }}
               >
                 <Stack
@@ -140,11 +143,8 @@ const PackagesForm = () => {
                   direction="row"
                   sx={{
                     mt: 2,
-                    display: "flex",
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
                   }}
                 >
                   <TextField
@@ -152,6 +152,7 @@ const PackagesForm = () => {
                     label="Package Price"
                     required
                     type="text"
+                    style={{ width: "-webkit-fill-available" }}
                     value={formik.values.price}
                     error={Boolean(formik.touched.price && formik.errors.price)}
                     helperText={formik.touched.price && formik.errors.price}
@@ -159,31 +160,27 @@ const PackagesForm = () => {
                     // autoComplete="current"
                   />
                   <TextField
-                    id="adults"
-                    label="No. of Guests(Adults)"
+                    id="price"
+                    label="Select Room"
                     required
                     type="text"
-                    //value={formik.values.email}
+                    style={{
+                      width: "-webkit-fill-available",
+                      marginLeft: "15px",
+                    }}
+                    value={formik.values.price}
+                    error={Boolean(formik.touched.price && formik.errors.price)}
+                    helperText={formik.touched.price && formik.errors.price}
                     onChange={formik.handleChange}
-                    // error={Boolean(formik.touched.email && formik.errors.email)}
-                    // helperText={formik.touched.email && formik.errors.email}
                     // autoComplete="current"
-                  />
-                  <TextField
-                    id="kids"
-                    label="No. of Guests(Kids)"
-                    required
-                    type="text"
-                    onChange={formik.handleChange}
                   />
                 </Stack>
               </Box>
             </Grid>
-            <Grid item xs={12}>
+            <Grid style={{ paddingLeft: "7px" }} item xs={12}>
               <Box
                 sx={{
                   "& .MuiTextField-root": { width: "50ch" },
-                  ml: -6,
                 }}
               >
                 <Stack
@@ -191,11 +188,8 @@ const PackagesForm = () => {
                   direction="row"
                   sx={{
                     mt: 2,
-                    display: "flex",
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
                   }}
                 >
                   <TextField
@@ -203,6 +197,7 @@ const PackagesForm = () => {
                     label="Date and Time"
                     required
                     type="tel"
+                    style={{ width: "-webkit-fill-available" }}
                     value={formik.values.noOfGuests}
                     error={Boolean(
                       formik.touched.noOfGuests && formik.errors.noOfGuests
@@ -216,6 +211,10 @@ const PackagesForm = () => {
                   <TextField
                     id="email"
                     label="Package Duration"
+                    style={{
+                      width: "-webkit-fill-available",
+                      marginLeft: "15px",
+                    }}
                     required
                     type="email"
                     value={formik.values.email}
@@ -235,7 +234,7 @@ const PackagesForm = () => {
             <Grid item xs={12}>
               <Box
                 sx={{
-                  "& .MuiTextField-root": { width: "96%" },
+                  "& .MuiTextField-root": { width: "100%" },
                   ml: "100",
                 }}
               >
@@ -251,11 +250,8 @@ const PackagesForm = () => {
                   )}
                 />
               </Box>
-
             </Grid>
           </Grid>
-
-          
 
           <Stack
             spacing={2}
@@ -297,11 +293,10 @@ const PackagesForm = () => {
 };
 
 const top100Films = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'The Dark Knight', year: 2008 },
+  { title: "The Shawshank Redemption", year: 1994 },
+  { title: "The Godfather", year: 1972 },
+  { title: "The Godfather: Part II", year: 1974 },
+  { title: "The Dark Knight", year: 2008 },
 ];
-
 
 export default PackagesForm;
