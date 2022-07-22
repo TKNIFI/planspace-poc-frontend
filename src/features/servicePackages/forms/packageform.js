@@ -16,22 +16,25 @@ import {
 import { Editor, EditorState } from "draft-js";
 import "draft-js/dist/Draft.css";
 import RoomSelect from "./RoomSelect";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import clarityimageline from "../../../assets/images/clarity_image-line.png";
 import { useFormik } from "formik";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Select } from "antd";
 import * as Yup from "yup";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import PackageAddedModal from "./PackageAddedModal";
 
 const PackagesForm = () => {
   const [modal1Visible, setModal1Visible] = useState(false);
   const [copyIsChecked, setCopyIsChecked] = useState();
+  const [date, setDate] = React.useState(new Date("2014-08-18T21:11:54"));
   const { Option, OptGroup } = Select;
   const formik = useFormik({
     initialValues: {
       name: "",
       price: "",
       room: "",
-      date_time: "",
       duration_minutes: "",
       description: "",
     },
@@ -216,7 +219,7 @@ const PackagesForm = () => {
                     gridTemplateColumns: "1fr 1fr",
                   }}
                 >
-                  <TextField
+                  {/* <TextField
                     id="date_time"
                     label="Date and Time"
                     type="datetime"
@@ -231,6 +234,15 @@ const PackagesForm = () => {
                     onChange={formik.handleChange}
                     // autoComplete="current"
                   />
+                  */}
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DateTimePicker
+                      label="Date&Time picker"
+                      value={date}
+                      onChange={(date) => setDate(date)}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
                   <TextField
                     id="duration_minutes"
                     label="Package Duration"
@@ -250,7 +262,7 @@ const PackagesForm = () => {
                       formik.errors.duration_minutes
                     }
                     // autoComplete="current"
-                  />
+                  />{" "}
                 </Stack>
               </Box>
             </Grid>

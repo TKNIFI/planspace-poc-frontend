@@ -65,8 +65,14 @@ export default function RoomSelect(props) {
         getOptionLabel={(option) => option.name}
         onChange={(event, values) => (props.formik.values.room = values)}
         isOptionEqualToValue={(option, value) => option.id === value.id}
-        sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Movie" />}
+        sx={{ width: "-webkit-fill-available" }}
+        renderInput={(params) => (
+          <TextField
+            style={{ width: "-webkit-fill-available" }}
+            {...params}
+            label="Select Room"
+          />
+        )}
       />
     </div>
   );
