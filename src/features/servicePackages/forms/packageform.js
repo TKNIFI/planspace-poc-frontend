@@ -13,12 +13,19 @@ import {
   Checkbox,
   Autocomplete,
 } from "@mui/material";
+import { Editor, EditorState } from "draft-js";
+import "draft-js/dist/Draft.css";
+import RoomSelect from "./RoomSelect";
 import clarityimageline from "../../../assets/images/clarity_image-line.png";
 import { useFormik } from "formik";
+import { Select } from "antd";
 import * as Yup from "yup";
+import PackageAddedModal from "./PackageAddedModal";
 
 const PackagesForm = () => {
+  const [modal1Visible, setModal1Visible] = useState(false);
   const [copyIsChecked, setCopyIsChecked] = useState();
+  const { Option, OptGroup } = Select;
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -29,16 +36,11 @@ const PackagesForm = () => {
       description: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string()
-        .required("Package Name is required"),
-      price: Yup.string()
-        .required("Package Price is required"),
-      room: Yup.string()
-        .required("Room is required"),
-      date_time: Yup.string()
-        .required("Package date and time is required"),
-      duration_minutes: Yup.string()
-        .required("Package duration is required"),
+      name: Yup.string().required("Package Name is required"),
+      price: Yup.string().required("Package Price is required"),
+      room: Yup.string().required("Room is required"),
+      date_time: Yup.string().required("Package date and time is required"),
+      duration_minutes: Yup.string().required("Package duration is required"),
     }),
     onSubmit: (values) => {
       const formValues = values;
@@ -48,8 +50,17 @@ const PackagesForm = () => {
     },
   });
 
+  const [editorState, setEditorState] = React.useState(() =>
+    EditorState.createEmpty()
+  );
   return (
     <>
+      <PackageAddedModal
+        data={"hello world"}
+        title={"package"}
+        setModal1Visible={setModal1Visible}
+        modal1Visible={modal1Visible}
+      />
       <form onSubmit={formik.handleSubmit}>
         <Box
           sx={{
@@ -82,6 +93,7 @@ const PackagesForm = () => {
                   helperText={formik.touched.name && formik.errors.name}
                 />
 
+                <Editor editorState={editorState} onChange={setEditorState} />
                 <TextField
                   id="description"
                   label="Multiline Placeholder"
@@ -89,8 +101,12 @@ const PackagesForm = () => {
                   rows={4}
                   value={formik.values.description}
                   onChange={formik.handleChange}
-                  error={Boolean(formik.touched.description && formik.errors.description)}
-                  helperText={formik.touched.description && formik.errors.description}
+                  error={Boolean(
+                    formik.touched.description && formik.errors.description
+                  )}
+                  helperText={
+                    formik.touched.description && formik.errors.description
+                  }
                   sx={{
                     backgroundColor: "#F4F6F9",
                   }}
@@ -164,9 +180,9 @@ const PackagesForm = () => {
                     error={Boolean(formik.touched.price && formik.errors.price)}
                     helperText={formik.touched.price && formik.errors.price}
                     onChange={formik.handleChange}
-                  // autoComplete="current"
+                    // autoComplete="current"
                   />
-                  <TextField
+                  {/* <TextField
                     id="room"
                     label="Select Room"
                     type="text"
@@ -178,8 +194,10 @@ const PackagesForm = () => {
                     error={Boolean(formik.touched.room && formik.errors.room)}
                     helperText={formik.touched.room && formik.errors.room}
                     onChange={formik.handleChange}
-                  // autoComplete="current"
-                  />
+                    // autoComplete="current"
+                  /> */}
+
+                  <RoomSelect formik={formik} />
                 </Stack>
               </Box>
             </Grid>
@@ -211,7 +229,7 @@ const PackagesForm = () => {
                       formik.touched.date_time && formik.errors.date_time
                     }
                     onChange={formik.handleChange}
-                  // autoComplete="current"
+                    // autoComplete="current"
                   />
                   <TextField
                     id="duration_minutes"
@@ -225,13 +243,13 @@ const PackagesForm = () => {
                     onChange={formik.handleChange}
                     error={Boolean(
                       formik.touched.duration_minutes &&
-                      formik.errors.duration_minutes
+                        formik.errors.duration_minutes
                     )}
                     helperText={
                       formik.touched.duration_minutes &&
                       formik.errors.duration_minutes
                     }
-                  // autoComplete="current"
+                    // autoComplete="current"
                   />
                 </Stack>
               </Box>
@@ -288,6 +306,7 @@ const PackagesForm = () => {
             <Button
               variant="outlined"
               type="submit"
+              onClick={() => setModal1Visible(true)}
               sx={{ textTransform: "capitalize" }}
             >
               Save
