@@ -59,7 +59,7 @@ export default function RoomSelect(props) {
     <div>
       <Autocomplete
         disablePortal
-        id="combo-box-demo"
+        id="room"
         name="room"
         options={rooms}
         getOptionLabel={(option) => option.name}

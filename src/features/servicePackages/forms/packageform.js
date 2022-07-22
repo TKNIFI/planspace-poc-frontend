@@ -15,6 +15,8 @@ import {
 } from "@mui/material";
 import { Editor, EditorState } from "draft-js";
 import "draft-js/dist/Draft.css";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import RoomSelect from "./RoomSelect";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import clarityimageline from "../../../assets/images/clarity_image-line.png";
@@ -96,22 +98,24 @@ const PackagesForm = () => {
                   helperText={formik.touched.name && formik.errors.name}
                 />
 
-                <Editor editorState={editorState} onChange={setEditorState} />
-                <TextField
-                  id="description"
-                  label="Multiline Placeholder"
-                  multiline
-                  rows={4}
-                  value={formik.values.description}
-                  onChange={formik.handleChange}
-                  error={Boolean(
-                    formik.touched.description && formik.errors.description
-                  )}
-                  helperText={
-                    formik.touched.description && formik.errors.description
-                  }
-                  sx={{
-                    backgroundColor: "#F4F6F9",
+                <CKEditor
+                  editor={ClassicEditor}
+                  data="<p>Hello from CKEditor 5!</p>"
+                  onReady={(editor) => {
+                    // You can store the "editor" and use when it is needed.
+                    console.log("Editor is ready to use!", editor);
+                  }}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                    formik.setFieldValue("description", data);
+
+                    console.log({ event, editor, data });
+                  }}
+                  onBlur={(event, editor) => {
+                    console.log("Blur.", editor);
+                  }}
+                  onFocus={(event, editor) => {
+                    console.log("Focus.", editor);
                   }}
                 />
               </Box>
