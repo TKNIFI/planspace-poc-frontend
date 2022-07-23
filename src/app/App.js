@@ -10,13 +10,11 @@ function App() {
     return (
         <div className="App">
             <ToastContainer autoClose={3000} />
-
-      <Switch>
-        {routes.map((route, i) => (
-          <RouteWithSubRoutes key={i} {...route} />
-        ))}
-      </Switch>
-
+            <Switch>
+                {routes.map((route, i) => (
+                    <RouteWithSubRoutes key={i} {...route} />
+                ))}
+            </Switch>
             <div className="help-div">
                 <svg
                     width="41"
