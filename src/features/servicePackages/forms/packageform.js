@@ -142,7 +142,7 @@ const PackagesForm = () => {
         let formData = new FormData();
         formData.append("name", values.name);
         formData.append("price", parseInt(values.price));
-        formData.append("active", false);
+        formData.append("active", cardActive);
         formData.append("description", description);
         formData.append("room", roomSelected.id);
         formData.append("date_time", newDate);
@@ -171,6 +171,7 @@ const PackagesForm = () => {
   const [description, setDescription] = useState("");
   const [roomSelected, setRoomSelected] = useState({});
   const [file, setFile] = React.useState(null);
+  const [cardActive, setCardActive] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
   const dummyRequest = async ({ file, onSuccess }) => {
@@ -217,8 +218,8 @@ const PackagesForm = () => {
       {console.log("add on", addOn)}
       {console.log(" data =>", submitData)}
       <PackageAddedModal
-        data={"hello world"}
-        title={"package"}
+        data={`The ${formik.values.name} Added successfully`}
+        title={"Add new Package"}
         setModal1Visible={setModal1Visible}
         modal1Visible={modal1Visible}
       />
@@ -413,7 +414,15 @@ const PackagesForm = () => {
                     /> */}
 
                     <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
+                      renderInput={(props) => (
+                        <TextField
+                          style={{
+                            width: "-webkit-fill-available",
+                            background: "#F4F6F9",
+                          }}
+                          {...props}
+                        />
+                      )}
                       label="DateTimePicker"
                       value={date}
                       onChange={(newValue) => {
@@ -504,14 +513,21 @@ const PackagesForm = () => {
             <Button
               variant="outlined"
               type="submit"
-              onClick={() => setModal1Visible(true)}
+              onClick={() => {
+                setModal1Visible(true);
+                setCardActive(false);
+              }}
               sx={{ textTransform: "capitalize" }}
             >
               Save
             </Button>
             <Button
               variant="contained"
-              // type="submit"
+              type="submit"
+              onClick={() => {
+                setModal1Visible(true);
+                setCardActive(true);
+              }}
               sx={{ textTransform: "capitalize" }}
             >
               Save & Activate

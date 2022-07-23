@@ -66,6 +66,7 @@ const ServicePack = () => {
   const [open, setOpen] = useState(false);
   const [activeBtn, setActiveBtn] = useState(true);
   const [inActiveBtn, setInActiveBtn] = useState(false);
+  const [packages, setPackages] = useState([]);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -79,8 +80,9 @@ const ServicePack = () => {
 
       //   setLoading(true);
       await myApi.get(url).then((result) => {
-        console.log("packages=> ", result);
+        console.log("packages=> ", result.data.results);
         // setRooms(result.data.results);
+        setPackages(result.data.results);
       });
     } catch (error) {
       //   setLoading(false);
@@ -95,6 +97,7 @@ const ServicePack = () => {
   const [modal1Visible, setModal1Visible] = useState(false);
   return (
     <>
+      {console.log("pkg => ", packages)}
       <Box sx={{ flexGrow: 1, display: "inline" }}>
         <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
           <Grid item xs={8}>
@@ -247,21 +250,27 @@ const ServicePack = () => {
           </Button>
         </div>
       </Modal>
-      <div style={{ justifyContent: "space-between", display: "flex" }}>
-        <Box sx={{ mt: 3 }}>
-          <PremiumPackCard
-            pkgName={"pkg name"}
-            pkgDes={"pkg desc"}
-            pkgDuration={"12"}
-            pkgDate={"date"}
-          />
-        </Box>
-        <Box sx={{ mt: 3 }}>
-          <PremiumPackCard />
-        </Box>
-        <Box sx={{ mt: 3 }}>
-          <PremiumPackCard />
-        </Box>
+      <div
+        style={{
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          display: "flex",
+        }}
+      >
+        {packages.map((item) => {
+          return (
+            <Box sx={{ mt: 3 }}>
+              <PremiumPackCard
+                pkgName={item.name}
+                pkgDes={item.description}
+                pkgPrice={item.price}
+                pkgDuration={item.duration_minutes}
+                pkgDate={"date"}
+                pkgActive={item.active}
+              />
+            </Box>
+          );
+        })}
       </div>
 
       {/* Model html */}

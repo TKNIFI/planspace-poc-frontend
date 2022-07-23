@@ -124,7 +124,7 @@ export default function PremiumPackCard(props) {
               <MoreVertIcon />
             </IconButton>
           }
-          title="Premium Package 1"
+          title={props.pkgName}
           sx={{ color: "#003399" }}
         />
         <div style={{ position: "relative" }}>
@@ -222,9 +222,7 @@ export default function PremiumPackCard(props) {
         </div>
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            Casa Sea-Esta, a studio apartment with a fabulous sea view and
-            tasteful interiors. Located on the Dona Paul highway, this studio
-            does'nt give you that feeling of living in a city...
+            {props.pkgDes}
           </Typography>
           <Grid spacing={2} sx={{ mt: 2 }}>
             <Stack
@@ -254,7 +252,7 @@ export default function PremiumPackCard(props) {
                   This pacakge is legnth is{" "}
                   <a href="#" style={styleAnchor}>
                     {" "}
-                    UP TO 8 hours
+                    UP TO {props.pkgDuration} hours
                   </a>
                 </Typography>
               </Grid>
@@ -349,19 +347,26 @@ export default function PremiumPackCard(props) {
             <Button
               sx={{ color: "#003399", fontSize: "30px", fontWeight: "bolder" }}
             >
-              <AttachMoneyIcon /> 1200
+              <AttachMoneyIcon /> {props.pkgPrice}
             </Button>
-            <Button
-              style={{
-                marginLeft: "0px",
-                height: "fit-content",
-                padding: "6px 20px",
-                marginRight: "22px",
-              }}
-              variant="contained"
-            >
-              Activate
-            </Button>
+            {false && (
+              <Button
+                style={{
+                  marginLeft: "0px",
+                  height: "fit-content",
+                  padding: "6px 20px",
+                  marginRight: "22px",
+                }}
+                variant="contained"
+              >
+                Activate
+              </Button>
+            )}
+            {true && (
+              <Button style={{}} variant="contained">
+                Activate
+              </Button>
+            )}
           </Stack>
         </CardActions>
       </Card>
