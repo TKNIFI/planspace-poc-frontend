@@ -13,11 +13,9 @@ import {
   Checkbox,
   Autocomplete,
 } from "@mui/material";
-import { Editor, EditorState } from "draft-js";
 import "draft-js/dist/Draft.css";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import RoomSelect from "./RoomSelect";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import clarityimageline from "../../../assets/images/clarity_image-line.png";
 import { useFormik } from "formik";
@@ -26,127 +24,60 @@ import { Select } from "antd";
 import * as Yup from "yup";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import PackageAddedModal from "./PackageAddedModal";
-import axios from "axios";
 import myApi from "../../../network/axios";
 
 const PackagesForm = () => {
   const [modal1Visible, setModal1Visible] = useState(false);
-  const [copyIsChecked, setCopyIsChecked] = useState();
   const [addOnList, setaddOnList] = useState([]);
 
-  async function sendData(obj) {
-    console.log("obj=>", obj);
-    await myApi
-      .post(`${process.env.REACT_APP_BASE_URL}api/company/package/`, obj)
-      .then((response) => {
-        console.log("send data resp ", response);
-        // toast.success(response.data.message);
-      })
-      .catch((error) => {
-        console.log(error);
-        // toast.error(error.response.data.message);
-      });
-  }
   async function getAddOnData() {
     await myApi
       .get(`${process.env.REACT_APP_BASE_URL}api/company/addon/`)
       .then((response) => {
         console.log("getaddon ", response.data.results);
         setaddOnList(response.data.results);
-        // toast.success(response.data.message);
       })
       .catch((error) => {
         console.log(error);
-        // toast.error(error.response.data.message);
       });
   }
 
-  const defaultValues = {
-    name: "",
-    price: 0,
-    active: false,
-    description: "",
-    image: new File([], ""),
-    room: "",
-    date_time: "",
-    addons: [],
-    duration_minutes: 0,
-  };
-  const [submitData, setSubmitData] = useState(defaultValues);
   const [date, setDate] = React.useState(new Date("2014-08-18T21:11:54"));
-  const [addOn, setAddOn] = React.useState([]);
-  const { Option, OptGroup } = Select;
+  const [rooms, setRooms] = React.useState([]);
   const formik = useFormik({
     initialValues: {
       name: "",
       price: "",
+      room: "",
       duration_minutes: "",
+      addons: [],
       logo: new File([], ""),
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Package Name is required"),
       price: Yup.string().required("Package Price is required"),
       duration_minutes: Yup.string().required("Package duration is required"),
+      room: Yup.string(),
+      addons: Yup.array()
     }),
     onSubmit: async (values) => {
-      const formValues = values;
       let VarDate = new Date(date);
-      console.log("new var date => ", VarDate.getDate());
 
       let newDate = `${VarDate.getFullYear()}-${VarDate.getMonth()}-${VarDate.getDate()} ${VarDate.getHours()}:${VarDate.getMinutes()}:${VarDate.getSeconds()}`;
 
-      console.log("newdate =>", newDate);
-      console.log("form values => ", values, date, file);
-      // Location.CreateLocation(formValues);
-      console.log("description => ", description);
-
-      // console.log("new format date => ", format(date, "yyyy-MM-dd HH:mm:ss"));
-
-      setSubmitData({
-        name: values.name,
-        price: parseInt(values.price),
-        active: false,
-        description: description,
-        image: file,
-        room: roomSelected.id,
-        date_time: newDate,
-        addons: addOn,
-        duration_minutes: parseInt(values.duration_minutes),
-      });
-
-      console.log("addon in payload", addOn);
-
-      let addOnArray = [];
-      addOn.forEach((val) => {
-        console.log("array ", val.id);
-        addOnArray.push(val.id);
-      });
-
-      console.log("addOnArray => ", addOnArray);
-      console.log("file in payload =>", file);
-
-      let payLoad = {
-        name: values.name,
-        price: parseInt(values.price),
-        active: false,
-        description: description,
-        image: file,
-        room: roomSelected.id,
-        date_time: newDate,
-        addons: addOnArray,
-        duration_minutes: parseInt(values.duration_minutes),
-      };
-
-      console.log("submit data => ", payLoad);
       try {
         let formData = new FormData();
         formData.append("name", values.name);
         formData.append("price", parseInt(values.price));
         formData.append("active", false);
         formData.append("description", description);
-        formData.append("room", roomSelected.id);
+        if (values.room) {
+          formData.append("room", values.room.id);
+        }
         formData.append("date_time", newDate);
-        formData.append("addons", JSON.stringify(addOnArray));
+        let addons = []
+        values.addons.map(addon => addons.push(addon.id))
+        formData.append("addons", JSON.stringify(addons));
         formData.append("duration_minutes", parseInt(values.duration_minutes));
         if (file) {
           formData.append("logo", file ? file : new File([], ""));
@@ -164,12 +95,9 @@ const PackagesForm = () => {
         formik.setSubmitting(false);
         setLoading(false);
       }
-
-      // sendData(payLoad);
     },
   });
   const [description, setDescription] = useState("");
-  const [roomSelected, setRoomSelected] = useState({});
   const [file, setFile] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 
@@ -179,12 +107,27 @@ const PackagesForm = () => {
     }, 0);
   };
 
+  const getRooms = async () => {
+    try {
+      let url = `${process.env.REACT_APP_BASE_URL}api/company/room/`;
+      await myApi.get(url).then((result) => {
+        console.log("rooms=> ", result.data.results);
+        setRooms(result.data.results);
+      });
+    } catch (error) {
+      //   setLoading(false);
+      // alert(error?.data?.message);
+    }
+  };
+
   useEffect(() => {
     setDescription(description);
   }, [description]);
 
   useEffect(() => {
     getAddOnData();
+    getRooms();
+
   }, []);
 
   const props = {
@@ -214,8 +157,6 @@ const PackagesForm = () => {
 
   return (
     <>
-      {console.log("add on", addOn)}
-      {console.log(" data =>", submitData)}
       <PackageAddedModal
         data={"hello world"}
         title={"package"}
@@ -228,11 +169,6 @@ const PackagesForm = () => {
             "& .MuiTextField-root": { width: "50ch" },
           }}
         >
-          {/* <FormControlLabel
-            sx={{}}
-            control={<Checkbox checked={copyIsChecked} />}
-            label="Copy address & contacts from company profile"
-          /> */}
           <Grid container spacing={2}>
             <Grid item style={{ paddingLeft: "0" }} xs={8}>
               <Box
@@ -344,26 +280,30 @@ const PackagesForm = () => {
                     error={Boolean(formik.touched.price && formik.errors.price)}
                     helperText={formik.touched.price && formik.errors.price}
                     onChange={formik.handleChange}
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />
-                  {/* <TextField
+                  <Autocomplete
+                    disablePortal
                     id="room"
-                    label="Select Room"
-                    type="text"
-                    style={{
-                      width: "-webkit-fill-available",
-                      marginLeft: "15px",
+                    name="room"
+                    options={rooms}
+                    getOptionLabel={(option) => option.name}
+                    onChange={(event, value) => {
+                      formik.values.room = value
                     }}
-                    value={formik.values.room}
-                    error={Boolean(formik.touched.room && formik.errors.room)}
-                    helperText={formik.touched.room && formik.errors.room}
-                    onChange={formik.handleChange}
-                    // autoComplete="current"
-                  /> */}
-
-                  <RoomSelect
-                    formik={formik}
-                    setRoomSelected={setRoomSelected}
+                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                    sx={{ width: "-webkit-fill-available" }}
+                    renderInput={(params) => (
+                      <TextField
+                        style={{
+                          width: "-webkit-fill-available",
+                          background: "#F4F6F9",
+                          marginLeft: "-24px",
+                        }}
+                        {...params}
+                        label="Select Room"
+                      />
+                    )}
                   />
                 </Stack>
               </Box>
@@ -383,35 +323,7 @@ const PackagesForm = () => {
                     gridTemplateColumns: "1fr 1fr",
                   }}
                 >
-                  {/* <TextField
-                    id="date_time"
-                    label="Date and Time"
-                    type="datetime"
-                    style={{ width: "-webkit-fill-available" }}
-                    value={formik.values.date_time}
-                    error={Boolean(
-                      formik.touched.date_time && formik.errors.date_time
-                    )}
-                    helperText={
-                      formik.touched.date_time && formik.errors.date_time
-                    }
-                    onChange={formik.handleChange}
-                    // autoComplete="current"
-                  />
-                  */}
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    {/* <DateTimePicker
-                      label="Date&Time picker"
-                      value={date}
-                      onChange={(date) => setDate(date)}
-                      renderInput={(params) => (
-                        <TextField
-                          style={{ width: "auto", background: "#F4F6F9" }}
-                          {...params}
-                        />
-                      )}
-                    /> */}
-
                     <DateTimePicker
                       renderInput={(props) => <TextField {...props} />}
                       label="DateTimePicker"
@@ -433,13 +345,13 @@ const PackagesForm = () => {
                     onChange={formik.handleChange}
                     error={Boolean(
                       formik.touched.duration_minutes &&
-                        formik.errors.duration_minutes
+                      formik.errors.duration_minutes
                     )}
                     helperText={
                       formik.touched.duration_minutes &&
                       formik.errors.duration_minutes
                     }
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />{" "}
                 </Stack>
               </Box>
@@ -458,15 +370,15 @@ const PackagesForm = () => {
               >
                 <Autocomplete
                   multiple
-                  limitTags={2}
                   id="multiple-limit-tags"
                   options={addOnList}
                   onChange={(event, values) => {
-                    console.log("values in add on", values);
-                    setAddOn(values);
+                    console.log("value", values)
+                    formik.values.addons = values
+                    // setAddOn(values);
                   }}
                   getOptionLabel={(option) => option.name}
-                  //defaultValue={[top100Films[13], top100Films[12], top100Films[11]]}
+                  isOptionEqualToValue={(option, value) => option.id === value.id}
                   renderInput={(params) => (
                     <TextField
                       {...params}
