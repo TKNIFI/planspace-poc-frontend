@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Button, Drawer, Typography, Skeleton, Space } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { Box, Card, CardContent, CardMedia, IconButton } from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Stack, CardMedia, IconButton, CardActions } from "@mui/material";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AddLocationForm from "../forms/AddLocationForm";
 import EditCompanyForm from "../forms/EditCompanyfrom";
 import locImage from "../../assets/images/northFace.png";
 import companyImage from "../../assets/images/company_logo.jpg";
+import LocationImage from "../../assets/images/location_image.jpg";
 import Location from "../../models/Locations/Location";
 import addLogoImage from "../../assets/images/iconadd.png";
 import "./location.scss";
@@ -89,7 +90,6 @@ const EmailIcon = () => {
 
 export default function Locations() {
 
-  const [formData, setFormData] = useState();
   const [editRecordValues, setEditRecordValues] = useState(null);
   const [openEditForm, setOpenEditForm] = useState(false);
   const [openCompanyEditForm, setOpenCompanyEditForm] = useState(false);
@@ -110,9 +110,6 @@ export default function Locations() {
     toast.success(message)
   }
   const innerWidth = window.innerWidth;
-  const gettingDataFromChild = (formDataFromParent) => {
-    setFormData(formDataFromParent);
-  };
 
   const getFormattedPhoneNumber = (phone) => {
     let phone_number = ""
@@ -309,26 +306,59 @@ export default function Locations() {
             )}
           </Card>
         </div>
-        <Button
-          style={{
-            width: "250px",
-            height: "207px",
-            color: "gray",
-            border: "none",
-            marginTop: "30px",
-            display: "flex",
-            flexWrap: "wrap",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: "4px",
-            fontWeight: "bold",
-          }}
-          icon={<img src={addLogoImage} />}
-          onClick={handleClickOpen}
-        >
-          <Typography style={{ marginTop: "12px" }}>Add New Venue</Typography>
-        </Button>
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', mt: 5 }}>
+          <Card
+            sx={{ maxWidth: 345, p: 1, m: 1, height: "295px" }}
+          >
+            <Button
+              style={{
+                height: "300px",
+                color: "gray",
+                border: "none",
+                display: "flex",
+                flexWrap: "wrap",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "4px",
+                fontWeight: "bold",
+                marginLeft: "100px",
+              }}
+              icon={<img src={addLogoImage} />}
+              onClick={handleClickOpen}
+            >
+              <Typography style={{ marginTop: "12px" }}>Add New Venue</Typography>
+            </Button>
+          </Card>
+          {locations.map((location) => (
+            <Card
+              sx={{ maxWidth: 345, p: 1, m: 1, height: "300px", border: "3px solid #66a4e5",  borderRadius: "5px" }}
+            >
+              <CardMedia
+                component="img"
+                height="150"
+                image={location.image ? location.image : LocationImage}
+                src={location.image ? location.image : LocationImage}
+              />
+              <CardContent>
+                <h2 variant="h2" style={{ color: "#003399", marginBottom: 0 }}><strong>{location.name}</strong></h2>
+                <Typography variant="body" color="text.secondary">
+                  {location.address_line1} {location.address_line2} {location.zip_code.zip_code}
+                </Typography>
+                <Box style={{marginTop: "10px"}}>
+                  {location.rooms.map((room) => (
+                    <Button
+                      onClick={() => console.log()}
+                      style={{ border: "3px solid #66a4e5", borderRadius: "5px" }}
+                    > {room.name} </Button>
+                  ))}
+                </Box>
+              </CardContent>
+              <CardActions disableSpacing>
+              </CardActions>
+            </Card>
+          ))}
+        </Box>
       </Box>
 
       {/* Model html */}
@@ -338,6 +368,7 @@ export default function Locations() {
         onClose={handleClose}
         visible={open}
         closable={false}
+        style={{overflowY: "scroll", height: "1000px"}}
         bodyStyle={{
           paddingBottom: 80,
         }}
@@ -345,7 +376,7 @@ export default function Locations() {
           <IconButton
             edge="start"
             sx={{ color: "white" }}
-            onClick={handleClose}
+            onClick={() => setOpen(false)}
             aria-label="close"
           >
             <CloseCircleOutlined />
@@ -353,9 +384,7 @@ export default function Locations() {
         }
       >
         <AddLocationForm
-          setOpen={setOpen}
-          sendChildToParent={gettingDataFromChild}
-          callBack={() => getLocation()}
+          company={company.length > 0 ? company[0] : null}
           handleClose={() => setOpen(false)}
           popUp={(message) => toast.success(message)}
         />
@@ -384,7 +413,6 @@ export default function Locations() {
         }
       >
         <EditLocationForm
-          sendChildToParent={gettingDataFromChild}
           editRecordValues={editRecordValues}
         />
       </Drawer>

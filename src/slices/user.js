@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Create from "react-redux"
 import myApi from "../network/axios";
 import axios from "axios";
 require("dotenv").config();
@@ -17,6 +18,9 @@ const slice = createSlice({
         setUserDetails(state, action) {
             state.details = action.payload;
         },
+        saveRoom(state, action) {
+            state.rooms = action.payload;
+        },
     },
 });
 
@@ -31,6 +35,10 @@ export const login = (username, password) => async (dispatch) => {
     localStorage.setItem("userInfo", JSON.stringify(data.data));
     dispatch(slice.actions.login(data.data));
 };
+
+export const saveRoom = (room) => async (dispatch) => {
+    dispatch(slice.actions.saveRoom(room))
+}
 
 export const register = (formData) => async (dispatch) => {
 
