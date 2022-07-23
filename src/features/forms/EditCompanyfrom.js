@@ -161,7 +161,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                   placeholder="Enter the business name"
                   type="text"
                   required
-                  sx={{ width: "auto", margin: "32px 0px 0px 0px" }}
+                  sx={{ width: "auto", margin: "28px 0px 0px 0px" }}
                   value={formik.values.name}
                   onChange={formik.handleChange}
                   // autoComplete="current"
@@ -429,7 +429,8 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
                 <TextField
                   id="phone"
                   name="phone"
-                  label="Enter phone number*"
+                  label="Enter phone number"
+                  required
                   placeholder="E.g 121-532-2545"
                   type="tel"
                   error={Boolean(formik.touched.mobile && formik.errors.phone)}
@@ -465,7 +466,14 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
           >
             <LoadingButton
               variant="outlined"
-              sx={{ textTransform: "capitalize", margin: "10px" }}
+              sx={{
+                textTransform: "capitalize",
+                marginRight: "10px",
+                padding: "10px 16px",
+                background: "rgba(17, 17, 17, 0.04)",
+                border: "1px solid #676879",
+                color: "#676879",
+              }}
               color="primary"
               onClick={() => handleClose(false)}
             >
@@ -474,7 +482,7 @@ function EditCompanyfrom({ defaultValues, handleClose, callBack, popUp }) {
             <LoadingButton
               loading={loading}
               variant="contained"
-              sx={{ textTransform: "capitalize" }}
+              sx={{ textTransform: "capitalize", padding: "10px 16px" }}
               type="submit"
             >
               Save changes
