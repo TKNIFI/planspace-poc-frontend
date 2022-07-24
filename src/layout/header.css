@@ -19,11 +19,20 @@ margin-top: 2px;
 }
 
 .css-eay8ao {
-    margin-left: 140px !important;
+    margin-left: 39px !important;
     width: 25%;
 }
 
 
 .css-i6s8oy {
     min-height: 85px !important;
+}
+
+.logo{
+    
+}
+
+.logo svg{
+height: 72px;
+margin-left: -44px;
 }
