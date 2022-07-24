@@ -349,7 +349,7 @@ export default function PremiumPackCard(props) {
             >
               <AttachMoneyIcon /> {props.pkgPrice}
             </Button>
-            {false && (
+            {props.pkgActive && (
               <Button
                 style={{
                   marginLeft: "0px",
@@ -362,7 +362,7 @@ export default function PremiumPackCard(props) {
                 Activate
               </Button>
             )}
-            {true && (
+            {!props.pkgActive && (
               <Button
                 style={{
                   display: "flex",
