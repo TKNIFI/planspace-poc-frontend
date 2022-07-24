@@ -316,7 +316,7 @@ const ServicePack = () => {
       >
         {/* form */}
         <Box>
-          <PackagesForm />
+          <PackagesForm getPackages={getPackages} />
         </Box>
       </Drawer>
     </>

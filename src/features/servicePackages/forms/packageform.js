@@ -26,7 +26,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import PackageAddedModal from "./PackageAddedModal";
 import myApi from "../../../network/axios";
 
-const PackagesForm = () => {
+const PackagesForm = (prop) => {
   const [modal1Visible, setModal1Visible] = useState(false);
   const [addOnList, setaddOnList] = useState([]);
 
@@ -53,13 +53,16 @@ const PackagesForm = () => {
       addons: [],
       logo: new File([], ""),
     },
-    validationSchema: Yup.object({
-      name: Yup.string().required("Package Name is required"),
-      price: Yup.string().required("Package Price is required"),
-      duration_minutes: Yup.string().required("Package duration is required"),
-      room: Yup.string(),
-      addons: Yup.array(),
-    }),
+    // validationSchema: Yup.object({
+    //   name: Yup.string().required("Package Name is required"),
+    //   price: Yup.string().required("Package Price is required"),
+    //   duration_minutes: Yup.string().required("Package duration is required"),
+    //   room: Yup.string(),
+    //   addons: Yup.array(),
+    //   logo: Yup.object(),
+    // }),
+
+    validator: () => ({}),
     onSubmit: async (values) => {
       let VarDate = new Date(date);
 
@@ -87,6 +90,7 @@ const PackagesForm = () => {
           // handleClose(false);
           // callBack();
           console.log("resp => ", result);
+          prop.getPackages();
           // popUp(result.response.data.message);
           setFile(null);
         });
@@ -192,7 +196,7 @@ const PackagesForm = () => {
 
                 <CKEditor
                   editor={ClassicEditor}
-                  data="<p>Hello from CKEditor 5!</p>"
+                  data=""
                   style={{ height: "125px" }}
                   onReady={(editor) => {
                     // You can store the "editor" and use when it is needed.
@@ -380,7 +384,7 @@ const PackagesForm = () => {
               >
                 <Autocomplete
                   multiple
-                  id="multiple-limit-tags"
+                  id="addons"
                   options={addOnList}
                   onChange={(event, values) => {
                     console.log("value", values);
