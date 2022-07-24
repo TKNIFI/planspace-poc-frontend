@@ -259,16 +259,36 @@ const ServicePack = () => {
       >
         {packages.map((item) => {
           return (
-            <Box sx={{ mt: 3 }}>
-              <PremiumPackCard
-                pkgName={item.name}
-                pkgDes={item.description}
-                pkgPrice={item.price}
-                pkgDuration={item.duration_minutes}
-                pkgDate={"date"}
-                pkgActive={item.active}
-              />
-            </Box>
+            activeBtn &&
+            item.active && (
+              <Box sx={{ mt: 3 }}>
+                <PremiumPackCard
+                  pkgName={item.name}
+                  pkgDes={item.description}
+                  pkgPrice={item.price}
+                  pkgDuration={item.duration_minutes}
+                  pkgDate={"date"}
+                  pkgActive={item.active}
+                />
+              </Box>
+            )
+          );
+        })}
+        {packages.map((item) => {
+          return (
+            !activeBtn &&
+            !item.active && (
+              <Box sx={{ mt: 3 }}>
+                <PremiumPackCard
+                  pkgName={item.name}
+                  pkgDes={item.description}
+                  pkgPrice={item.price}
+                  pkgDuration={item.duration_minutes}
+                  pkgDate={"date"}
+                  pkgActive={item.active}
+                />
+              </Box>
+            )
           );
         })}
       </div>

@@ -58,7 +58,7 @@ const PackagesForm = () => {
       price: Yup.string().required("Package Price is required"),
       duration_minutes: Yup.string().required("Package duration is required"),
       room: Yup.string(),
-      addons: Yup.array()
+      addons: Yup.array(),
     }),
     onSubmit: async (values) => {
       let VarDate = new Date(date);
@@ -75,8 +75,8 @@ const PackagesForm = () => {
           formData.append("room", values.room.id);
         }
         formData.append("date_time", newDate);
-        let addons = []
-        values.addons.map(addon => addons.push(addon.id))
+        let addons = [];
+        values.addons.map((addon) => addons.push(addon.id));
         formData.append("addons", JSON.stringify(addons));
         formData.append("duration_minutes", parseInt(values.duration_minutes));
         if (file) {
@@ -128,7 +128,6 @@ const PackagesForm = () => {
   useEffect(() => {
     getAddOnData();
     getRooms();
-
   }, []);
 
   const props = {
@@ -281,7 +280,7 @@ const PackagesForm = () => {
                     error={Boolean(formik.touched.price && formik.errors.price)}
                     helperText={formik.touched.price && formik.errors.price}
                     onChange={formik.handleChange}
-                  // autoComplete="current"
+                    // autoComplete="current"
                   />
                   <Autocomplete
                     disablePortal
@@ -290,9 +289,11 @@ const PackagesForm = () => {
                     options={rooms}
                     getOptionLabel={(option) => option.name}
                     onChange={(event, value) => {
-                      formik.values.room = value
+                      formik.values.room = value;
                     }}
-                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                    isOptionEqualToValue={(option, value) =>
+                      option.id === value.id
+                    }
                     sx={{ width: "-webkit-fill-available" }}
                     renderInput={(params) => (
                       <TextField
@@ -354,13 +355,13 @@ const PackagesForm = () => {
                     onChange={formik.handleChange}
                     error={Boolean(
                       formik.touched.duration_minutes &&
-                      formik.errors.duration_minutes
+                        formik.errors.duration_minutes
                     )}
                     helperText={
                       formik.touched.duration_minutes &&
                       formik.errors.duration_minutes
                     }
-                  // autoComplete="current"
+                    // autoComplete="current"
                   />{" "}
                 </Stack>
               </Box>
@@ -382,12 +383,14 @@ const PackagesForm = () => {
                   id="multiple-limit-tags"
                   options={addOnList}
                   onChange={(event, values) => {
-                    console.log("value", values)
-                    formik.values.addons = values
+                    console.log("value", values);
+                    formik.values.addons = values;
                     // setAddOn(values);
                   }}
                   getOptionLabel={(option) => option.name}
-                  isOptionEqualToValue={(option, value) => option.id === value.id}
+                  isOptionEqualToValue={(option, value) =>
+                    option.id === value.id
+                  }
                   renderInput={(params) => (
                     <TextField
                       {...params}

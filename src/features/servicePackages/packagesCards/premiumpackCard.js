@@ -363,8 +363,24 @@ export default function PremiumPackCard(props) {
               </Button>
             )}
             {true && (
-              <Button style={{}} variant="contained">
-                Activate
+              <Button
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "10px 20px",
+                  width: "107px",
+                  height: "40px",
+                  background: "rgba(17, 17, 17, 0.12)",
+                  border: "1px solid #676879",
+                  borderRadius: "4px",
+                  color: "black",
+                  textTransform: "capitalize",
+                }}
+                variant="contained"
+              >
+                Deactivate
               </Button>
             )}
           </Stack>
