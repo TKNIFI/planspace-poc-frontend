@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./DeactivateModal.css";
 import { ReactComponent as closeIcon } from "./Close-icon.svg";
 
@@ -15,7 +15,9 @@ import {
   Slide,
   IconButton,
 } from "@mui/material";
+import myApi from "../../network/axios";
 import CloseIcon from "@mui/icons-material/Close";
+import "./servicePackages.css";
 import AddTaskRoundedIcon from "@mui/icons-material/AddTaskRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
@@ -36,38 +38,95 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
 const ServicePack = () => {
+  // const [file, setFile] = React.useState(null);
+  // const props = {
+  //   name: "file",
+  //   multiple: false,
+  //   customRequest: dummyRequest,
+
+  //   beforeUpload(file, fileList) {
+  //     console.log("file", file);
+  //     setFile(file);
+  //   },
+  //   onChange(info) {
+  //     const { status } = info.file;
+
+  //     if (status === "done") {
+  //       // message.success(`${info.file.name} file uploaded successfully.`);
+  //       setFile(info.file.originFileObj);
+  //     } else if (status === "error") {
+  //       // message.error(`${info.file.name} file upload failed.`);
+  //     }
+  //   },
+
+  //   onDrop(e) {
+  //     console.log("Dropped files", e);
+  //   },
+  // };
   const [open, setOpen] = useState(false);
+  const [activeBtn, setActiveBtn] = useState(true);
+  const [inActiveBtn, setInActiveBtn] = useState(false);
+  const [packages, setPackages] = useState([]);
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
+
+  const getPackages = async () => {
+    try {
+      let url = `${process.env.REACT_APP_BASE_URL}api/company/package/`;
+
+      //   setLoading(true);
+      await myApi.get(url).then((result) => {
+        console.log("packages=> ", result.data.results);
+        // setRooms(result.data.results);
+        setPackages(result.data.results);
+      });
+    } catch (error) {
+      //   setLoading(false);
+      // alert(error?.data?.message);
+    }
+  };
+
+  useEffect(() => {
+    getPackages();
+  }, []);
+
   const [modal1Visible, setModal1Visible] = useState(false);
   return (
     <>
+      {console.log("pkg => ", packages)}
       <Box sx={{ flexGrow: 1, display: "inline" }}>
         <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
           <Grid item xs={8}>
-            <Button sx={ButtonStyle}>
+            <Button
+              className={`${activeBtn ? "packages-nav-active" : ""}`}
+              onClick={() => {
+                setActiveBtn(true);
+                setInActiveBtn(false);
+              }}
+              sx={ButtonStyle}
+            >
               <Stack spacing={4} direction="row">
                 <AddTaskRoundedIcon />
                 Active
                 <Badge badgeContent={8} color="primary" />
               </Stack>
             </Button>
-            <Button sx={ButtonStyle}>
+            <Button
+              sx={ButtonStyle}
+              className={`${inActiveBtn ? "packages-nav-active" : ""}`}
+              onClick={() => {
+                setActiveBtn(false);
+                setInActiveBtn(true);
+              }}
+            >
               <Stack spacing={4} direction="row">
                 <VisibilityOffRoundedIcon />
                 Inactive
                 <Badge badgeContent={12} color="primary" />
-              </Stack>
-            </Button>
-            <Button sx={ButtonStyle}>
-              <Stack spacing={4} direction="row">
-                <DriveFileRenameOutlineOutlinedIcon />
-                Drafts
-                <Badge badgeContent={4} color="primary" />
               </Stack>
             </Button>
           </Grid>
@@ -93,7 +152,6 @@ const ServicePack = () => {
                 fontSize: "15px",
                 float: "right",
               }}
-              onClick={() => setModal1Visible(true)}
             >
               <svg
                 width="22"
@@ -192,10 +250,48 @@ const ServicePack = () => {
           </Button>
         </div>
       </Modal>
-
-      <Box sx={{ mt: 3 }}>
-        <PremiumPackCard />
-      </Box>
+      <div
+        style={{
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          display: "flex",
+        }}
+      >
+        {packages.map((item) => {
+          return (
+            activeBtn &&
+            item.active && (
+              <Box sx={{ mt: 3 }}>
+                <PremiumPackCard
+                  pkgName={item.name}
+                  pkgDes={item.description}
+                  pkgPrice={item.price}
+                  pkgDuration={item.duration_minutes}
+                  pkgDate={"date"}
+                  pkgActive={item.active}
+                />
+              </Box>
+            )
+          );
+        })}
+        {packages.map((item) => {
+          return (
+            !activeBtn &&
+            !item.active && (
+              <Box sx={{ mt: 3 }}>
+                <PremiumPackCard
+                  pkgName={item.name}
+                  pkgDes={item.description}
+                  pkgPrice={item.price}
+                  pkgDuration={item.duration_minutes}
+                  pkgDate={"date"}
+                  pkgActive={item.active}
+                />
+              </Box>
+            )
+          );
+        })}
+      </div>
 
       {/* Model html */}
       <Drawer

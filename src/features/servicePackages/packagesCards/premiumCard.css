@@ -1,0 +1,20 @@
+.li{
+    padding: 10px 10px;
+    
+}
+
+.li span{
+    margin-left: 10px;
+}
+.display{
+    display: none;
+}
+
+.li:hover{
+    background-color: #CCE5FF;
+cursor: pointer;
+}
+
+.ant-modal-header{
+    /* background-color: #D83A52 !important; */
+}

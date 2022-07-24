@@ -1,5 +1,5 @@
 //import "./packageForm.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Upload } from "antd";
 import {
   Grid,
@@ -13,48 +13,162 @@ import {
   Checkbox,
   Autocomplete,
 } from "@mui/material";
+import "draft-js/dist/Draft.css";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import clarityimageline from "../../../assets/images/clarity_image-line.png";
 import { useFormik } from "formik";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { Select } from "antd";
 import * as Yup from "yup";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import PackageAddedModal from "./PackageAddedModal";
+import myApi from "../../../network/axios";
 
 const PackagesForm = () => {
-  const [copyIsChecked, setCopyIsChecked] = useState();
+  const [modal1Visible, setModal1Visible] = useState(false);
+  const [addOnList, setaddOnList] = useState([]);
+
+  async function getAddOnData() {
+    await myApi
+      .get(`${process.env.REACT_APP_BASE_URL}api/company/addon/`)
+      .then((response) => {
+        console.log("getaddon ", response.data.results);
+        setaddOnList(response.data.results);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const [date, setDate] = React.useState(new Date("2014-08-18T21:11:54"));
+  const [rooms, setRooms] = React.useState([]);
   const formik = useFormik({
     initialValues: {
       name: "",
-      logo_url: "",
       price: "",
-      noOfGuests: "",
+      room: "",
+      duration_minutes: "",
+      addons: [],
+      logo: new File([], ""),
     },
     validationSchema: Yup.object({
-      name: Yup.string()
-        .max(15, "Must be 15 characters or less")
-        .required("Location Name is required"),
-      logo_url: Yup.mixed().required("location image is required"),
-      price: Yup.string()
-        .max(15, "Must be 15 characters or less")
-        .required("Package Price is required"),
-      noOfGuests: Yup.string().required("No. of Guests required"),
+      name: Yup.string().required("Package Name is required"),
+      price: Yup.string().required("Package Price is required"),
+      duration_minutes: Yup.string().required("Package duration is required"),
+      room: Yup.string(),
+      addons: Yup.array(),
     }),
-    onSubmit: (values) => {
-      const formValues = values;
-      Location.CreateLocation(formValues);
+    onSubmit: async (values) => {
+      let VarDate = new Date(date);
+
+      let newDate = `${VarDate.getFullYear()}-${VarDate.getMonth()}-${VarDate.getDate()} ${VarDate.getHours()}:${VarDate.getMinutes()}:${VarDate.getSeconds()}`;
+
+      try {
+        let formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("price", parseInt(values.price));
+        formData.append("active", cardActive);
+        formData.append("description", description);
+        if (values.room) {
+          formData.append("room", values.room.id);
+        }
+        formData.append("date_time", newDate);
+        let addons = [];
+        values.addons.map((addon) => addons.push(addon.id));
+        formData.append("addons", JSON.stringify(addons));
+        formData.append("duration_minutes", parseInt(values.duration_minutes));
+        if (file) {
+          formData.append("logo", file ? file : new File([], ""));
+        }
+        await myApi.post(`api/company/package/`, formData).then((result) => {
+          setLoading(false);
+          // handleClose(false);
+          // callBack();
+          console.log("resp => ", result);
+          // popUp(result.response.data.message);
+          setFile(null);
+        });
+      } catch (error) {
+        console.log(error.response.data.message);
+        formik.setSubmitting(false);
+        setLoading(false);
+      }
     },
   });
+  const [description, setDescription] = useState("");
+  const [file, setFile] = React.useState(null);
+  const [cardActive, setCardActive] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const dummyRequest = async ({ file, onSuccess }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 0);
+  };
+
+  const getRooms = async () => {
+    try {
+      let url = `${process.env.REACT_APP_BASE_URL}api/company/room/`;
+      await myApi.get(url).then((result) => {
+        console.log("rooms=> ", result.data.results);
+        setRooms(result.data.results);
+      });
+    } catch (error) {
+      //   setLoading(false);
+      // alert(error?.data?.message);
+    }
+  };
+
+  useEffect(() => {
+    setDescription(description);
+  }, [description]);
+
+  useEffect(() => {
+    getAddOnData();
+    getRooms();
+  }, []);
+
+  const props = {
+    name: "file",
+    multiple: false,
+    customRequest: dummyRequest,
+
+    beforeUpload(file, fileList) {
+      console.log("file", file);
+      setFile(file);
+    },
+    onChange(info) {
+      const { status } = info.file;
+
+      if (status === "done") {
+        // message.success(`${info.file.name} file uploaded successfully.`);
+        setFile(info.file.originFileObj);
+      } else if (status === "error") {
+        // message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+
+    onDrop(e) {
+      console.log("Dropped files", e);
+    },
+  };
 
   return (
     <>
+      <PackageAddedModal
+        data={`The ${formik.values.name} Added successfully`}
+        title={"Add new Package"}
+        setModal1Visible={setModal1Visible}
+        modal1Visible={modal1Visible}
+      />
       <form onSubmit={formik.handleSubmit}>
         <Box
           sx={{
             "& .MuiTextField-root": { width: "50ch" },
           }}
         >
-          {/* <FormControlLabel
-            sx={{}}
-            control={<Checkbox checked={copyIsChecked} />}
-            label="Copy address & contacts from company profile"
-          /> */}
           <Grid container spacing={2}>
             <Grid item style={{ paddingLeft: "0" }} xs={8}>
               <Box
@@ -69,68 +183,77 @@ const PackagesForm = () => {
                 <TextField
                   id="name"
                   label="Package Name"
-                  required
                   type="text"
                   value={formik.values.name}
                   onChange={formik.handleChange}
                   error={Boolean(formik.touched.name && formik.errors.name)}
                   helperText={formik.touched.name && formik.errors.name}
-                  // autoComplete="current"
                 />
 
-                <TextField
-                  id="textarea"
-                  label="Multiline Placeholder"
-                  required
-                  multiline
-                  rows={4}
-                  sx={{
-                    backgroundColor: "#F4F6F9",
+                <CKEditor
+                  editor={ClassicEditor}
+                  data="<p>Hello from CKEditor 5!</p>"
+                  style={{ height: "125px" }}
+                  onReady={(editor) => {
+                    // You can store the "editor" and use when it is needed.
+                    console.log("Editor is ready to use!", editor);
+                  }}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                    console.log({ event, editor, data });
+                    setDescription(data);
+                  }}
+                  onBlur={(event, editor) => {
+                    console.log("Blur.", editor);
+                  }}
+                  onFocus={(event, editor) => {
+                    console.log("Focus.", editor);
                   }}
                 />
               </Box>
             </Grid>
             <Grid item xs={4}>
-              <Upload
-                id="logo_url"
-                accept="image"
-                action={formik.values.logo_url}
-                onChange={formik.handleChange}
+              <div
+                className="img-comp"
+                style={{ color: "black", marginLeft: "14px" }}
               >
-                <Paper
-                  elevation={3}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "220px",
-                    width: "-webkit-fill-available",
-                    mt: "27px",
-                    borderRadius: "8px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <Typography variant="p">Add Package Image </Typography>
-                  <img
-                    src={clarityimageline}
-                    style={{ width: "auto", height: "auto" }}
-                  />
-                  <Typography variant="p" sx={{ fontSize: "10px" }}>
-                    Supports , JPG, JPG2000, PNG Less than 2 MB
-                  </Typography>
-                  <Typography
-                    variant="p"
+                <Upload {...props} accept=".jpg, .jpeg, .png">
+                  <Paper
+                    elevation={3}
                     sx={{
-                      fontSize: "10px",
-                      fontWeight: "bold",
+                      display: "flex",
+                      flexDirection: "column",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: window.innerWidth > 1900 ? "268px" : "267px",
+                      // width: window.innerWidth > 1900 ? "300px" : "231px",
+                      mt: window.innerWidth > 1900 ? "20px" : "27px",
+                      borderRadius: "8px",
+                      cursor: "pointer",
+                      border: "2px dashed #ccc",
+                      boxShadow: "none",
+                      width: "auto",
+                      // height: "38vh",
                     }}
                   >
-                    Drop your images here or <a>Browse</a>
-                  </Typography>
-                </Paper>
-              </Upload>
+                    <Typography variant="p">Add Company Logo </Typography>
+                    <img src={clarityimageline} />
+                    <Typography variant="p" sx={{ fontSize: "10px" }}>
+                      Supports , JPG, JPG2000, PNG Less than 2 MB
+                    </Typography>
+                    <Typography
+                      variant="p"
+                      sx={{
+                        fontSize: "10px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Drop your images here or <a>Browse</a>
+                    </Typography>
+                  </Paper>
+                </Upload>
+              </div>
             </Grid>
             <Grid style={{ paddingLeft: "7px" }} item xs={12}>
               <Box
@@ -150,29 +273,39 @@ const PackagesForm = () => {
                   <TextField
                     id="price"
                     label="Package Price"
-                    required
                     type="text"
                     style={{ width: "-webkit-fill-available" }}
                     value={formik.values.price}
+                    inputFormat={"dd-mmm-yyyy hh:mm"}
                     error={Boolean(formik.touched.price && formik.errors.price)}
                     helperText={formik.touched.price && formik.errors.price}
                     onChange={formik.handleChange}
                     // autoComplete="current"
                   />
-                  <TextField
-                    id="price"
-                    label="Select Room"
-                    required
-                    type="text"
-                    style={{
-                      width: "-webkit-fill-available",
-                      marginLeft: "15px",
+                  <Autocomplete
+                    disablePortal
+                    id="room"
+                    name="room"
+                    options={rooms}
+                    getOptionLabel={(option) => option.name}
+                    onChange={(event, value) => {
+                      formik.values.room = value;
                     }}
-                    value={formik.values.price}
-                    error={Boolean(formik.touched.price && formik.errors.price)}
-                    helperText={formik.touched.price && formik.errors.price}
-                    onChange={formik.handleChange}
-                    // autoComplete="current"
+                    isOptionEqualToValue={(option, value) =>
+                      option.id === value.id
+                    }
+                    sx={{ width: "-webkit-fill-available" }}
+                    renderInput={(params) => (
+                      <TextField
+                        style={{
+                          width: "-webkit-fill-available",
+                          background: "#F4F6F9",
+                          marginLeft: "-24px",
+                        }}
+                        {...params}
+                        label="Select Room"
+                      />
+                    )}
                   />
                 </Stack>
               </Box>
@@ -192,37 +325,44 @@ const PackagesForm = () => {
                     gridTemplateColumns: "1fr 1fr",
                   }}
                 >
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DateTimePicker
+                      renderInput={(props) => (
+                        <TextField
+                          style={{
+                            width: "-webkit-fill-available",
+                            background: "#F4F6F9",
+                          }}
+                          {...props}
+                        />
+                      )}
+                      label="DateTimePicker"
+                      value={date}
+                      onChange={(newValue) => {
+                        setDate(newValue);
+                      }}
+                    />
+                  </LocalizationProvider>
                   <TextField
-                    id="noOfGuests"
-                    label="Date and Time"
-                    required
-                    type="tel"
-                    style={{ width: "-webkit-fill-available" }}
-                    value={formik.values.noOfGuests}
-                    error={Boolean(
-                      formik.touched.noOfGuests && formik.errors.noOfGuests
-                    )}
-                    helperText={
-                      formik.touched.noOfGuests && formik.errors.noOfGuests
-                    }
-                    onChange={formik.handleChange}
-                    // autoComplete="current"
-                  />
-                  <TextField
-                    id="email"
+                    id="duration_minutes"
                     label="Package Duration"
                     style={{
                       width: "-webkit-fill-available",
                       marginLeft: "15px",
                     }}
-                    required
-                    type="email"
-                    value={formik.values.email}
+                    type="text"
+                    value={formik.values.duration_minutes}
                     onChange={formik.handleChange}
-                    error={Boolean(formik.touched.email && formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
+                    error={Boolean(
+                      formik.touched.duration_minutes &&
+                        formik.errors.duration_minutes
+                    )}
+                    helperText={
+                      formik.touched.duration_minutes &&
+                      formik.errors.duration_minutes
+                    }
                     // autoComplete="current"
-                  />
+                  />{" "}
                 </Stack>
               </Box>
             </Grid>
@@ -240,13 +380,23 @@ const PackagesForm = () => {
               >
                 <Autocomplete
                   multiple
-                  limitTags={2}
                   id="multiple-limit-tags"
-                  options={top100Films}
-                  getOptionLabel={(option) => option.title}
-                  //defaultValue={[top100Films[13], top100Films[12], top100Films[11]]}
+                  options={addOnList}
+                  onChange={(event, values) => {
+                    console.log("value", values);
+                    formik.values.addons = values;
+                    // setAddOn(values);
+                  }}
+                  getOptionLabel={(option) => option.name}
+                  isOptionEqualToValue={(option, value) =>
+                    option.id === value.id
+                  }
                   renderInput={(params) => (
-                    <TextField {...params} label="Search and add" />
+                    <TextField
+                      {...params}
+                      style={{ background: "#F4F6F9" }}
+                      label="Search and add"
+                    />
                   )}
                 />
               </Box>
@@ -275,12 +425,24 @@ const PackagesForm = () => {
             >
               cancel
             </Button>
-            <Button variant="outlined" sx={{ textTransform: "capitalize" }}>
+            <Button
+              variant="outlined"
+              type="submit"
+              onClick={() => {
+                setModal1Visible(true);
+                setCardActive(false);
+              }}
+              sx={{ textTransform: "capitalize" }}
+            >
               Save
             </Button>
             <Button
               variant="contained"
               type="submit"
+              onClick={() => {
+                setModal1Visible(true);
+                setCardActive(true);
+              }}
               sx={{ textTransform: "capitalize" }}
             >
               Save & Activate
@@ -292,11 +454,6 @@ const PackagesForm = () => {
   );
 };
 
-const top100Films = [
-  { title: "The Shawshank Redemption", year: 1994 },
-  { title: "The Godfather", year: 1972 },
-  { title: "The Godfather: Part II", year: 1974 },
-  { title: "The Dark Knight", year: 2008 },
-];
+const top100Films = [1, 2, 3];
 
 export default PackagesForm;
