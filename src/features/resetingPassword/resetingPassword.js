@@ -17,6 +17,7 @@ import circleImage1 from "../../assets/images/sliderCircleImage1.png";
 import circleImage2 from "../../assets/images/sliderCircleImage2.png";
 import circleImage3 from "../../assets/images/sliderCircleImage3.png";
 require("dotenv").config();
+
 const SliderContent = () => {
     return (
         <>
