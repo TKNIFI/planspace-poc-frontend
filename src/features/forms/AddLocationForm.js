@@ -1,52 +1,197 @@
-import React, { useEffect } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Typography from "@mui/material/Typography";
-import { Button, Drawer, Skeleton, Space } from "antd";
-import { styled } from "@mui/material/styles";
-import { Paper, Grid } from "@mui/material";
+import React, { useState } from "react";
 import { Upload, message } from "antd";
-import clarityimageline from "../../assets/images/clarity_image-line.png";
-import MuiAlert from "@mui/material/Alert";
-import { Card } from "@mui/material";
-import AddRoomCard from "./AddRoomCard";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useFormik } from "formik";
-import Chip from "@mui/material/Chip";
-import Autocomplete from "@mui/material/Autocomplete";
-import * as Yup from "yup";
-import AddTaskRoundedIcon from "@mui/icons-material/AddTaskRounded";
-import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
-import addLogoImage from "../../assets/images/iconadd.png";
-
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
-  Badge,
-  Stack,
-  Dialog,
-  AppBar,
-  Toolbar,
-  Slide,
-  IconButton,
+  TextField,
+  Button,
+  Paper,
+  Grid,
+  Box,
+  Card,
+  CardActions,
+  CardHeader,
+  CardContent,
 } from "@mui/material";
-import "./AddLocationForm.css";
-import myApi from "../../network/axios";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import addLogoImage from "../../assets/images/iconadd.png";
+import AddRoomCard from "./AddRoomCard";
+import Chip from "@mui/material/Chip";
+import MuiAlert from "@mui/material/Alert";
+import Autocomplete from "@mui/material/Autocomplete";
+import Checkbox from "@mui/material/Checkbox";
 import PhoneInput from "../../common/phoneNumber";
-import ZipCodeInput from "../../common/zipcodeInput";
+import { toast } from "react-toastify";
+import clarityimageline from "../../assets/images/clarity_image-line.png";
 
-const Input = styled("input")({
-  display: "none",
-});
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import Location from "../../models/Locations/Location";
+import "./AddLocationForm.css";
 
-const ButtonStyle = {
-  backgroundColor: "#FFFFFF",
-  color: "lightslategray",
-  p: 2,
-  textTransform: "capitalize",
+const AddRoomForm = ({ handleClose }) => {
+  const [image, setImage] = useState();
+
+  const dummyRequest = async ({ file, onSuccess }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 0);
+  };
+
+  const props = {
+    name: "file",
+    multiple: false,
+    customRequest: dummyRequest,
+
+    beforeUpload(file, fileList) {
+      setImage(file);
+    },
+    onChange(info) {
+      const { status } = info.file;
+      if (status === "done") {
+        message.success(`${info.file.name} file uploaded successfully.`);
+        setImage(info.file.originFileObj);
+      } else if (status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      base_price: "",
+      max_guests: "",
+      spaces: [],
+      amenities: [],
+      ceremony_types: [],
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Room Name is required"),
+    }),
+    onSubmit: (values) => {
+      let formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("base_price", values.base_price);
+      formData.append("max_guests", values.max_guests);
+      if (image) {
+        formData.append("image", image ? image : new File([], ""));
+      }
+      let data = [];
+      data.push(formData);
+      localStorage.setItem("rooms", [formData]);
+      handleClose();
+    },
+  });
+
+  return (
+    <>
+      <form onSubmit={formik.handleSubmit}>
+        <Grid container spacing={2}>
+          <Grid item xs={8}>
+            <Box
+              sx={{
+                "& .MuiTextField-root": {
+                  m: 1,
+                  marginTop: 3,
+                },
+              }}
+            >
+              <div>
+                <TextField
+                  name="name"
+                  label="Room Name"
+                  onChange={formik.handleChange}
+                  value={formik.values.name}
+                  error={Boolean(formik.touched.name && formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
+                />
+              </div>
+              <TextField
+                name="base_price"
+                label="Base Price"
+                onChange={formik.handleChange}
+                value={formik.values.base_price}
+                error={Boolean(
+                  formik.touched.base_price && formik.errors.base_price
+                )}
+                helperText={
+                  formik.touched.base_price && formik.errors.base_price
+                }
+              />
+              <TextField
+                name="max_guests"
+                label="Max. no. of Guests"
+                onChange={formik.handleChange}
+                value={formik.values.max_guests}
+                error={Boolean(
+                  formik.touched.max_guests && formik.errors.max_guests
+                )}
+                helperText={
+                  formik.touched.max_guests && formik.errors.max_guests
+                }
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={4}>
+            <Upload {...props}>
+              <Paper
+                elevation={3}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  border: "2px dashed #ccc",
+                  boxShadow: "none",
+                }}
+              >
+                <Typography variant="p">Add Package Image </Typography>
+                <img src={clarityimageline} />
+                <Typography variant="p" sx={{ fontSize: "10px" }}>
+                  Supports , JPG, JPG2000, PNG Less than 2 MB
+                </Typography>
+                <Typography
+                  variant="p"
+                  sx={{
+                    fontSize: "10px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Drop your images here or <a>Browse</a>
+                </Typography>
+              </Paper>
+            </Upload>
+          </Grid>
+        </Grid>
+        <Box>
+          <Button type="submit" fullWidth>
+            Add Room
+          </Button>
+        </Box>
+        <Box>
+          <Button fullWidth>Cancel</Button>
+        </Box>
+      </form>
+    </>
+  );
 };
-const phoneRegExp = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-function AddLocationForm({ defaultValues, handleClose, callBack, popUp }) {
+const AddLocationForm = ({ company, handleClose, popUp }) => {
+  const [openAddRoom, setOpenAddRoom] = useState(false);
+  const [copyIsChecked, setCopyIsChecked] = useState();
+  const innerWidth = window.innerWidth;
+
+  const [active1, setActive1] = useState(true);
+  const [active2, setActive2] = useState(false);
+  const [active3, setActive3] = useState(false);
+
+  const leftInputWidth = innerWidth > 1900 ? "98ch" : "70ch";
+
   const [file, setFile] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 
@@ -62,7 +207,6 @@ function AddLocationForm({ defaultValues, handleClose, callBack, popUp }) {
     customRequest: dummyRequest,
 
     beforeUpload(file, fileList) {
-      console.log("file", file);
       setFile(file);
     },
     onChange(info) {
@@ -77,274 +221,163 @@ function AddLocationForm({ defaultValues, handleClose, callBack, popUp }) {
     },
 
     onDrop(e) {
-      console.log("Dropped files", e);
+      console.log("Dropped files", e.dataTransfer.files);
     },
   };
 
   const formik = useFormik({
-    enableReinitialize: true,
     initialValues: {
-      name: defaultValues?.name ? defaultValues?.name : "",
-      address_line1: defaultValues?.address_line1
-        ? defaultValues?.address_line1
-        : "",
-      address_line2: defaultValues?.address_line2
-        ? defaultValues?.address_line2
-        : "",
-      city: defaultValues?.city ? defaultValues?.city : "",
-      state: defaultValues?.state ? defaultValues?.state : "",
-      zip_code: defaultValues?.zip_code ? defaultValues?.zip_code : "",
-      phone: defaultValues?.phone ? defaultValues?.phone : "",
-      email: defaultValues?.email ? defaultValues?.email : "",
-      logo: defaultValues?.logo ? defaultValues?.logo : "",
+      name: "",
+      address_line1: "",
+      address_line2: "",
+      city: "",
+      state: "",
+      zip_code: "",
+      phone: "",
+      email: "",
+      logo: "",
     },
-    validationSchema: Yup.object({
-      name: Yup.string().required("Name is required"),
-      address_line1: Yup.string().nullable(),
-      address_line2: Yup.string().nullable(),
-      city: Yup.string().nullable(),
-      state: Yup.string().nullable(),
-      zip_code: Yup.number().positive().integer().nullable(),
-      phone: Yup.string()
-        .required("Phone number is required")
-        .matches(phoneRegExp, "Phone number is not valid")
-        .nullable(),
-      email: Yup.string().email("Invalid email").nullable(),
-    }),
-
-    onSubmit: async (values) => {
-      try {
-        setLoading(true);
-        let formData = new FormData();
-        formData.append("name", values.name);
-        formData.append("address_line1", values.address_line1);
-        formData.append("address_line2", values.address_line2);
-        formData.append("city", values.city);
-        formData.append("state", values.state);
-        formData.append("zip_code", values.zip_code);
-        formData.append("phone", values.phone.replaceAll("-", ""));
-        formData.append("email", values.email);
-        if (file) {
-          formData.append("logo", file ? file : new File([], ""));
-        }
-        await myApi
-          .put(`api/company/${defaultValues?.id}/`, formData)
-          .then((result) => {
-            setLoading(false);
-            handleClose(false);
-            callBack();
-            popUp(result.response.data.message);
-            setFile(null);
-          });
-      } catch (error) {
-        console.log(error.response.data.message);
-        formik.setSubmitting(false);
-        setLoading(false);
+    validator: () => {},
+    onSubmit: (values) => {
+      setLoading(true);
+      let formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("address_line1", values.address_line1);
+      formData.append("address_line2", values.address_line2);
+      formData.append("city", values.city);
+      formData.append("state", values.state);
+      formData.append("zip_code", values.zip_code);
+      formData.append("phone", values.phone);
+      formData.append("email", values.email);
+      if (file) {
+        formData.append("image", file ? file : new File([], ""));
       }
+      Location.CreateLocation(formData)
+        .then((result) => {
+          console.log("result", result);
+          setLoading(false);
+
+          formik.handleReset();
+          popUp(result.message);
+
+          handleClose();
+        })
+        .catch((e) => {
+          console.log("E", e.response.data.message);
+          setLoading(false);
+          formik.setSubmitting(false);
+        });
+      // sendChildToParent(formValues);
     },
   });
 
-  const name = (
-    <p>
-      Name<span style={{ color: "red" }}>*</span>
-    </p>
-  );
+  const handleCheckBox = (event) => {
+    setCopyIsChecked(event.target.checked);
+    if (event.target.checked && company) {
+      formik.values.address_line1 = company.address_line1;
+      formik.values.address_line2 = company.address_line2;
+      formik.values.city = company.city;
+      formik.values.state = company.state;
+      formik.values.zip_code = company.zip_code;
+      formik.values.phone = company.phone;
+      formik.values.email = company.email;
+    } else {
+      formik.values.address_line1 = "";
+      formik.values.address_line2 = "";
+      formik.values.city = "";
+      formik.values.state = "";
+      formik.values.zip_code = "";
+      formik.values.phone = "";
+      formik.values.email = "";
+    }
+  };
 
-  const theme = createTheme({
-    components: {
-      MuiFormLabel: {
-        styleOverrides: {
-          asterisk: { color: "red" },
-        },
-      },
-    },
-  });
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <form onSubmit={formik.handleSubmit}>
-          <div>
-            <div
-              className="fields"
-              style={{
-                display: "grid",
-                height: "331px",
-                gridTemplateColumns: "1fr 300px",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  height: "370px",
-                  flexDirection: "column",
+      <form onSubmit={formik.handleSubmit}>
+        <Box
+          sx={{
+            "& .MuiTextField-root": { width: "50ch" },
+          }}
+        >
+          <FormControlLabel
+            sx={{}}
+            control={
+              <Checkbox onChange={handleCheckBox} checked={copyIsChecked} />
+            }
+            label="Copy address & contacts from company profile"
+          />
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+              <Box
+                sx={{
+                  "& .MuiTextField-root": {
+                    m: 1,
+                    width: leftInputWidth,
+                    marginTop: 3,
+                  },
                 }}
               >
-                <TextField
-                  id="name"
-                  label="Enter the Location Name"
-                  placeholder="Enter the Location name"
-                  type="text"
-                  required
-                  sx={{ width: "auto", margin: "28px 0px 0px 0px" }}
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                  // autoComplete="current"
-                />
-                {formik.touched.name && formik.errors.name ? (
-                  <MuiAlert severity="error" sx={{ width: "25%" }}>
-                    <p>{formik.errors.name}</p>
-                  </MuiAlert>
-                ) : null}
+                <div>
+                  <TextField
+                    id="name"
+                    name="name"
+                    label="Enter the location name"
+                    type="text"
+                    style={{ width: "-webkit-fill-available" }}
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    error={Boolean(formik.touched.name && formik.errors.name)}
+                    helperText={formik.touched.name && formik.errors.name}
+                    // autoComplete="current"
+                  />
+                </div>
 
                 <TextField
                   id="address_line1"
-                  label="Address line "
-                  placeholder="Address line 1"
+                  name="address_line1"
+                  style={{ width: "-webkit-fill-available" }}
+                  label="Address line"
                   type="text"
-                  sx={{ width: "auto", margin: "48px 0px 0px 0px" }}
                   value={formik.values.address_line1}
+                  error={Boolean(
+                    formik.touched.address_line1 && formik.errors.address_line1
+                  )}
+                  helperText={
+                    formik.touched.address_line1 && formik.errors.address_line1
+                  }
                   onChange={formik.handleChange}
                   // autoComplete="current"
                 />
-                {formik.touched.address_line1 && formik.errors.address_line1 ? (
-                  <MuiAlert severity="error" sx={{ width: "25%" }}>
-                    <p>{formik.errors.address_line1}</p>
-                  </MuiAlert>
-                ) : null}
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    margin: "25px 0px",
-                  }}
-                >
-                  <PhoneInput
-                    value={formik.values.phone}
-                    onChange={formik.handleChange}
-                  >
-                    {() => (
-                      <TextField
-                        id="phone"
-                        name="phone"
-                        label="City"
-                        placeholder="E.g 121-532-2545"
-                        type="text"
-                        error={Boolean(
-                          formik.touched.mobile && formik.errors.phone
-                        )}
-                        helperText={formik.touched.phone && formik.errors.phone}
-                        sx={{ width: "auto", margin: "0px 17px 0px 0px" }}
-                      />
-                    )}
-                  </PhoneInput>
+
+                <div style={{ display: "flex" }}>
                   <TextField
-                    id="email"
-                    label="State"
-                    placeholder="state"
+                    id="city"
+                    label="City*"
                     type="text"
-                    required
-                    sx={{ width: "auto", margin: "0px 5px" }}
-                    value={formik.values.email}
+                    value={formik.values.city}
+                    error={Boolean(formik.touched.city && formik.errors.city)}
+                    helperText={formik.touched.city && formik.errors.city}
+                    onChange={formik.handleChange}
+                    sx={{ marginLeft: "20px", width: "-webkit-fill-available" }}
+                    // autoComplete="current"
+                  />
+                  <TextField
+                    id="state"
+                    label="State*"
+                    type="text"
+                    style={{ width: "-webkit-fill-available" }}
+                    value={formik.values.state}
+                    error={Boolean(formik.touched.state && formik.errors.state)}
+                    helperText={formik.touched.state && formik.errors.state}
                     onChange={formik.handleChange}
                     // autoComplete="current"
                   />
-                  {formik.touched.email && formik.errors.email ? (
-                    <MuiAlert severity="error" sx={{ width: "25%" }}>
-                      <p>{formik.errors.email}</p>
-                    </MuiAlert>
-                  ) : null}
                 </div>
-              </div>
-
-              <div
-                className="img-comp"
-                style={{ color: "black", marginLeft: "14px" }}
-              >
-                <Upload {...props} accept=".jpg, .jpeg, .png">
-                  <Paper
-                    elevation={3}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: window.innerWidth > 1900 ? "268px" : "267px",
-                      // width: window.innerWidth > 1900 ? "300px" : "231px",
-                      mt: window.innerWidth > 1900 ? "20px" : "27px",
-                      borderRadius: "8px",
-                      cursor: "pointer",
-                      border: "2px dashed #ccc",
-                      boxShadow: "none",
-                      width: "auto",
-                      // height: "38vh",
-                    }}
-                  >
-                    <Typography variant="p">Add Company Logo </Typography>
-                    <img src={clarityimageline} />
-                    <Typography variant="p" sx={{ fontSize: "10px" }}>
-                      Supports , JPG, JPG2000, PNG Less than 2 MB
-                    </Typography>
-                    <Typography
-                      variant="p"
-                      sx={{
-                        fontSize: "10px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Drop your images here or <a>Browse</a>
-                    </Typography>
-                  </Paper>
-                </Upload>
-              </div>
-            </div>
-          </div>
-          {/* <div style={{ display: "flex", width: "auto" }}>
-                <TextField
-                  id="city"
-                  label="City"
-                  placeholder="City"
-                  sx={{ width: "20.8vw", margin: "48px 19px 32px 0px" }}
-                  type="text"
-                  value={formik.values.city}
-                  onChange={formik.handleChange}
-                  // autoComplete="current"
-                />
-                {formik.touched.city && formik.errors.city ? (
-                  <MuiAlert severity="error" sx={{ width: "25%" }}>
-                    <p>{formik.errors.city}</p>
-                  </MuiAlert>
-                ) : null}
-                <TextField
-                  id="state"
-                  label="State"
-                  placeholder="State"
-                  type="text"
-                  required
-                  sx={{ width: "20.4vw", margin: "48px 19px 32px 0px" }}
-                  value={formik.values.state}
-                  onChange={formik.handleChange}
-                  // autoComplete="current"
-                />
-                {formik.touched.state && formik.errors.state ? (
-                  <MuiAlert severity="error" sx={{ width: "25%" }}>
-                    <p>{formik.errors.state}</p>
-                  </MuiAlert>
-                ) : null}
-              </div> */}
-          {/* </div> */}
-          {/* <div
-              className="img"
-              style={{
-                display: "flex",
-                height: "fit-content",
-                width: "334px",
-                position: "relative",
-                flexDirection: "column",
-                top: "4px",
-              }}
-            >
-              <Upload {...props} accept=".jpg, .jpeg, .png">
+              </Box>
+            </Grid>
+            <Grid item xs={4}>
+              <Upload {...props}>
                 <Paper
                   elevation={3}
                   sx={{
@@ -353,18 +386,16 @@ function AddLocationForm({ defaultValues, handleClose, callBack, popUp }) {
                     flexWrap: "wrap",
                     alignItems: "center",
                     justifyContent: "center",
-                    height: window.innerWidth > 1900 ? "250px" : "220px",
-                    width: window.innerWidth > 1900 ? "300px" : "231px",
-                    mt: window.innerWidth > 1900 ? "20px" : "27px",
+                    height: innerWidth > 1900 ? "250px" : "220px",
+                    width: innerWidth > 1900 ? "300px" : "231px",
+                    mt: innerWidth > 1900 ? "20px" : "27px",
                     borderRadius: "8px",
                     cursor: "pointer",
                     border: "2px dashed #ccc",
                     boxShadow: "none",
-                    // width: "17vw",
-                    // height: "38vh",
                   }}
                 >
-                  <Typography variant="p">Add Company Logo </Typography>
+                  <Typography variant="p">Add Package Image </Typography>
                   <img src={clarityimageline} />
                   <Typography variant="p" sx={{ fontSize: "10px" }}>
                     Supports , JPG, JPG2000, PNG Less than 2 MB
@@ -380,292 +411,337 @@ function AddLocationForm({ defaultValues, handleClose, callBack, popUp }) {
                   </Typography>
                 </Paper>
               </Upload>
-              <ZipCodeInput
-                value={formik.values.zip_code}
+            </Grid>
+            <br />
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  "& .MuiTextField-root": {
+                    width: innerWidth > 1900 ? "45ch" : "30ch",
+                  },
+                }}
+              >
+                <Stack
+                  spacing={7}
+                  direction="row"
+                  sx={{
+                    mt: 2,
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TextField
+                    id="zip_code"
+                    label="Zip code*"
+                    type="number"
+                    value={formik.values.zip_code}
+                    error={Boolean(
+                      formik.touched.zip_code && formik.errors.zip_code
+                    )}
+                    helperText={
+                      formik.touched.zip_code && formik.errors.zip_code
+                    }
+                    onChange={formik.handleChange}
+                    // autoComplete="current"
+                  />
+                  <TextField
+                    id="phone"
+                    label="Enter phone number"
+                    type="tel"
+                    value={formik.values.phone}
+                    error={Boolean(formik.touched.phone && formik.errors.phone)}
+                    helperText={formik.touched.phone && formik.errors.phone}
+                    onChange={formik.handleChange}
+                    sx={{ marginLeft: "20px" }}
+                    // autoComplete="current"
+                  />
+                  <TextField
+                    id="email"
+                    label="Enter email address"
+                    type="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    error={Boolean(formik.touched.email && formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                    // autoComplete="current"
+                  />
+                </Stack>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+        {/* <h2 style={{ marginTop: "10px" }}>Add Room(s)</h2>
+        <Box
+          sx={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", mt: 5 }}
+        >
+          <Card sx={{ maxWidth: 345, p: 1, m: 1, height: "295px" }}>
+            <Button
+              style={{
+                height: "300px",
+                color: "gray",
+                border: "none",
+                display: "flex",
+                flexWrap: "wrap",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "4px",
+                fontWeight: "bold",
+                marginLeft: "100px",
+              }}
+              icon={<img src={addLogoImage} />}
+              onClick={() => setOpenAddRoom(true)}
+            >
+              <Typography style={{ marginTop: "12px" }}>Add Room</Typography>
+            </Button>
+          </Card> */}
+        {/* {locations.map((location) => (
+              <Card
+                sx={{ maxWidth: 345, p: 1, m: 1, height: "300px", border: "3px solid #66a4e5", borderRadius: "5px" }}
+              >
+                <CardMedia
+                  component="img"
+                  height="150"
+                  image={location.image ? location.image : LocationImage}
+                  src={location.image ? location.image : LocationImage}
+                />
+                <CardContent>
+                  <h2 variant="h2" style={{ color: "#003399", marginBottom: 0 }}><strong>{location.name}</strong></h2>
+                  <Typography variant="body" color="text.secondary">
+                    {location.address_line1} {location.address_line2} {location.zip_code.zip_code}
+                  </Typography>
+                  <Box style={{ marginTop: "10px" }}>
+                    {location.rooms.map((room) => (
+                      <Button
+                        onClick={() => console.log()}
+                        style={{ border: "3px solid #66a4e5", borderRadius: "5px" }}
+                      > {room.name} </Button>
+                    ))}
+                  </Box>
+                </CardContent>
+                <CardActions disableSpacing>
+                </CardActions>
+              </Card>
+            ))} */}
+        {/* </Box> */}
+        {/* {openAddRoom ? <AddRoomForm /> : ""} */}
+
+        <div className="heading">Add Room(s)</div>
+
+        <div className="rooms">
+          <div style={{ display: "flex", width: "236px" }}>
+            <Button
+              style={{
+                height: "230px",
+                color: "gray",
+                display: "flex",
+                flexWrap: "wrap",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "214px",
+                justifyContent: "center",
+                borderRadius: "4px",
+                fontWeight: "bold",
+              }}
+              icon={<img src={addLogoImage} />}
+              // onClick={handleClickOpen}
+            >
+              <Typography style={{ marginTop: "12px" }}>Add Room</Typography>
+            </Button>
+          </div>
+
+          <AddRoomCard />
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: " 1fr 200px" }}>
+          <div>
+            {" "}
+            <TextField
+              id="name"
+              label="Room Name"
+              placeholder="Room Name"
+              type="text"
+              required
+              sx={{
+                width: "-webkit-fill-available",
+                margin: "28px 9px 0px 0px",
+              }}
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              // autoComplete="current"
+            />
+            {formik.touched.name && formik.errors.name ? (
+              <MuiAlert severity="error" sx={{ width: "25%" }}>
+                <p>{formik.errors.name}</p>
+              </MuiAlert>
+            ) : null}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                margin: "25px 0px",
+              }}
+            >
+              <PhoneInput
+                value={formik.values.phone}
                 onChange={formik.handleChange}
               >
                 {() => (
                   <TextField
-                    id="zip_code"
-                    label="Zip code"
-                    required
-                    sx={{ marginTop: "94px", width: "17vw" }}
-                    placeholder="E.g 20001 (Washington DC)"
-
-                    // type=""
-                    // autoComplete="current"
+                    id="phone"
+                    name="phone"
+                    label="Base Price"
+                    placeholder="E.g 121-532-2545"
+                    type="tel"
+                    error={Boolean(
+                      formik.touched.mobile && formik.errors.phone
+                    )}
+                    helperText={formik.touched.phone && formik.errors.phone}
+                    sx={{ width: "auto", margin: "0px 17px 0px 0px" }}
                   />
                 )}
-              </ZipCodeInput>
-              {formik.touched.zip_code && formik.errors.zip_code ? (
-                <MuiAlert severity="error" sx={{ width: "25%" }}>
-                  <p>{formik.errors.zip_code}</p>
-                </MuiAlert>
-              ) : null}
-            </div> */}
-          {/* </div> */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr 1fr",
-            }}
-          >
-            <TextField
-              id="city"
-              label="Zip Code"
-              placeholder="Zip code"
-              sx={{ width: "auto", margin: "0px 10px 0px 0px" }}
-              type="text"
-              value={formik.values.city}
-              onChange={formik.handleChange}
-              // autoComplete="current"
-            />
-            {formik.touched.city && formik.errors.city ? (
-              <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <p>{formik.errors.city}</p>
-              </MuiAlert>
-            ) : null}
-            <TextField
-              id="state"
-              label="Enter Phone Number"
-              placeholder="Enter Phone Number"
-              type="text"
-              required
-              sx={{ width: "auto", margin: "0px 10px 0px 0px" }}
-              value={formik.values.state}
-              onChange={formik.handleChange}
-              // autoComplete="current"
-            />
-            {formik.touched.state && formik.errors.state ? (
-              <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <p>{formik.errors.state}</p>
-              </MuiAlert>
-            ) : null}
-
-            <ZipCodeInput
-              value={formik.values.zip_code}
-              onChange={formik.handleChange}
-            >
-              {() => (
-                <TextField
-                  id="zip_code"
-                  label="Enter Email Address"
-                  sx={{ width: "auto" }}
-                  placeholder="E.g 20001 (Washington DC)"
-                  type="email"
-                  // type=""
-                  // autoComplete="current"
-                />
-              )}
-            </ZipCodeInput>
-            {formik.touched.zip_code && formik.errors.zip_code ? (
-              <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <p>{formik.errors.zip_code}</p>
-              </MuiAlert>
-            ) : null}
-          </div>
-
-          <div className="heading">Add Room(s)</div>
-
-          <div className="rooms">
-            <div style={{ display: "flex", width: "236px" }}>
-              <Button
-                style={{
-                  height: "230px",
-                  color: "gray",
-                  display: "flex",
-                  flexWrap: "wrap",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  width: "214px",
-                  justifyContent: "center",
-                  borderRadius: "4px",
-                  fontWeight: "bold",
-                }}
-                icon={<img src={addLogoImage} />}
-                // onClick={handleClickOpen}
-              >
-                <Typography style={{ marginTop: "12px" }}>Add Room</Typography>
-              </Button>
-            </div>
-
-            <AddRoomCard />
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: " 1fr 200px" }}>
-            <div>
-              {" "}
+              </PhoneInput>
               <TextField
-                id="name"
-                label="Room Name"
-                placeholder="Room Name"
+                id="email"
+                label="Number of Guests"
+                placeholder="Enter email address"
                 type="text"
-                required
-                sx={{
-                  width: "-webkit-fill-available",
-                  margin: "28px 9px 0px 0px",
-                }}
-                value={formik.values.name}
+                sx={{ width: "auto", margin: "0px 5px" }}
+                value={formik.values.email}
                 onChange={formik.handleChange}
                 // autoComplete="current"
               />
-              {formik.touched.name && formik.errors.name ? (
+              {formik.touched.email && formik.errors.email ? (
                 <MuiAlert severity="error" sx={{ width: "25%" }}>
-                  <p>{formik.errors.name}</p>
+                  <p>{formik.errors.email}</p>
                 </MuiAlert>
               ) : null}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  margin: "25px 0px",
+            </div>
+          </div>
+          <div>
+            <Upload {...props} accept=".jpg, .jpeg, .png">
+              <Paper
+                elevation={3}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  justifyContent: "center",
+
+                  height: window.innerWidth > 1900 ? "268px" : "267px",
+                  // width: window.innerWidth > 1900 ? "300px" : "231px",
+                  mt: window.innerWidth > 1900 ? "20px" : "27px",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  border: "2px dashed #ccc",
+                  boxShadow: "none",
+                  width: "auto",
+                  height: "150px",
                 }}
               >
-                <PhoneInput
-                  value={formik.values.phone}
-                  onChange={formik.handleChange}
-                >
-                  {() => (
-                    <TextField
-                      id="phone"
-                      name="phone"
-                      label="Base Price"
-                      placeholder="E.g 121-532-2545"
-                      type="tel"
-                      error={Boolean(
-                        formik.touched.mobile && formik.errors.phone
-                      )}
-                      helperText={formik.touched.phone && formik.errors.phone}
-                      sx={{ width: "auto", margin: "0px 17px 0px 0px" }}
-                    />
-                  )}
-                </PhoneInput>
-                <TextField
-                  id="email"
-                  label="Number of Guests"
-                  placeholder="Enter email address"
-                  type="text"
-                  sx={{ width: "auto", margin: "0px 5px" }}
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  // autoComplete="current"
-                />
-                {formik.touched.email && formik.errors.email ? (
-                  <MuiAlert severity="error" sx={{ width: "25%" }}>
-                    <p>{formik.errors.email}</p>
-                  </MuiAlert>
-                ) : null}
-              </div>
-            </div>
-            <div>
-              <Upload {...props} accept=".jpg, .jpeg, .png">
-                <Paper
-                  elevation={3}
+                <Typography variant="p">Add Company Logo </Typography>
+                <img src={clarityimageline} />
+                <Typography variant="p" sx={{ fontSize: "10px" }}>
+                  Supports , JPG, JPG2000, PNG Less than 2 MB
+                </Typography>
+                <Typography
+                  variant="p"
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    justifyContent: "center",
-
-                    height: window.innerWidth > 1900 ? "268px" : "267px",
-                    // width: window.innerWidth > 1900 ? "300px" : "231px",
-                    mt: window.innerWidth > 1900 ? "20px" : "27px",
-                    borderRadius: "8px",
-                    cursor: "pointer",
-                    border: "2px dashed #ccc",
-                    boxShadow: "none",
-                    width: "auto",
-                    height: "150px",
+                    fontSize: "10px",
+                    fontWeight: "bold",
                   }}
                 >
-                  <Typography variant="p">Add Company Logo </Typography>
-                  <img src={clarityimageline} />
-                  <Typography variant="p" sx={{ fontSize: "10px" }}>
-                    Supports , JPG, JPG2000, PNG Less than 2 MB
-                  </Typography>
-                  <Typography
-                    variant="p"
-                    sx={{
-                      fontSize: "10px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Drop your images here or <a>Browse</a>
-                  </Typography>
-                </Paper>
-              </Upload>
-            </div>
+                  Drop your images here or <a>Browse</a>
+                </Typography>
+              </Paper>
+            </Upload>
           </div>
+        </div>
 
-          <div style={{ display: "flex", gap: "3px" }}>
-            <div className="add-room-tab packages-nav-active">
-              Define Space{" "}
-            </div>
-            <div className="add-room-tab">Define</div>
-            <div className="add-room-tab">Define</div>
-          </div>
-
-          <div className="tab-div">
-            <p>Describe what kind of space you are offering </p>
-            <Autocomplete
-              multiple
-              id="tags-outlined"
-              options={top100Films}
-              getOptionLabel={(option) => option.title}
-              defaultValue={[top100Films[13]]}
-              filterSelectedOptions
-              style={{ width: "-webkit-fill-available" }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  style={{ width: "-webkit-fill-available" }}
-                  label="filterSelectedOptions"
-                  placeholder="Favorites"
-                />
-              )}
-            />
-          </div>
-
-          <button className="add-room-btn-room">Add Room</button>
-
+        <div style={{ display: "flex", gap: "3px" }}>
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: "20px",
+            className={`add-room-tab ${active1 ? "packages-nav-active" : ""}  `}
+            onClick={() => {
+              setActive1(true);
+              setActive2(false);
+              setActive3(false);
             }}
           >
-            <LoadingButton
-              variant="outlined"
-              sx={{
-                textTransform: "capitalize",
-                marginRight: "10px",
-                padding: "10px 16px",
-                background: "rgba(17, 17, 17, 0.04)",
-                border: "1px solid #676879",
-                color: "#676879",
-              }}
-              color="primary"
-              onClick={() => handleClose(false)}
-            >
-              Cancel
-            </LoadingButton>
-            <LoadingButton
-              loading={loading}
-              variant="contained"
-              sx={{ textTransform: "capitalize", padding: "10px 16px" }}
-              type="submit"
-            >
-              Save changes
-            </LoadingButton>
+            Define Space{" "}
           </div>
-        </form>
-      </ThemeProvider>
+          <div
+            className={`add-room-tab ${active2 ? "packages-nav-active" : ""}  `}
+            onClick={() => {
+              setActive1(false);
+              setActive2(true);
+              setActive3(false);
+            }}
+          >
+            Define
+          </div>
+          <div
+            className={`add-room-tab ${active1 ? "packages-nav-active" : ""}  `}
+            onClick={() => {
+              setActive1(false);
+              setActive2(false);
+              setActive3(true);
+            }}
+            className="add-room-tab"
+          >
+            Define
+          </div>
+        </div>
+
+        <div className="tab-div">
+          <p>Describe what kind of space you are offering </p>
+          <Autocomplete
+            multiple
+            id="tags-outlined"
+            options={top100Films}
+            getOptionLabel={(option) => option.title}
+            defaultValue={[top100Films[13]]}
+            filterSelectedOptions
+            style={{ width: "-webkit-fill-available" }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                style={{ width: "-webkit-fill-available" }}
+                label="filterSelectedOptions"
+                placeholder="Favorites"
+              />
+            )}
+          />
+        </div>
+
+        <button className="add-room-btn-room">Add Room</button>
+
+        <Stack
+          spacing={2}
+          direction="row"
+          sx={{
+            mt: 5,
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Button variant="outlined" onClick={() => handleClose()}>
+            cancel
+          </Button>
+          <LoadingButton loading={loading} variant="contained" type="submit">
+            Save changes
+          </LoadingButton>
+        </Stack>
+      </form>
     </>
   );
-}
+};
 
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 const top100Films = [
@@ -795,4 +871,5 @@ const top100Films = [
   { title: "3 Idiots", year: 2009 },
   { title: "Monty Python and the Holy Grail", year: 1975 },
 ];
+
 export default AddLocationForm;

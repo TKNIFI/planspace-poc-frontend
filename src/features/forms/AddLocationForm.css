@@ -18,6 +18,7 @@ font-family: "Fira Sans" !important;
     padding: 16px 0px;
     gap: 16px;
     
+    cursor: pointer;
     width: 163px;
     height: 52px;
     
@@ -28,6 +29,11 @@ font-family: "Fira Sans" !important;
     
     box-shadow: inset 0px -3px 0px #CFD4DA;
     border-radius: 0px;
+}
+
+.add-room-tab:hover{
+    background: #CCE5FF !important;
+    box-shadow: inset 0px -3px 0px #003399;
 }
 
 .tab-div{
@@ -69,4 +75,5 @@ border-radius: 4px;
 
 .rooms{
     display: flex;
+    flex-wrap: wrap;
 }
