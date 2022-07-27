@@ -97,7 +97,7 @@ export default function ResetingPassword() {
     }
 
     useEffect(() => {
-        checkToken();
+        // checkToken();
     }, []);
 
     return (

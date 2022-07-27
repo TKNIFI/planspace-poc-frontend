@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { Box, IconButton, InputAdornment, TextField, Typography, Alert } from "@mui/material";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
-
+import { withStyles } from '@mui/styles';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -33,6 +33,28 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
     const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
     const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
     const history = useHistory();
+
+    const CssTextField = withStyles({
+        root: {
+            '& label.Mui-focused': {
+                color: passwordColors[passwordScore],
+            },
+            '& .MuiInput-underline:after': {
+                borderBottomColor: passwordColors[passwordScore],
+            },
+            '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                    borderColor: passwordColors[passwordScore],
+                },
+                '&:hover fieldset': {
+                    borderColor: passwordColors[passwordScore],
+                },
+                '&.Mui-focused fieldset': {
+                    borderColor: passwordColors[passwordScore],
+                },
+            },
+        },
+    })(TextField);
 
     const formik = useFormik({
         initialValues: {
@@ -95,41 +117,42 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                         "& .MuiTextField-root": { pb: 2, marginTop: 1 },
                     }}
                 >
-                    <div style={{ position: "relative" }}><TextField
-                        id="newpassword"
-                        label="Enter new password*"
-                        placeholder="Enter new password"
-                        onFocus={() => setShowNewPassMeter(true)}
-                        onBlur={() => formik.values.newpassword ? setShowNewPassMeter(true) : setShowNewPassMeter(false)}
-                        type={showPassword ? "text" : "password"}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton>
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                        >
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                    <div style={{ position: "relative" }}>
+                        <CssTextField
+                            id="newpassword"
+                            label="Enter new password*"
+                            placeholder="Enter new password"
+                            onFocus={() => setShowNewPassMeter(true)}
+                            onBlur={() => formik.values.newpassword ? setShowNewPassMeter(true) : setShowNewPassMeter(false)}
+                            type={showPassword ? "text" : "password"}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton>
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                            >
+                                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
                                         </IconButton>
-                                    </IconButton>
-                                </InputAdornment>
-                            )
-                        }}
-                        value={formik.values.newpassword}
-                        error={Boolean(
-                            formik.touched.newpassword &&
-                            formik.errors.newpassword
-                        )}
-                        helperText={
-                            formik.touched.newpassword &&
-                            formik.errors.newpassword
-                        }
-                        onChange={formik.handleChange}
-                        autoFocus="true"
-                        sx={{ width: "100%" }}
-                    />
+                                    </InputAdornment>
+                                )
+                            }}
+                            value={formik.values.newpassword}
+                            error={Boolean(
+                                formik.touched.newpassword &&
+                                formik.errors.newpassword
+                            )}
+                            helperText={
+                                formik.touched.newpassword &&
+                                formik.errors.newpassword
+                            }
+                            onChange={formik.handleChange}
+                            autoFocus="true"
+                            sx={{ width: "100%" }}
+                        />
                         {showNewPassMeter && formik.values.newpassword &&
                             <div style={{ maxWidth: "350px", padding: "40px", boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px", position: "absolute", right: "0%", zIndex: "999", background: "white" }}>
                                 <strong>Password Strength </strong><span style={{ color: passwordColors[passwordScore] }}>{passwordEnums[passwordScore]}</span>
@@ -144,11 +167,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                                     rules={["minLength", "specialChar", "number", "capital"]}
                                     minLength={8}
                                     value={formik.values.newpassword}
-                                    onChange={(isValid) => {
-                                        console.log("isValid", isValid)
-                                        formik.setSubmitting(isValid)
-                                    }
-                                    }
+                                    onChange={(isValid) => { }}
                                     messages={{
                                         minLength: "Atleast 8 character(s).",
                                         specialChar: "Atleast 1 special character(s)",
