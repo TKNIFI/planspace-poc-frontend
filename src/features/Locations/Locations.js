@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Button, Drawer, Typography, Skeleton, Space } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { Box, Card, CardContent, CardHeader, Stack, CardMedia, IconButton, CardActions } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Stack,
+  CardMedia,
+  IconButton,
+  CardActions,
+} from "@mui/material";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import AddLocationForm from "../forms/AddLocationForm";
 import EditCompanyForm from "../forms/EditCompanyfrom";
@@ -89,7 +98,6 @@ const EmailIcon = () => {
 };
 
 export default function Locations() {
-
   const [editRecordValues, setEditRecordValues] = useState(null);
   const [openEditForm, setOpenEditForm] = useState(false);
   const [openCompanyEditForm, setOpenCompanyEditForm] = useState(false);
@@ -97,7 +105,7 @@ export default function Locations() {
   const [locations, setLocations] = useState([]);
   const [company, setCompany] = useState([]);
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false);
 
   const history = useHistory();
   const handleClickOpen = () => {
@@ -107,25 +115,27 @@ export default function Locations() {
     setOpen(close);
   };
   const makeAToast = (message) => {
-    toast.success(message)
-  }
+    toast.success(message);
+  };
   const innerWidth = window.innerWidth;
 
   const getFormattedPhoneNumber = (phone) => {
-    let phone_number = ""
-    phone_number += phone.slice(0, 3) + "-"
-    phone_number += phone.slice(3, 6) + "-"
-    phone_number += phone.slice(6)
-    return phone_number
-  }
+    let phone_number = "";
+    phone_number += phone.slice(0, 3) + "-";
+    phone_number += phone.slice(3, 6) + "-";
+    phone_number += phone.slice(6);
+    return phone_number;
+  };
   const getCompanyDetails = () => {
-    setLoading(true)
-    getCompany().then((res) => {
-      setCompany(res?.data?.results)
-      setLoading(false)
-    }).catch((error) => {
-      setLoading(false)
-    });
+    setLoading(true);
+    getCompany()
+      .then((res) => {
+        setCompany(res?.data?.results);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
   };
 
   const getLocation = () => {
@@ -136,7 +146,7 @@ export default function Locations() {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
   useEffect(() => {
     getCompanyDetails();
     getLocation();
@@ -171,7 +181,9 @@ export default function Locations() {
         <div data-testid="card">
           <Card>
             {!loading && company.length > 0 ? (
-              <Box sx={{ display: "grid", gridTemplateColumns: "291px 500px 1fr" }}>
+              <Box
+                sx={{ display: "grid", gridTemplateColumns: "291px 500px 1fr" }}
+              >
                 <Box
                   sx={{
                     display: "flex",
@@ -221,8 +233,8 @@ export default function Locations() {
                           {company[0]?.address_line1
                             ? company[0]?.address_line1
                             : "" + " " + company[0]?.address_line2
-                              ? company[0]?.address_line2
-                              : ""}
+                            ? company[0]?.address_line2
+                            : ""}
                         </Typography>
                       </Box>
                     </CardContent>
@@ -264,7 +276,9 @@ export default function Locations() {
                           color="text.secondary"
                           component="span"
                         >
-                          {company[0]?.phone ? getFormattedPhoneNumber(company[0]?.phone) : ""}
+                          {company[0]?.phone
+                            ? getFormattedPhoneNumber(company[0]?.phone)
+                            : ""}
                         </Typography>
                       </Box>
                     </CardContent>
@@ -295,21 +309,27 @@ export default function Locations() {
                 </Box>
               </Box>
             ) : (
-              <Box sx={{
-                display: "flex",
-                // justifyContent: "center",
-                alignItems: "center",
-              }}
+              <Box
+                sx={{
+                  display: "flex",
+                  // justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
-                <Skeleton paragraph={{ rows: 4 }} avatar active={loading} size="default" />
+                <Skeleton
+                  paragraph={{ rows: 4 }}
+                  avatar
+                  active={loading}
+                  size="default"
+                />
               </Box>
             )}
           </Card>
         </div>
-        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', mt: 5 }}>
-          <Card
-            sx={{ maxWidth: 345, p: 1, m: 1, height: "295px" }}
-          >
+        <Box
+          sx={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", mt: 5 }}
+        >
+          <Card sx={{ maxWidth: 345, p: 1, m: 1, height: "295px" }}>
             <Button
               style={{
                 height: "300px",
@@ -327,12 +347,21 @@ export default function Locations() {
               icon={<img src={addLogoImage} />}
               onClick={handleClickOpen}
             >
-              <Typography style={{ marginTop: "12px" }}>Add New Venue</Typography>
+              <Typography style={{ marginTop: "12px" }}>
+                Add New Venue
+              </Typography>
             </Button>
           </Card>
           {locations.map((location) => (
             <Card
-              sx={{ maxWidth: 345, p: 1, m: 1, height: "300px", border: "3px solid #66a4e5",  borderRadius: "5px" }}
+              sx={{
+                maxWidth: 345,
+                p: 1,
+                m: 1,
+                height: "300px",
+                border: "3px solid #66a4e5",
+                borderRadius: "5px",
+              }}
             >
               <CardMedia
                 component="img"
@@ -341,21 +370,29 @@ export default function Locations() {
                 src={location.image ? location.image : LocationImage}
               />
               <CardContent>
-                <h2 variant="h2" style={{ color: "#003399", marginBottom: 0 }}><strong>{location.name}</strong></h2>
+                <h2 variant="h2" style={{ color: "#003399", marginBottom: 0 }}>
+                  <strong>{location.name}</strong>
+                </h2>
                 <Typography variant="body" color="text.secondary">
-                  {location.address_line1} {location.address_line2} {location.zip_code.zip_code}
+                  {location.address_line1} {location.address_line2}{" "}
+                  {location.zip_code.zip_code}
                 </Typography>
-                <Box style={{marginTop: "10px"}}>
+                <Box style={{ marginTop: "10px" }}>
                   {location.rooms.map((room) => (
                     <Button
                       onClick={() => console.log()}
-                      style={{ border: "3px solid #66a4e5", borderRadius: "5px" }}
-                    > {room.name} </Button>
+                      style={{
+                        border: "3px solid #66a4e5",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      {" "}
+                      {room.name}{" "}
+                    </Button>
                   ))}
                 </Box>
               </CardContent>
-              <CardActions disableSpacing>
-              </CardActions>
+              <CardActions disableSpacing></CardActions>
             </Card>
           ))}
         </Box>
@@ -368,9 +405,10 @@ export default function Locations() {
         onClose={handleClose}
         visible={open}
         closable={false}
-        style={{overflowY: "scroll", height: "1000px"}}
+        style={{ overflowY: "scroll" }}
         bodyStyle={{
           paddingBottom: 80,
+          overflow: "auto !important",
         }}
         extra={
           <IconButton
@@ -412,9 +450,7 @@ export default function Locations() {
           </IconButton>
         }
       >
-        <EditLocationForm
-          editRecordValues={editRecordValues}
-        />
+        <EditLocationForm editRecordValues={editRecordValues} />
       </Drawer>
 
       <Drawer
