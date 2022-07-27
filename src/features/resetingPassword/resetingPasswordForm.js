@@ -7,7 +7,11 @@ import {
   InputAdornment,
   TextField,
   Typography,
+  Alert,
 } from "@mui/material";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -15,6 +19,7 @@ import { toast } from "react-toastify";
 import { ContentCopy, Visibility, VisibilityOff } from "@mui/icons-material";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { generatedPassword } from "../../utilities/generatePassword";
+import PasswordChecklist from "react-password-checklist";
 
 // import User from "../../../../models/user/user";
 // import { useDispatch } from "react-redux";
@@ -24,10 +29,10 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordScore, setPasswordScore] = useState(0);
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const [showNewPassMeter, setShowNewPassMeter] = useState(false);
   const [generatedPass, setGeneratedPass] = useState("");
-  const passwordEnums = ["TOO SHORT", "WEAK", "GOOD", "STRONG", "STRONG"];
+  const passwordEnums = ["TOO SHORT", "WEAK", "OK", "GOOD", "STRONG"];
   const passwordColors = [
     "#dddddd",
     "#ef4836",
@@ -43,6 +48,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
   const handleMouseDownConfirmPassword = () =>
     setShowConfirmPassword(!showConfirmPassword);
   const history = useHistory();
+
   const formik = useFormik({
     initialValues: {
       newpassword: "",
@@ -55,7 +61,6 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
         .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
       confirmpassword: Yup.string()
         .required("No password provided.")
-        .min(8, "Password is too short - should be 8 chars minimum.")
         .oneOf([Yup.ref("newpassword"), null], "Passwords must match")
         .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
     }),
@@ -138,7 +143,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
               <div
                 style={{
                   maxWidth: "350px",
-                  padding: "10px",
+                  padding: "40px",
                   boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
                   position: "absolute",
                   right: "0%",
@@ -146,77 +151,54 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                   background: "white",
                 }}
               >
-                <strong>
-                  Password Strength{" "}
-                  <span style={{ color: passwordColors[passwordScore] }}>
-                    {passwordEnums[passwordScore]}
-                  </span>
-                </strong>
+                <strong>Password Strength </strong>
+                <span style={{ color: passwordColors[passwordScore] }}>
+                  {passwordEnums[passwordScore]}
+                </span>
                 <PasswordStrengthBar
+                  minLength={8}
                   className="passwordMeter"
                   scoreWordStyle={{ display: "none" }}
                   password={formik.values.newpassword}
-                  onChangeScore={(score) => setPasswordScore(score)}
+                  onChangeScore={(score, feedback) => setPasswordScore(score)}
                 />
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginTop: "10px",
+                {/* <div style={{display: 'flex', alignItems:'center', marginTop:"10px"}}><span>Atleast 8 character{"(s)"}</span></div>
+                        <div style={{display: 'flex', alignItems:'center',marginTop:"10px"}}><span>Atleast 1 numeric character{"(s)"}</span></div>
+                        <div style={{display: 'flex', alignItems:'center',marginTop:"10px"}}><span>Atleast 1 upper case character{"(s)"}</span></div>
+                        <div style={{display: 'flex', alignItems:'center',marginTop:"10px"}}><span>Not used in past 4 passwords{"(s)"}</span></div> */}
+                <PasswordChecklist
+                  style={{ marginTop: "20px" }}
+                  rtl={true}
+                  rules={["minLength", "specialChar", "number", "capital"]}
+                  minLength={8}
+                  value={formik.values.newpassword}
+                  onChange={(isValid) => {
+                    console.log("isValid", isValid);
+                    formik.setSubmitting(isValid);
                   }}
-                >
-                  <span>
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5.98145 5.92969L11.7414 11.6897M11.7414 5.92969L5.98145 11.6897L11.7414 5.92969Z"
-                        stroke="#D83A52"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                  messages={{
+                    minLength: "Atleast 8 character(s).",
+                    specialChar: "Atleast 1 special character(s)",
+                    number: "Atleast 1 numeric character(s)",
+                    capital: "Atleast 1 upper case character(s)",
+                  }}
+                  iconComponents={{
+                    ValidIcon: (
+                      <CheckCircleOutlinedIcon
+                        style={{ marginRight: "5px" }}
+                        color="success"
                       />
-                      <path
-                        d="M8.86133 16.8105C13.2796 16.8105 16.8613 13.2288 16.8613 8.81055C16.8613 4.39227 13.2796 0.810547 8.86133 0.810547C4.44305 0.810547 0.861328 4.39227 0.861328 8.81055C0.861328 13.2288 4.44305 16.8105 8.86133 16.8105Z"
-                        stroke="#D83A52"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                    ),
+                    InvalidIcon: (
+                      <CancelOutlinedIcon
+                        style={{ marginRight: "5px" }}
+                        color="error"
                       />
-                    </svg>
-                    Atleast 8 character{"(s)"}
-                  </span>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginTop: "10px",
+                    ),
                   }}
-                >
-                  <span>Atleast 1 numeric character{"(s)"}</span>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginTop: "10px",
-                  }}
-                >
-                  <span>Atleast 1 upper case character{"(s)"}</span>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginTop: "10px",
-                  }}
-                >
-                  <span>Not used in past 4 passwords{"(s)"}</span>
-                </div>
+                />
                 <LoadingButton
+                  style={{ marginTop: "20px" }}
                   onClick={() => {
                     setShowNewPassMeter(true);
                     let pass = generatedPassword.shuffle();
@@ -224,7 +206,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                   }}
                   sx={{
                     marginTop: "10px",
-                    background: "#ccc",
+                    background: "#f5f5f5",
                     border: "1px solid #ccc",
                     color: "#777",
                   }}
@@ -297,6 +279,13 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
             sx={{ width: "100%" }}
           />
         </Box>
+        {formik.errors.submit && (
+          <Box sx={{ mt: 2, mb: 2 }}>
+            <Alert severity="error" style={{ fontSize: 16 }}>
+              {formik.errors.submit}
+            </Alert>
+          </Box>
+        )}
         <Box className="container">
           <LoadingButton
             sx={{
@@ -311,6 +300,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
             }}
             variant={formik.values.newpassword ? "contained" : "outlined"}
             type="submit"
+            disabled={!formik.isValid}
             loading={loading}
             // onClick={checkingFormFields}
           >
