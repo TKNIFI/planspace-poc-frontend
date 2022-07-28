@@ -30,8 +30,11 @@ import * as Yup from "yup";
 import Location from "../../models/Locations/Location";
 import "./AddLocationForm.css";
 
-const AddRoomForm = ({ handleClose }) => {
+const AddRoomForm = ({ close, RoomValues }) => {
   const [image, setImage] = useState();
+  const [active1, setActive1] = useState(true);
+  const [active2, setActive2] = useState(false);
+  const [active3, setActive3] = useState(false);
 
   const dummyRequest = async ({ file, onSuccess }) => {
     setTimeout(() => {
@@ -45,13 +48,17 @@ const AddRoomForm = ({ handleClose }) => {
     customRequest: dummyRequest,
 
     beforeUpload(file, fileList) {
-      setImage(file);
+      formik.values.image = file
+      formik.values.file = URL.createObjectURL(file)
+      // setImage(file);
     },
     onChange(info) {
       const { status } = info.file;
       if (status === "done") {
         message.success(`${info.file.name} file uploaded successfully.`);
-        setImage(info.file.originFileObj);
+        // setImage(info.file.originFileObj);
+        formik.values.image = info.file.originFileObj
+        formik.values.file = URL.createObjectURL(info.file.originFileObj)
       } else if (status === "error") {
         message.error(`${info.file.name} file upload failed.`);
       }
@@ -63,6 +70,8 @@ const AddRoomForm = ({ handleClose }) => {
       name: "",
       base_price: "",
       max_guests: "",
+      image: {},
+      file: {},
       spaces: [],
       amenities: [],
       ceremony_types: [],
@@ -71,71 +80,77 @@ const AddRoomForm = ({ handleClose }) => {
       name: Yup.string().required("Room Name is required"),
     }),
     onSubmit: (values) => {
-      let formData = new FormData();
-      formData.append("name", values.name);
-      formData.append("base_price", values.base_price);
-      formData.append("max_guests", values.max_guests);
-      if (image) {
-        formData.append("image", image ? image : new File([], ""));
-      }
-      let data = [];
-      data.push(formData);
-      localStorage.setItem("rooms", [formData]);
-      handleClose();
+      let formData = new FormData()
+      formData.append("name", values.name)
+      formData.append("base_price", values.base_price)
+      formData.append("max_guests", values.max_guests)
+      formData.append("image", values.image)
+      formData.append("file", values.file ? values.file : new File([], ""))
+      values.image = values.image ? values.image : new File([], "")
+      RoomValues(formData)
+      close()
     },
   });
 
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <Box
+        <div style={{ display: "grid", gridTemplateColumns: " 1fr 200px" }}>
+          <div>
+            {" "}
+            <TextField
+              id="name"
+              label="Room Name"
+              placeholder="Room Name"
+              type="text"
+              required
               sx={{
-                "& .MuiTextField-root": {
-                  m: 1,
-                  marginTop: 3,
-                },
+                width: "-webkit-fill-available",
+                margin: "28px 9px 0px 0px",
+              }}
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              error={Boolean(
+                formik.touched.name && formik.errors.name
+              )}
+              helperText={formik.touched.name && formik.errors.name}
+            // autoComplete="current"
+            />
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                margin: "25px 0px",
               }}
             >
-              <div>
-                <TextField
-                  name="name"
-                  label="Room Name"
-                  onChange={formik.handleChange}
-                  value={formik.values.name}
-                  error={Boolean(formik.touched.name && formik.errors.name)}
-                  helperText={formik.touched.name && formik.errors.name}
-                />
-              </div>
               <TextField
+                id="base_price"
                 name="base_price"
                 label="Base Price"
-                onChange={formik.handleChange}
-                value={formik.values.base_price}
                 error={Boolean(
                   formik.touched.base_price && formik.errors.base_price
                 )}
-                helperText={
-                  formik.touched.base_price && formik.errors.base_price
-                }
+                helperText={formik.touched.base_price && formik.errors.base_price}
+                value={formik.values.base_price}
+                onChange={formik.handleChange}
+                sx={{ width: "auto", margin: "0px 17px 0px 0px" }}
               />
               <TextField
-                name="max_guests"
-                label="Max. no. of Guests"
-                onChange={formik.handleChange}
+                id="max_guests"
+                label="Number of Guests"
+                sx={{ width: "auto", margin: "0px 5px" }}
                 value={formik.values.max_guests}
+                onChange={formik.handleChange}
                 error={Boolean(
                   formik.touched.max_guests && formik.errors.max_guests
                 )}
-                helperText={
-                  formik.touched.max_guests && formik.errors.max_guests
-                }
+                helperText={formik.touched.max_guests && formik.errors.max_guests}
+              // autoComplete="current"
               />
-            </Box>
-          </Grid>
-          <Grid item xs={4}>
-            <Upload {...props}>
+            </div>
+          </div>
+          <div>
+            <Upload {...props} accept=".jpg, .jpeg, .png">
               <Paper
                 elevation={3}
                 sx={{
@@ -144,13 +159,19 @@ const AddRoomForm = ({ handleClose }) => {
                   flexWrap: "wrap",
                   alignItems: "center",
                   justifyContent: "center",
+
+                  height: window.innerWidth > 1900 ? "268px" : "267px",
+                  // width: window.innerWidth > 1900 ? "300px" : "231px",
+                  mt: window.innerWidth > 1900 ? "20px" : "27px",
                   borderRadius: "8px",
                   cursor: "pointer",
                   border: "2px dashed #ccc",
                   boxShadow: "none",
+                  width: "auto",
+                  height: "150px",
                 }}
               >
-                <Typography variant="p">Add Package Image </Typography>
+                <Typography variant="p">Add Company Logo </Typography>
                 <img src={clarityimageline} />
                 <Typography variant="p" sx={{ fontSize: "10px" }}>
                   Supports , JPG, JPG2000, PNG Less than 2 MB
@@ -166,16 +187,64 @@ const AddRoomForm = ({ handleClose }) => {
                 </Typography>
               </Paper>
             </Upload>
-          </Grid>
-        </Grid>
-        <Box>
-          <Button type="submit" fullWidth>
-            Add Room
-          </Button>
-        </Box>
-        <Box>
-          <Button fullWidth>Cancel</Button>
-        </Box>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", gap: "3px" }}>
+          <div
+            className={`add-room-tab ${active1 ? "packages-nav-active" : ""}  `}
+            onClick={() => {
+              setActive1(true);
+              setActive2(false);
+              setActive3(false);
+            }}
+          >
+            Define Space{" "}
+          </div>
+          <div
+            className={`add-room-tab ${active2 ? "packages-nav-active" : ""}  `}
+            onClick={() => {
+              setActive1(false);
+              setActive2(true);
+              setActive3(false);
+            }}
+          >
+            Define
+          </div>
+          <div
+            className={`add-room-tab ${active1 ? "packages-nav-active" : ""}  `}
+            onClick={() => {
+              setActive1(false);
+              setActive2(false);
+              setActive3(true);
+            }}
+          >
+            Define
+          </div>
+        </div>
+
+        <div className="tab-div">
+          <p>Describe what kind of space you are offering </p>
+          <Autocomplete
+            multiple
+            id="tags-outlined"
+            options={top100Films}
+            getOptionLabel={(option) => option.title}
+            defaultValue={[top100Films[13]]}
+            filterSelectedOptions
+            style={{ width: "-webkit-fill-available" }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                style={{ width: "-webkit-fill-available" }}
+                label="filterSelectedOptions"
+                placeholder="Favorites"
+              />
+            )}
+          />
+        </div>
+        <Button type="submit" className="add-room-btn-room">Add Room</Button>
+        <Button className="add-room-btn-room" onClick={() => close()}>Cance</Button>
       </form>
     </>
   );
@@ -185,15 +254,10 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
   const [openAddRoom, setOpenAddRoom] = useState(false);
   const [copyIsChecked, setCopyIsChecked] = useState();
   const innerWidth = window.innerWidth;
-
-  const [active1, setActive1] = useState(true);
-  const [active2, setActive2] = useState(false);
-  const [active3, setActive3] = useState(false);
-
   const leftInputWidth = innerWidth > 1900 ? "98ch" : "70ch";
-
   const [file, setFile] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
+  const [roomValues, setRoomValues] = useState([])
 
   const dummyRequest = async ({ file, onSuccess }) => {
     setTimeout(() => {
@@ -237,7 +301,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
       email: "",
       logo: "",
     },
-    validator: () => {},
+    validator: () => { },
     onSubmit: (values) => {
       setLoading(true);
       let formData = new FormData();
@@ -249,6 +313,17 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
       formData.append("zip_code", values.zip_code);
       formData.append("phone", values.phone);
       formData.append("email", values.email);
+      let rooms = []
+      // roomValues.map((room) => {
+      //   let roomData = new FormData()
+      //   roomData.append("name", room.name)
+      //   roomData.append("base_price", room.base_price)
+      //   roomData.append("max_guests", room.max_guests)
+      //   roomData.append("image", room.image)
+      //   rooms.push(roomData)
+      //   console.log("rooms", rooms)
+      // })
+      formData.append("rooms", roomValues)
       if (file) {
         formData.append("image", file ? file : new File([], ""));
       }
@@ -256,10 +331,8 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
         .then((result) => {
           console.log("result", result);
           setLoading(false);
-
           formik.handleReset();
           popUp(result.message);
-
           handleClose();
         })
         .catch((e) => {
@@ -329,7 +402,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                     onChange={formik.handleChange}
                     error={Boolean(formik.touched.name && formik.errors.name)}
                     helperText={formik.touched.name && formik.errors.name}
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />
                 </div>
 
@@ -347,7 +420,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                     formik.touched.address_line1 && formik.errors.address_line1
                   }
                   onChange={formik.handleChange}
-                  // autoComplete="current"
+                // autoComplete="current"
                 />
 
                 <div style={{ display: "flex" }}>
@@ -360,7 +433,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                     helperText={formik.touched.city && formik.errors.city}
                     onChange={formik.handleChange}
                     sx={{ marginLeft: "20px", width: "-webkit-fill-available" }}
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />
                   <TextField
                     id="state"
@@ -371,7 +444,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                     error={Boolean(formik.touched.state && formik.errors.state)}
                     helperText={formik.touched.state && formik.errors.state}
                     onChange={formik.handleChange}
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />
                 </div>
               </Box>
@@ -445,7 +518,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                       formik.touched.zip_code && formik.errors.zip_code
                     }
                     onChange={formik.handleChange}
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />
                   <TextField
                     id="phone"
@@ -456,7 +529,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                     helperText={formik.touched.phone && formik.errors.phone}
                     onChange={formik.handleChange}
                     sx={{ marginLeft: "20px" }}
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />
                   <TextField
                     id="email"
@@ -466,7 +539,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                     onChange={formik.handleChange}
                     error={Boolean(formik.touched.email && formik.errors.email)}
                     helperText={formik.touched.email && formik.errors.email}
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />
                 </Stack>
               </Box>
@@ -530,195 +603,34 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
         {/* {openAddRoom ? <AddRoomForm /> : ""} */}
 
         <div className="heading">Add Room(s)</div>
-
-        <div className="rooms">
-          <div style={{ display: "flex", width: "236px" }}>
-            <Button
-              style={{
-                height: "230px",
-                color: "gray",
-                display: "flex",
-                flexWrap: "wrap",
-                flexDirection: "column",
-                alignItems: "center",
-                width: "214px",
-                justifyContent: "center",
-                borderRadius: "4px",
-                fontWeight: "bold",
-              }}
-              icon={<img src={addLogoImage} />}
-              // onClick={handleClickOpen}
-            >
-              <Typography style={{ marginTop: "12px" }}>Add Room</Typography>
-            </Button>
-          </div>
-
-          <AddRoomCard />
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: " 1fr 200px" }}>
-          <div>
-            {" "}
-            <TextField
-              id="name"
-              label="Room Name"
-              placeholder="Room Name"
-              type="text"
-              required
-              sx={{
-                width: "-webkit-fill-available",
-                margin: "28px 9px 0px 0px",
-              }}
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              // autoComplete="current"
-            />
-            {formik.touched.name && formik.errors.name ? (
-              <MuiAlert severity="error" sx={{ width: "25%" }}>
-                <p>{formik.errors.name}</p>
-              </MuiAlert>
-            ) : null}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                margin: "25px 0px",
-              }}
-            >
-              <PhoneInput
-                value={formik.values.phone}
-                onChange={formik.handleChange}
-              >
-                {() => (
-                  <TextField
-                    id="phone"
-                    name="phone"
-                    label="Base Price"
-                    placeholder="E.g 121-532-2545"
-                    type="tel"
-                    error={Boolean(
-                      formik.touched.mobile && formik.errors.phone
-                    )}
-                    helperText={formik.touched.phone && formik.errors.phone}
-                    sx={{ width: "auto", margin: "0px 17px 0px 0px" }}
-                  />
-                )}
-              </PhoneInput>
-              <TextField
-                id="email"
-                label="Number of Guests"
-                placeholder="Enter email address"
-                type="text"
-                sx={{ width: "auto", margin: "0px 5px" }}
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                // autoComplete="current"
-              />
-              {formik.touched.email && formik.errors.email ? (
-                <MuiAlert severity="error" sx={{ width: "25%" }}>
-                  <p>{formik.errors.email}</p>
-                </MuiAlert>
-              ) : null}
-            </div>
-          </div>
-          <div>
-            <Upload {...props} accept=".jpg, .jpeg, .png">
-              <Paper
-                elevation={3}
-                sx={{
+        {openAddRoom ? (
+          <AddRoomForm close={() => setOpenAddRoom(false)} RoomValues={values => setRoomValues([...roomValues, values])} />
+        ) : (
+          <div className="rooms">
+            <div style={{ display: "flex", width: "236px" }}>
+              <Button
+                style={{
+                  height: "230px",
+                  color: "gray",
                   display: "flex",
-                  flexDirection: "column",
                   flexWrap: "wrap",
+                  flexDirection: "column",
                   alignItems: "center",
+                  width: "214px",
                   justifyContent: "center",
-
-                  height: window.innerWidth > 1900 ? "268px" : "267px",
-                  // width: window.innerWidth > 1900 ? "300px" : "231px",
-                  mt: window.innerWidth > 1900 ? "20px" : "27px",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  border: "2px dashed #ccc",
-                  boxShadow: "none",
-                  width: "auto",
-                  height: "150px",
+                  borderRadius: "4px",
+                  fontWeight: "bold",
                 }}
+                icon={<img src={addLogoImage} />}
+                onClick={() => setOpenAddRoom(true)}
               >
-                <Typography variant="p">Add Company Logo </Typography>
-                <img src={clarityimageline} />
-                <Typography variant="p" sx={{ fontSize: "10px" }}>
-                  Supports , JPG, JPG2000, PNG Less than 2 MB
-                </Typography>
-                <Typography
-                  variant="p"
-                  sx={{
-                    fontSize: "10px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Drop your images here or <a>Browse</a>
-                </Typography>
-              </Paper>
-            </Upload>
-          </div>
-        </div>
-
-        <div style={{ display: "flex", gap: "3px" }}>
-          <div
-            className={`add-room-tab ${active1 ? "packages-nav-active" : ""}  `}
-            onClick={() => {
-              setActive1(true);
-              setActive2(false);
-              setActive3(false);
-            }}
-          >
-            Define Space{" "}
-          </div>
-          <div
-            className={`add-room-tab ${active2 ? "packages-nav-active" : ""}  `}
-            onClick={() => {
-              setActive1(false);
-              setActive2(true);
-              setActive3(false);
-            }}
-          >
-            Define
-          </div>
-          <div
-            className={`add-room-tab ${active1 ? "packages-nav-active" : ""}  `}
-            onClick={() => {
-              setActive1(false);
-              setActive2(false);
-              setActive3(true);
-            }}
-            className="add-room-tab"
-          >
-            Define
-          </div>
-        </div>
-
-        <div className="tab-div">
-          <p>Describe what kind of space you are offering </p>
-          <Autocomplete
-            multiple
-            id="tags-outlined"
-            options={top100Films}
-            getOptionLabel={(option) => option.title}
-            defaultValue={[top100Films[13]]}
-            filterSelectedOptions
-            style={{ width: "-webkit-fill-available" }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                style={{ width: "-webkit-fill-available" }}
-                label="filterSelectedOptions"
-                placeholder="Favorites"
-              />
-            )}
-          />
-        </div>
-
-        <button className="add-room-btn-room">Add Room</button>
-
+                <Typography style={{ marginTop: "12px" }}>Add Room</Typography>
+              </Button>
+            </div>
+            {roomValues.map((room) => (
+              <AddRoomCard value={room} />
+            ))}
+          </div>)}
         <Stack
           spacing={2}
           direction="row"
