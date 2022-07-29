@@ -8,12 +8,12 @@ const AddRoomCard = ({ value }) => {
       {console.log("value in card ", value)}
       <img
         // src="https://images4.alphacoders.com/378/37864.jpg"
-        src={value.get("file")}
-        alt={value.get("name")}
+        src={value.file? value.file : "https://images4.alphacoders.com/378/37864.jpg"}
+        alt={value.name}
         className="card-room-img"
         srcSet=""
       />{" "}
-      <h1 className="room-name">{value.get("name")}</h1>
+      <h1 className="room-name">{value.name}</h1>
       <p className="room-info">Room 300A, Max. Guest {value.max_guests}</p>
       <div className="card-tags">{/* <CardTags /> */}</div>
     </div>

@@ -233,8 +233,8 @@ export default function Locations() {
                           {company[0]?.address_line1
                             ? company[0]?.address_line1
                             : "" + " " + company[0]?.address_line2
-                            ? company[0]?.address_line2
-                            : ""}
+                              ? company[0]?.address_line2
+                              : ""}
                         </Typography>
                       </Box>
                     </CardContent>
@@ -371,19 +371,19 @@ export default function Locations() {
               <CardMedia
                 component="img"
                 height="150"
-                image={location.image ? location.image : LocationImage}
-                src={location.image ? location.image : LocationImage}
+                image={location.image ? location?.image : LocationImage}
+                src={location.image ? location?.image : LocationImage}
               />
               <CardContent>
                 <h2 variant="h2" style={{ color: "#003399", marginBottom: 0 }}>
-                  <strong>{location.name}</strong>
+                  <strong>{location?.name}</strong>
                 </h2>
                 <Typography variant="body" color="text.secondary">
-                  {location.address_line1} {location.address_line2}{" "}
-                  {location.zip_code.zip_code}
+                  {location?.address_line1} {location?.address_line2}{" "}
+                  {location?.zip_code?.zip_code}
                 </Typography>
                 <Box style={{ marginTop: "10px" }}>
-                  {location.rooms.map((room) => (
+                  {location?.rooms?.map((room) => (
                     <span
                       style={{
                         width: "26px",
@@ -395,7 +395,7 @@ export default function Locations() {
                         borderRadius: "4px",
                       }}
                     >
-                      {room.name}
+                      {room?.name}
                     </span>
                   ))}
                 </Box>

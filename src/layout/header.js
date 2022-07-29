@@ -23,7 +23,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 // import planLogo from "../assets/images/plan.svg";
-import { ReactComponent as BrandIcon } from "./Logo.svg";
+import { ReactComponent as BrandIcon } from "./logo.svg";
 import "../index.css";
 import { Popover } from "antd";
 const Search = styled("div")(({ theme }) => ({

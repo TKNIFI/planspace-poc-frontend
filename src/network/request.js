@@ -125,6 +125,17 @@ export default class Request {
             false
         );
     }
+    
+    static UpdateCompany(body) {
+        return new Request(
+            K.Network.URL.UpdateCompany,
+            K.Network.Method.UPDATE,
+            body,
+            K.Network.Header.Type.Json,
+            {},
+            false
+        );
+    }
 
     static CreateLocation(requestbody) {
         const body = requestbody;
@@ -137,6 +148,7 @@ export default class Request {
             false
         );
     }
+
     static GetLocations() {
         return new Request(
             K.Network.URL.GetLocations,
@@ -170,9 +182,54 @@ export default class Request {
         );
     }
 
-    static UpdateCompany(body) {
+    static GetLocationOptions(group) {
         return new Request(
-            K.Network.URL.UpdateCompany,
+            K.Network.URL.GetLocationOptions + `?group=${group}`,
+            K.Network.Method.GET,
+            null,
+            K.Network.Header.Type.Json,
+            {},
+            false
+        );
+    }
+
+    static CreateRoom(requestbody) {
+        const body = requestbody;
+        return new Request(
+            K.Network.URL.CreateRoom,
+            K.Network.Method.POST,
+            body,
+            K.Network.Header.Type.Json,
+            this.headers,
+            false
+        );
+    }
+    
+    static GetRooms() {
+        return new Request(
+            K.Network.URL.GetRooms,
+            K.Network.Method.GET,
+            null,
+            K.Network.Header.Type.Json,
+            {},
+            false
+        );
+    }
+
+    static DeleteRoom() {
+        return new Request(
+            K.Network.URL.DeleteRoom,
+            K.Network.Method.DELETE,
+            null,
+            K.Network.Header.Type.Json,
+            {},
+            false
+        );
+    }
+
+    static UpdateRoom(body) {
+        return new Request(
+            K.Network.URL.UpdateRoom,
             K.Network.Method.UPDATE,
             body,
             K.Network.Header.Type.Json,

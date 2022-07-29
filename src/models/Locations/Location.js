@@ -1,6 +1,7 @@
 import BaseModel from "../baseModel/baseModel";
 import NetworkCall from "../../network/networkCall";
 import Request from "../../network/request";
+
 export default class Location extends BaseModel {
   // API call using thunk
   static async CreateLocation(Props) {
@@ -18,8 +19,9 @@ export default class Location extends BaseModel {
     return await NetworkCall.fetch(Request.DeleteLocation(id));
   }
 
-  // Selectors
+  static async GetLocationOptions(group) {
+    return await NetworkCall.fetch(Request.GetLocationOptions(group));
+  }
 
-  // Helpers
 }
 Location.modelName = "Location";

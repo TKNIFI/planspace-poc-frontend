@@ -101,7 +101,17 @@ const K = {
             UpdateLocation: "/company/location/",
 
             // delete Location
-            DeleteLocation: "/locations/:id/delete/",
+            DeleteLocation: "/company/location/:id/",
+
+            CreateRoom: "/company/room/",
+
+            GetRooms: "/company/room/",
+
+            DeleteRoom: "/company/room/",
+
+            UpdateRoom: "/company/room/",
+
+            GetLocationOptions: "/company/location/option/"
         },
         Method: {
             GET: "GET",

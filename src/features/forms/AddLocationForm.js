@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Upload, message } from "antd";
 import LoadingButton from "@mui/lab/LoadingButton";
 import {
@@ -33,6 +33,7 @@ import clarityimageline from "../../assets/images/clarity_image-line.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Location from "../../models/Locations/Location";
+import Room from "../../models/Locations/Room";
 import "./AddLocationForm.css";
 // import { makeStyles } from "@material-ui/styles";
 // export const useStyles = makeStyles((theme) => ({
@@ -55,25 +56,19 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const TabDiv = (props) => {
+  const [locationOptions, setLocationOptions] = useState([])
+
+  const getLocationOptions = () => {
+    Location.GetLocationOptions(props.group).then((result) => setLocationOptions(result.data))
+  }
+
+  useEffect(() => {
+    getLocationOptions()
+  }, [])
+
   return (
     <div className={`tab-div ${props.showDropdown ? "tab-div-height" : ""}`}>
       <p>Describe what kind of {props.tabData} you are offering </p>
-      {/* <Autocomplete
-            multiple
-            id="tags-outlined"
-            options={top100Films}
-            getOptionLabel={(option) => option.title}
-            defaultValue={[top100Films[13]]}
-            filterSelectedOptions
-            style={{ width: "-webkit-fill-available" }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                style={{ width: "-webkit-fill-available" }}
-                label="filterSelectedOptions"
-                placeholder="Favorites"
-              /> */}
-
       <div
         style={{
           display: "flex",
@@ -84,10 +79,12 @@ const TabDiv = (props) => {
         <Autocomplete
           multiple
           id="checkboxes-tags-demo"
-          options={top100Films}
+          options={locationOptions ? locationOptions : []}
           disableCloseOnSelect
+          includeInputInList
+          getOptionLabel={(option) => option.name}
           sx={{
-            overflow: "auto",
+            overflow: "visible",
             "&  .MuiOutlinedInput-root": {
               padding: "0px",
             },
@@ -96,14 +93,15 @@ const TabDiv = (props) => {
               padding: "15px !important",
             },
             "& .MuiAutocomplete-root": {
-              overflow: "auto",
+              overflow: "visible",
             },
           }}
           limitTags={2}
+          onChange={(event, values) => props.values(values)}
           fullWidth
           renderTags={(tagValue, getTagProps) => {
             return tagValue.map((option, index) => (
-              <MyChip {...getTagProps({ index })} label={option.title} />
+              <MyChip {...getTagProps({ index })} label={option.name} />
             ));
           }}
           forcePopupIcon={true}
@@ -112,7 +110,6 @@ const TabDiv = (props) => {
           disablePortal={true}
           onOpen={() => props.setShowDropdown(true)}
           freeSolo
-          getOptionLabel={(option) => option.title}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               <Checkbox
@@ -121,7 +118,7 @@ const TabDiv = (props) => {
                 style={{ marginRight: 8 }}
                 checked={selected}
               />
-              {option.title}
+              {option.name}
             </li>
           )}
           style={{}}
@@ -181,22 +178,14 @@ const AddRoomForm = ({ close, RoomValues }) => {
       max_guests: "",
       image: {},
       file: {},
-      spaces: [],
-      amenities: [],
-      ceremony_types: [],
+      options: []
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Room Name is required"),
     }),
     onSubmit: (values) => {
-      let formData = new FormData();
-      formData.append("name", values.name);
-      formData.append("base_price", values.base_price);
-      formData.append("max_guests", values.max_guests);
-      formData.append("image", values.image);
-      formData.append("file", values.file ? values.file : new File([], ""));
       values.image = values.image ? values.image : new File([], "");
-      RoomValues(formData);
+      RoomValues(values);
       close();
     },
   });
@@ -232,7 +221,7 @@ const AddRoomForm = ({ close, RoomValues }) => {
                 onChange={formik.handleChange}
                 error={Boolean(formik.touched.name && formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
-                // autoComplete="current"
+              // autoComplete="current"
               />
               <div
                 style={{
@@ -285,7 +274,7 @@ const AddRoomForm = ({ close, RoomValues }) => {
                   helperText={
                     formik.touched.max_guests && formik.errors.max_guests
                   }
-                  // autoComplete="current"
+                // autoComplete="current"
                 />
               </div>
             </div>
@@ -332,9 +321,8 @@ const AddRoomForm = ({ close, RoomValues }) => {
 
           <div style={{ display: "flex", gap: "3px" }}>
             <div
-              className={`add-room-tab ${
-                active1 ? "packages-nav-active" : ""
-              }  `}
+              className={`add-room-tab ${active1 ? "packages-nav-active" : ""
+                }  `}
               onClick={() => {
                 setActive1(true);
                 setActive2(false);
@@ -344,9 +332,8 @@ const AddRoomForm = ({ close, RoomValues }) => {
               Define Space{" "}
             </div>
             <div
-              className={`add-room-tab ${
-                active2 ? "packages-nav-active" : ""
-              }  `}
+              className={`add-room-tab ${active2 ? "packages-nav-active" : ""
+                }  `}
               onClick={() => {
                 setActive1(false);
                 setActive2(true);
@@ -356,9 +343,8 @@ const AddRoomForm = ({ close, RoomValues }) => {
               Define Amenities
             </div>
             <div
-              className={`add-room-tab ${
-                active3 ? "packages-nav-active" : ""
-              }  `}
+              className={`add-room-tab ${active3 ? "packages-nav-active" : ""
+                }  `}
               onClick={() => {
                 setActive1(false);
                 setActive2(false);
@@ -373,6 +359,8 @@ const AddRoomForm = ({ close, RoomValues }) => {
               setShowDropdown={setShowDropdown}
               showDropdown={showDropdown}
               tabData={"space"}
+              group="space"
+              values={(values) => formik.values.options = values}
             />
           )}
           {active2 && (
@@ -380,6 +368,8 @@ const AddRoomForm = ({ close, RoomValues }) => {
               setShowDropdown={setShowDropdown}
               showDropdown={showDropdown}
               tabData={"amenities"}
+              group="amenity"
+              values={(values) => formik.values.options = values}
             />
           )}
           {active3 && (
@@ -387,6 +377,8 @@ const AddRoomForm = ({ close, RoomValues }) => {
               setShowDropdown={setShowDropdown}
               showDropdown={showDropdown}
               tabData={"cermony type"}
+              group="ceremony_type"
+              values={(values) => formik.values.options = values}
             />
           )}
           <button type="submit" className="add-room-btn-room">
@@ -401,6 +393,7 @@ const AddRoomForm = ({ close, RoomValues }) => {
 const AddLocationForm = ({ company, handleClose, popUp }) => {
   const [openAddRoom, setOpenAddRoom] = useState(false);
   const [copyIsChecked, setCopyIsChecked] = useState();
+  const [locationId, setLocationId] = useState()
   const innerWidth = window.innerWidth;
   const leftInputWidth = innerWidth > 1900 ? "98ch" : "70ch";
   const [file, setFile] = React.useState(null);
@@ -449,7 +442,6 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
       email: "",
       logo: "",
     },
-    validator: () => {},
     onSubmit: (values) => {
       setLoading(true);
       let formData = new FormData();
@@ -461,34 +453,35 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
       formData.append("zip_code", values.zip_code);
       formData.append("phone", values.phone);
       formData.append("email", values.email);
-      let rooms = [];
-      // roomValues.map((room) => {
-      //   let roomData = new FormData()
-      //   roomData.append("name", room.name)
-      //   roomData.append("base_price", room.base_price)
-      //   roomData.append("max_guests", room.max_guests)
-      //   roomData.append("image", room.image)
-      //   rooms.push(roomData)
-      //   console.log("rooms", rooms)
-      // })
-      formData.append("rooms", roomValues);
       if (file) {
         formData.append("image", file ? file : new File([], ""));
       }
       Location.CreateLocation(formData)
         .then((result) => {
-          console.log("result", result);
-          setLoading(false);
-          formik.handleReset();
-          popUp(result.message);
-          handleClose();
-        })
-        .catch((e) => {
-          console.log("E", e.response.data.message);
+          setLocationId(result.data.id)
+          let is_call_finished = false;
+          roomValues.forEach((room) => {
+            is_call_finished = true
+            let roomData = new FormData()
+            roomData.append("name", room.name)
+            roomData.append("base_price", room.base_price)
+            roomData.append("max_guests", room.max_guests)
+            roomData.append("image", room.image)
+            roomData.append("location", result.data.id)
+            Room.CreateRoom(roomData)
+            is_call_finished = true
+          })
+          if (is_call_finished) {
+            setLoading(false);
+            formik.handleReset();
+            popUp("Location successfully added");
+            handleClose();
+          }
+        }).catch((error) => {
+          console.log("Error", error.response.data.message);
           setLoading(false);
           formik.setSubmitting(false);
-        });
-      // sendChildToParent(formValues);
+        })
     },
   });
 
@@ -561,7 +554,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                   onChange={formik.handleChange}
                   error={Boolean(formik.touched.name && formik.errors.name)}
                   helperText={formik.touched.name && formik.errors.name}
-                  // autoComplete="current"
+                // autoComplete="current"
                 />
 
                 <TextField
@@ -578,7 +571,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                     formik.touched.address_line1 && formik.errors.address_line1
                   }
                   onChange={formik.handleChange}
-                  // autoComplete="current"
+                // autoComplete="current"
                 />
 
                 <div style={{ display: "flex" }}>
@@ -595,7 +588,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                       width: "-webkit-fill-available !important",
                       paddingRight: "8px",
                     }}
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />
                   <TextField
                     id="state"
@@ -606,7 +599,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                     error={Boolean(formik.touched.state && formik.errors.state)}
                     helperText={formik.touched.state && formik.errors.state}
                     onChange={formik.handleChange}
-                    // autoComplete="current"
+                  // autoComplete="current"
                   />
                 </div>
               </div>
@@ -663,7 +656,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                   style={{ width: "-webkit-fill-available" }}
                   helperText={formik.touched.zip_code && formik.errors.zip_code}
                   onChange={formik.handleChange}
-                  // autoComplete="current"
+                // autoComplete="current"
                 />
               </div>
 
@@ -677,7 +670,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                   helperText={formik.touched.phone && formik.errors.phone}
                   onChange={formik.handleChange}
                   style={{ margin: "0 8px", width: "-webkit-fill-available" }}
-                  // autoComplete="current"
+                // autoComplete="current"
                 />
               </div>
 
@@ -691,7 +684,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
                   onChange={formik.handleChange}
                   error={Boolean(formik.touched.email && formik.errors.email)}
                   helperText={formik.touched.email && formik.errors.email}
-                  // autoComplete="current"
+                // autoComplete="current"
                 />
               </div>
             </div>
@@ -809,34 +802,37 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
               ))}
             </div>
           )}
-          <Stack
-            spacing={2}
-            direction="row"
-            sx={{
-              mt: 5,
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Button
-              variant="outlined"
-              style={{ textTransform: "capitalize" }}
-              onClick={() => handleClose()}
+          {!openAddRoom && (
+            <Stack
+              spacing={2}
+              direction="row"
+              sx={{
+                mt: 5,
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              cancel
-            </Button>
-            <LoadingButton
-              loading={loading}
-              style={{ textTransform: "capitalize" }}
-              variant="contained"
-              type="submit"
-            >
-              Save changes
-            </LoadingButton>
-          </Stack>
+              <Button
+                variant="outlined"
+                style={{ textTransform: "capitalize" }}
+                onClick={() => handleClose()}
+              >
+                cancel
+              </Button>
+              <LoadingButton
+                loading={loading}
+                style={{ textTransform: "capitalize" }}
+                variant="contained"
+                type="submit"
+              >
+                Save changes
+              </LoadingButton>
+            </Stack>
+          )
+          }
         </form>
       </ThemeProvider>
     </>
