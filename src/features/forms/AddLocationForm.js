@@ -68,10 +68,23 @@ const TabDiv = (props) => {
           id="checkboxes-tags-demo"
           options={top100Films}
           disableCloseOnSelect
+          sx={{
+            overflow: "auto",
+            "&  .MuiOutlinedInput-root": {
+              padding: "0px",
+            },
+
+            "& .MuiAutocomplete-input": {
+              padding: "15px !important",
+            },
+            "& .MuiAutocomplete-root": {
+              overflow: "auto",
+            },
+          }}
           limitTags={2}
           fullWidth
           popupIcon={<SearchIcon />}
-          sx={{ overflow: "auto" }}
+          // sx={{ overflow: "auto" }}
           disablePortal={true}
           freeSolo
           getOptionLabel={(option) => option.title}
