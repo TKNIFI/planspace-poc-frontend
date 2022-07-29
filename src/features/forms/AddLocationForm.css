@@ -1,0 +1,88 @@
+.heading{
+font-weight: 900;
+margin: 26px 0px;
+font-size: 22px;
+font-family: "Fira Sans" !important;
+}
+
+
+.packages-nav-active {
+    background: #CCE5FF !important;
+    box-shadow: inset 0px -3px 0px #003399;
+}
+.add-room-tab{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 0px;
+    gap: 16px;
+    
+    cursor: pointer;
+    width: 163px;
+    height: 52px;
+    
+    /* Tab background color */
+    
+    background: #F7F7F7;
+    /* Tab / inactive-border */
+    
+    box-shadow: inset 0px -3px 0px #CFD4DA;
+    border-radius: 0px;
+}
+
+.add-room-tab:hover{
+    background: #CCE5FF !important;
+    box-shadow: inset 0px -3px 0px #003399;
+}
+
+.tab-div{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 26px 8px;
+    gap: 10px;
+    position: relative;
+    width: auto;
+    height: auto;
+    background: #FFFFFF;
+    border: 1px solid #C5C7D0;
+}
+
+.tab-div-height{
+    height: 395px !important;
+}
+
+.css-eozd4h-MuiAutocomplete-root .MuiOutlinedInput-root{
+    padding: 0px !important;
+}
+
+.css-eozd4h-MuiAutocomplete-root .MuiOutlinedInput-root .MuiAutocomplete-input{
+    padding: 15px !important;
+}
+.add-room-btn-room{ 
+/* Auto layout */
+
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 10px 20px;
+
+width: 722px;
+height: 40px;
+width: -webkit-fill-available;
+color: white;
+
+background: #0073EA;
+
+margin: 15px 0px;
+cursor: pointer;
+border: 0;
+border-radius: 4px;
+}
+
+.rooms{
+    display: flex;
+    flex-wrap: wrap;
+}
