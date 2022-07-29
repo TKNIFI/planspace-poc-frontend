@@ -329,7 +329,10 @@ export default function Locations() {
         <Box
           sx={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", mt: 5 }}
         >
-          <Card sx={{ maxWidth: 345, p: 1, m: 1, height: "295px" }}>
+          <Card
+            className="card-hover"
+            sx={{ maxWidth: 345, p: 1, m: 1, height: "295px" }}
+          >
             <Button
               style={{
                 height: "300px",
@@ -354,13 +357,15 @@ export default function Locations() {
           </Card>
           {locations.map((location) => (
             <Card
+              className="card-hover"
               sx={{
                 maxWidth: 345,
                 p: 1,
                 m: 1,
                 height: "300px",
-                border: "3px solid #66a4e5",
-                borderRadius: "5px",
+                background: "#FFFFFF",
+                border: "1px solid #C5C7D0",
+                borderRadius: "4px",
               }}
             >
               <CardMedia
@@ -379,16 +384,19 @@ export default function Locations() {
                 </Typography>
                 <Box style={{ marginTop: "10px" }}>
                   {location.rooms.map((room) => (
-                    <Button
-                      onClick={() => console.log()}
+                    <span
                       style={{
-                        border: "3px solid #66a4e5",
-                        borderRadius: "5px",
+                        width: "26px",
+                        height: "28px",
+                        padding: "5px 25px",
+                        /* top: 156px; */
+                        background: "rgba(14, 165, 233, 0.1)",
+                        border: "1px solid #0073EA",
+                        borderRadius: "4px",
                       }}
                     >
-                      {" "}
-                      {room.name}{" "}
-                    </Button>
+                      {room.name}
+                    </span>
                   ))}
                 </Box>
               </CardContent>
