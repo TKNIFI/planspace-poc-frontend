@@ -176,15 +176,14 @@ const AddRoomForm = ({ close, RoomValues }) => {
       name: "",
       base_price: "",
       max_guests: "",
-      image: {},
-      file: {},
+      image: new File([], ""),
+      file: new File([], ""),
       options: []
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Room Name is required"),
     }),
     onSubmit: (values) => {
-      values.image = values.image ? values.image : new File([], "");
       RoomValues(values);
       close();
     },
@@ -396,8 +395,8 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
   const [locationId, setLocationId] = useState()
   const innerWidth = window.innerWidth;
   const leftInputWidth = innerWidth > 1900 ? "98ch" : "70ch";
-  const [file, setFile] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [roomValues, setRoomValues] = useState([]);
 
   const dummyRequest = async ({ file, onSuccess }) => {
@@ -442,7 +441,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
       email: "",
       logo: "",
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       setLoading(true);
       let formData = new FormData();
       formData.append("name", values.name);
@@ -456,29 +455,26 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
       if (file) {
         formData.append("image", file ? file : new File([], ""));
       }
-      Location.CreateLocation(formData)
+      await Location.CreateLocation(formData)
         .then((result) => {
           setLocationId(result.data.id)
-          let is_call_finished = false;
-          roomValues.forEach((room) => {
-            is_call_finished = true
-            let roomData = new FormData()
-            roomData.append("name", room.name)
-            roomData.append("base_price", room.base_price)
-            roomData.append("max_guests", room.max_guests)
-            roomData.append("image", room.image)
-            roomData.append("location", result.data.id)
-            Room.CreateRoom(roomData)
-            is_call_finished = true
-          })
-          if (is_call_finished) {
-            setLoading(false);
-            formik.handleReset();
-            popUp("Location successfully added");
-            handleClose();
+          if (roomValues.length > 0) {
+            roomValues.forEach((room) => {
+              let roomData = new FormData()
+              roomData.append("name", room.name)
+              roomData.append("base_price", room.base_price)
+              roomData.append("max_guests", room.max_guests)
+              roomData.append("image", room.image)
+              roomData.append("location", result.data.id)
+              Room.CreateRoom(roomData)
+            })
           }
+          setLoading(false);
+          formik.handleReset();
+          popUp("Location successfully added");
+          handleClose();
         }).catch((error) => {
-          console.log("Error", error.response.data.message);
+          console.log("Error", error);
           setLoading(false);
           formik.setSubmitting(false);
         })
@@ -818,7 +814,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
               <Button
                 variant="outlined"
                 style={{ textTransform: "capitalize" }}
-                onClick={() => handleClose()}
+                onClick={() => handleClose}
               >
                 cancel
               </Button>
