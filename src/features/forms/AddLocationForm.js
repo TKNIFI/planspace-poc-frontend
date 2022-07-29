@@ -32,13 +32,29 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Location from "../../models/Locations/Location";
 import "./AddLocationForm.css";
+// import { makeStyles } from "@material-ui/styles";
+// export const useStyles = makeStyles((theme) => ({
+//   root: {
+//     borderRadius: 0,
+//     color: "blue",
+//     boxSizing: "border-box",
+//     border: "1px solid",
+//     borderColor: "#bddaff",
+//   },
+// }));
+const MyChip = (props) => {
+  // const classes = useStyles();
 
+  return (
+    <Chip style={{ background: "#CCE5FF", borderRadius: "4px" }} {...props} />
+  );
+};
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const TabDiv = (props) => {
   return (
-    <div className="tab-div">
+    <div className={`tab-div ${props.showDropdown ? "tab-div-height" : ""}`}>
       <p>Describe what kind of {props.tabData} you are offering </p>
       {/* <Autocomplete
             multiple
@@ -83,9 +99,16 @@ const TabDiv = (props) => {
           }}
           limitTags={2}
           fullWidth
+          renderTags={(tagValue, getTagProps) => {
+            return tagValue.map((option, index) => (
+              <MyChip {...getTagProps({ index })} label={option.title} />
+            ));
+          }}
+          forcePopupIcon={true}
           popupIcon={<SearchIcon />}
           // sx={{ overflow: "auto" }}
           disablePortal={true}
+          onOpen={() => props.setShowDropdown(true)}
           freeSolo
           getOptionLabel={(option) => option.title}
           renderOption={(props, option, { selected }) => (
@@ -101,7 +124,11 @@ const TabDiv = (props) => {
           )}
           style={{}}
           renderInput={(params) => (
-            <TextField {...params} label="Search and add space(s)" />
+            <TextField
+              onBlur={() => props.setShowDropdown(false)}
+              {...params}
+              label="Search and add space(s)"
+            />
           )}
         />
       </div>
@@ -114,6 +141,7 @@ const AddRoomForm = ({ close, RoomValues }) => {
   const [active1, setActive1] = useState(true);
   const [active2, setActive2] = useState(false);
   const [active3, setActive3] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const dummyRequest = async ({ file, onSuccess }) => {
     setTimeout(() => {
@@ -303,9 +331,27 @@ const AddRoomForm = ({ close, RoomValues }) => {
             Ceremony Type
           </div>
         </div>
-        {active1 && <TabDiv tabData={"space"} />}
-        {active2 && <TabDiv tabData={"amenities"} />}
-        {active3 && <TabDiv tabData={"cermony type"} />}
+        {active1 && (
+          <TabDiv
+            setShowDropdown={setShowDropdown}
+            showDropdown={showDropdown}
+            tabData={"space"}
+          />
+        )}
+        {active2 && (
+          <TabDiv
+            setShowDropdown={setShowDropdown}
+            showDropdown={showDropdown}
+            tabData={"amenities"}
+          />
+        )}
+        {active3 && (
+          <TabDiv
+            setShowDropdown={setShowDropdown}
+            showDropdown={showDropdown}
+            tabData={"cermony type"}
+          />
+        )}
         <button type="submit" className="add-room-btn-room">
           Add Room
         </button>

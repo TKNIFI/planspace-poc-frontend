@@ -45,11 +45,14 @@ font-family: "Fira Sans" !important;
     gap: 10px;
     position: relative;
     width: auto;
-    height: 500px;
+    height: auto;
     background: #FFFFFF;
     border: 1px solid #C5C7D0;
 }
 
+.tab-div-height{
+    height: 395px !important;
+}
 
 .css-eozd4h-MuiAutocomplete-root .MuiOutlinedInput-root{
     padding: 0px !important;
