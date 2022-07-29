@@ -5,7 +5,7 @@ import { Button as Muibtn } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { green } from "@mui/material/colors";
 import CircularProgress from "@mui/material/CircularProgress";
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -27,8 +27,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
     },
     validationSchema: Yup.object({
       // owner: Yup.string().required("owner is required"),
-      name: Yup.string()
-        .required("Name is required"),
+      name: Yup.string().required("Name is required"),
       userId: Yup.string().required("user id is required"),
       username: Yup.string()
         .email("Invalid email")
@@ -54,7 +53,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
           handleClose(false);
           popUp(result.data.message);
           callBack();
-          formik.resetForm()
+          formik.resetForm();
         })
         .catch((error) => {
           let message = error.response.data.message;
@@ -100,7 +99,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 helperText={formik.touched.name && formik.errors.name}
                 onChange={formik.handleChange}
                 autoFocus={true}
-              // autoComplete="current"
+                // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -112,7 +111,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 error={Boolean(formik.touched.userId && formik.errors.userId)}
                 helperText={formik.touched.userId && formik.errors.userId}
                 onChange={formik.handleChange}
-              // autoComplete="current"
+                // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -126,7 +125,7 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                 )}
                 helperText={formik.touched.username && formik.errors.username}
                 onChange={formik.handleChange}
-              // autoComplete="current"
+                // autoComplete="current"
               />
             </Grid>
             <Grid item xs={6}>
@@ -183,8 +182,8 @@ const AddMemberForm = ({ handleClose, callBack, popUp }) => {
                   textTransform: "none",
                 }}
                 onClick={() => {
-                  handleClose(false)
-                  formik.resetForm()
+                  handleClose(false);
+                  formik.resetForm();
                 }}
               >
                 Cancel

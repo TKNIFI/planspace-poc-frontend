@@ -10,8 +10,9 @@ import {
   Alert,
 } from "@mui/material";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+// import "./resettingPassword.css";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-
+import { withStyles } from "@mui/styles";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -48,6 +49,28 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
   const handleMouseDownConfirmPassword = () =>
     setShowConfirmPassword(!showConfirmPassword);
   const history = useHistory();
+
+  const CssTextField = withStyles({
+    root: {
+      "& label.Mui-focused": {
+        color: passwordColors[passwordScore],
+      },
+      "& .MuiInput-underline:after": {
+        borderBottomColor: passwordColors[passwordScore],
+      },
+      "& .MuiOutlinedInput-root": {
+        "& fieldset": {
+          borderColor: passwordColors[passwordScore],
+        },
+        "&:hover fieldset": {
+          borderColor: passwordColors[passwordScore],
+        },
+        "&.Mui-focused fieldset": {
+          borderColor: passwordColors[passwordScore],
+        },
+      },
+    },
+  })(TextField);
 
   const formik = useFormik({
     initialValues: {
@@ -102,7 +125,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
           }}
         >
           <div style={{ position: "relative" }}>
-            <TextField
+            <CssTextField
               id="newpassword"
               label="Enter new password*"
               placeholder="Enter new password"
@@ -141,6 +164,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
             />
             {showNewPassMeter && formik.values.newpassword && (
               <div
+                className="password-meter"
                 style={{
                   maxWidth: "350px",
                   padding: "40px",
@@ -151,6 +175,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                   background: "white",
                 }}
               >
+                <div></div>
                 <strong>Password Strength </strong>
                 <span style={{ color: passwordColors[passwordScore] }}>
                   {passwordEnums[passwordScore]}
@@ -172,10 +197,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                   rules={["minLength", "specialChar", "number", "capital"]}
                   minLength={8}
                   value={formik.values.newpassword}
-                  onChange={(isValid) => {
-                    console.log("isValid", isValid);
-                    formik.setSubmitting(isValid);
-                  }}
+                  onChange={(isValid) => {}}
                   messages={{
                     minLength: "Atleast 8 character(s).",
                     specialChar: "Atleast 1 special character(s)",
@@ -209,6 +231,9 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                     background: "#f5f5f5",
                     border: "1px solid #ccc",
                     color: "#777",
+                    width: "-webkit-fill-available",
+                    marginLeft: "9px",
+                    textTransform: "capitalize",
                   }}
                 >
                   Generate a Strong Password

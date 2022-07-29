@@ -1,7 +1,7 @@
 import React from "react";
 import "./AddRoomCard.css";
 
-const AddRoomCard = ({value}) => {
+const AddRoomCard = ({ value }) => {
   return (
     <div className="card-room">
       {" "}
@@ -15,9 +15,7 @@ const AddRoomCard = ({value}) => {
       />{" "}
       <h1 className="room-name">{value.get("name")}</h1>
       <p className="room-info">Room 300A, Max. Guest {value.max_guests}</p>
-      <div className="card-tags">
-        {/* <CardTags /> */}
-      </div>
+      <div className="card-tags">{/* <CardTags /> */}</div>
     </div>
   );
 };

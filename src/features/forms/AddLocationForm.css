@@ -45,14 +45,19 @@ font-family: "Fira Sans" !important;
     gap: 10px;
     position: relative;
     width: auto;
-    height: 191px;
+    height: 500px;
     background: #FFFFFF;
     border: 1px solid #C5C7D0;
 }
 
 
+.css-eozd4h-MuiAutocomplete-root .MuiOutlinedInput-root{
+    padding: 0px !important;
+}
 
-
+.css-eozd4h-MuiAutocomplete-root .MuiOutlinedInput-root .MuiAutocomplete-input{
+    padding: 15px !important;
+}
 .add-room-btn-room{ 
 /* Auto layout */
 
@@ -69,6 +74,7 @@ color: white;
 background: #0073EA;
 
 margin: 15px 0px;
+cursor: pointer;
 border: 0;
 border-radius: 4px;
 }
