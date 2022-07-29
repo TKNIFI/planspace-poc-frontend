@@ -540,7 +540,7 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
               label="Copy address & contacts from company profile"
             />
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 200px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 265px" }}>
               <div
                 style={{
                   display: "flex",
