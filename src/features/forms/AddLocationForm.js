@@ -539,185 +539,162 @@ const AddLocationForm = ({ company, handleClose, popUp }) => {
               }
               label="Copy address & contacts from company profile"
             />
-            <Grid container spacing={2}>
-              <Grid item xs={8}>
-                <Box
-                  sx={{
-                    "& .MuiTextField-root": {
-                      m: 1,
-                      width: leftInputWidth,
-                      marginTop: 3,
-                    },
-                  }}
-                >
-                  <div>
-                    <TextField
-                      id="name"
-                      name="name"
-                      label="Enter the location name"
-                      placeholder="Enter the location name"
-                      type="text"
-                      required
-                      style={{ width: "-webkit-fill-available" }}
-                      value={formik.values.name}
-                      onChange={formik.handleChange}
-                      error={Boolean(formik.touched.name && formik.errors.name)}
-                      helperText={formik.touched.name && formik.errors.name}
-                      // autoComplete="current"
-                    />
-                  </div>
 
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 200px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-evenly",
+                  paddingRight: "16px",
+                }}
+              >
+                <TextField
+                  id="name"
+                  name="name"
+                  label="Enter the location name"
+                  placeholder="Enter the location name"
+                  type="text"
+                  required
+                  style={{ width: "-webkit-fill-available" }}
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  error={Boolean(formik.touched.name && formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
+                  // autoComplete="current"
+                />
+
+                <TextField
+                  id="address_line1"
+                  name="address_line1"
+                  style={{ width: "-webkit-fill-available", margin: "25px 0" }}
+                  label="Address line"
+                  type="text"
+                  value={formik.values.address_line1}
+                  error={Boolean(
+                    formik.touched.address_line1 && formik.errors.address_line1
+                  )}
+                  helperText={
+                    formik.touched.address_line1 && formik.errors.address_line1
+                  }
+                  onChange={formik.handleChange}
+                  // autoComplete="current"
+                />
+
+                <div style={{ display: "flex" }}>
                   <TextField
-                    id="address_line1"
-                    name="address_line1"
-                    style={{ width: "-webkit-fill-available" }}
-                    label="Address line"
+                    id="city"
+                    label="City*"
                     type="text"
-                    value={formik.values.address_line1}
-                    error={Boolean(
-                      formik.touched.address_line1 &&
-                        formik.errors.address_line1
-                    )}
-                    helperText={
-                      formik.touched.address_line1 &&
-                      formik.errors.address_line1
-                    }
+                    value={formik.values.city}
+                    error={Boolean(formik.touched.city && formik.errors.city)}
+                    helperText={formik.touched.city && formik.errors.city}
+                    onChange={formik.handleChange}
+                    sx={{
+                      marginLeft: "0",
+                      width: "-webkit-fill-available !important",
+                      paddingRight: "8px",
+                    }}
+                    // autoComplete="current"
+                  />
+                  <TextField
+                    id="state"
+                    label="State*"
+                    type="text"
+                    style={{ width: "-webkit-fill-available" }}
+                    value={formik.values.state}
+                    error={Boolean(formik.touched.state && formik.errors.state)}
+                    helperText={formik.touched.state && formik.errors.state}
                     onChange={formik.handleChange}
                     // autoComplete="current"
                   />
+                </div>
+              </div>
 
-                  <div style={{ display: "flex" }}>
-                    <TextField
-                      id="city"
-                      label="City*"
-                      type="text"
-                      value={formik.values.city}
-                      error={Boolean(formik.touched.city && formik.errors.city)}
-                      helperText={formik.touched.city && formik.errors.city}
-                      onChange={formik.handleChange}
-                      sx={{
-                        marginLeft: "20px",
-                        width: "-webkit-fill-available",
-                      }}
-                      // autoComplete="current"
-                    />
-                    <TextField
-                      id="state"
-                      label="State*"
-                      type="text"
-                      style={{ width: "-webkit-fill-available" }}
-                      value={formik.values.state}
-                      error={Boolean(
-                        formik.touched.state && formik.errors.state
-                      )}
-                      helperText={formik.touched.state && formik.errors.state}
-                      onChange={formik.handleChange}
-                      // autoComplete="current"
-                    />
-                  </div>
-                </Box>
-              </Grid>
-              <Grid item xs={4}>
-                <Upload {...props}>
-                  <Paper
-                    elevation={3}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: innerWidth > 1900 ? "250px" : "220px",
-                      width: innerWidth > 1900 ? "300px" : "231px",
-                      mt: innerWidth > 1900 ? "20px" : "27px",
-                      borderRadius: "8px",
-                      cursor: "pointer",
-                      border: "2px dashed #ccc",
-                      boxShadow: "none",
-                    }}
-                  >
-                    <Typography variant="p">Add Package Image </Typography>
-                    <img src={clarityimageline} />
-                    <Typography variant="p" sx={{ fontSize: "10px" }}>
-                      Supports , JPG, JPG2000, PNG Less than 2 MB
-                    </Typography>
-                    <Typography
-                      variant="p"
-                      sx={{
-                        fontSize: "10px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Drop your images here or <a>Browse</a>
-                    </Typography>
-                  </Paper>
-                </Upload>
-              </Grid>
-              <br />
-              <Grid item xs={12}>
-                <Box
+              <Upload {...props}>
+                <Paper
+                  elevation={3}
                   sx={{
-                    "& .MuiTextField-root": {
-                      width: innerWidth > 1900 ? "45ch" : "32ch",
-                    },
+                    display: "flex",
+                    flexDirection: "column",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: innerWidth > 1900 ? "250px" : "220px",
+                    width: "-webkit-fill-available",
+
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    border: "2px dashed #ccc",
+                    boxShadow: "none",
                   }}
                 >
-                  <Stack
-                    spacing={7}
-                    direction="row"
+                  <Typography variant="p">Add Package Image </Typography>
+                  <img src={clarityimageline} />
+                  <Typography variant="p" sx={{ fontSize: "10px" }}>
+                    Supports , JPG, JPG2000, PNG Less than 2 MB
+                  </Typography>
+                  <Typography
+                    variant="p"
                     sx={{
-                      mt: 2,
-                      display: "flex",
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      justifyContent: "space-between",
+                      fontSize: "10px",
+                      fontWeight: "bold",
                     }}
                   >
-                    <TextField
-                      id="zip_code"
-                      label="Zip code*"
-                      type="number"
-                      value={formik.values.zip_code}
-                      error={Boolean(
-                        formik.touched.zip_code && formik.errors.zip_code
-                      )}
-                      helperText={
-                        formik.touched.zip_code && formik.errors.zip_code
-                      }
-                      onChange={formik.handleChange}
-                      // autoComplete="current"
-                    />
-                    <TextField
-                      id="phone"
-                      label="Enter phone number"
-                      type="tel"
-                      value={formik.values.phone}
-                      error={Boolean(
-                        formik.touched.phone && formik.errors.phone
-                      )}
-                      helperText={formik.touched.phone && formik.errors.phone}
-                      onChange={formik.handleChange}
-                      style={{ marginLeft: 0 }}
-                      // autoComplete="current"
-                    />
-                    <TextField
-                      id="email"
-                      label="Enter email address"
-                      type="email"
-                      style={{ marginLeft: 0 }}
-                      value={formik.values.email}
-                      onChange={formik.handleChange}
-                      error={Boolean(
-                        formik.touched.email && formik.errors.email
-                      )}
-                      helperText={formik.touched.email && formik.errors.email}
-                      // autoComplete="current"
-                    />
-                  </Stack>
-                </Box>
-              </Grid>
-            </Grid>
+                    Drop your images here or <a>Browse</a>
+                  </Typography>
+                </Paper>
+              </Upload>
+            </div>
+            <br />
+
+            <div
+              style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}
+            >
+              <div>
+                <TextField
+                  id="zip_code"
+                  label="Zip code*"
+                  type="number"
+                  value={formik.values.zip_code}
+                  error={Boolean(
+                    formik.touched.zip_code && formik.errors.zip_code
+                  )}
+                  style={{ width: "-webkit-fill-available" }}
+                  helperText={formik.touched.zip_code && formik.errors.zip_code}
+                  onChange={formik.handleChange}
+                  // autoComplete="current"
+                />
+              </div>
+
+              <div>
+                <TextField
+                  id="phone"
+                  label="Enter phone number"
+                  type="tel"
+                  value={formik.values.phone}
+                  error={Boolean(formik.touched.phone && formik.errors.phone)}
+                  helperText={formik.touched.phone && formik.errors.phone}
+                  onChange={formik.handleChange}
+                  style={{ margin: "0 8px", width: "-webkit-fill-available" }}
+                  // autoComplete="current"
+                />
+              </div>
+
+              <div>
+                <TextField
+                  id="email"
+                  label="Enter email address"
+                  type="email"
+                  style={{ marginLeft: 0, width: "-webkit-fill-available" }}
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  error={Boolean(formik.touched.email && formik.errors.email)}
+                  helperText={formik.touched.email && formik.errors.email}
+                  // autoComplete="current"
+                />
+              </div>
+            </div>
           </Box>
           {/* <h2 style={{ marginTop: "10px" }}>Add Room(s)</h2>
         <Box
