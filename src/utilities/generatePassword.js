@@ -5,16 +5,13 @@ String.prototype.pick = function(min, max) {
   if (typeof max === 'undefined') {
       n = min;
   } else {
-    /* this line was creating random number which then add to min and creates a unique 'n'
-      as requirement is 12 characters password every time. So, i commented below logic.
-      */
-     // n = min + Math.floor(Math.random() * (max - min + 1));
-     n = min + max;
+      n = min + Math.floor(Math.random() * (max - min + 1));
   }
 
   for (var i = 0; i < n; i++) {
       chars += this.charAt(Math.floor(Math.random() * this.length));
   }
+
   return chars;
 };
 
@@ -22,7 +19,6 @@ String.prototype.pick = function(min, max) {
 // Credit to @Christoph: http://stackoverflow.com/a/962890/464744
 // eslint-disable-next-line no-extend-native
 String.prototype.shuffle = function() {
-  debugger;
   var array = this.split('');
   var tmp, current, top = array.length;
 
@@ -47,7 +43,6 @@ var password = '';
 password += specials.pick(1);
 password += lowercase.pick(1);
 password += uppercase.pick(1);
-password += numbers.pick(1);
-password += all.pick(3, 5);
+password += all.pick(3, 10);
 
 export {password as generatedPassword}

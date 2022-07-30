@@ -22,7 +22,7 @@ const SliderContent = () => {
     return (
         <>
             <Box className="container-for-swiper-slide">
-                <img src={sliderImage} height="880px" width="100%" />
+                <img src={sliderImage} height="740px" width="100%" />
                 <Box className="centered-for-content-swiper-slide">
                     <Typography
                         variant="h6"
