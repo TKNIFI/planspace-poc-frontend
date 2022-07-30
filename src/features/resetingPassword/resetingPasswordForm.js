@@ -33,7 +33,7 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
   const [loading, setLoading] = useState(false);
   const [showNewPassMeter, setShowNewPassMeter] = useState(false);
   const [generatedPass, setGeneratedPass] = useState("");
-  const passwordEnums = ["TOO SHORT", "WEEK", "OK", "GOOD", "STRONG"];
+  const passwordEnums = ["TOO SHORT", "WEAK", "OK", "GOOD", "STRONG"];
   const passwordColors = [
     "#dddddd",
     "#ef4836",
@@ -187,23 +187,22 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                   password={formik.values.newpassword}
                   onChangeScore={(score, feedback) => setPasswordScore(score)}
                 />
-                {/* "specialChar", <div style={{display: 'flex', alignItems:'center', marginTop:"10px"}}><span>Atleast 8 character{"(s)"}</span></div>
+                {/* <div style={{display: 'flex', alignItems:'center', marginTop:"10px"}}><span>Atleast 8 character{"(s)"}</span></div>
                         <div style={{display: 'flex', alignItems:'center',marginTop:"10px"}}><span>Atleast 1 numeric character{"(s)"}</span></div>
                         <div style={{display: 'flex', alignItems:'center',marginTop:"10px"}}><span>Atleast 1 upper case character{"(s)"}</span></div>
                         <div style={{display: 'flex', alignItems:'center',marginTop:"10px"}}><span>Not used in past 4 passwords{"(s)"}</span></div> */}
                 <PasswordChecklist
-                  style={{ marginTop: "20px"}}
+                  style={{ marginTop: "20px" }}
                   rtl={true}
-                  rules={["minLength",  "number", "capital","match"]}
+                  rules={["minLength", "specialChar", "number", "capital"]}
                   minLength={8}
                   value={formik.values.newpassword}
                   onChange={(isValid) => {}}
                   messages={{
                     minLength: "Atleast 8 character(s).",
-                    // specialChar: "Atleast 1 special character(s)",
+                    specialChar: "Atleast 1 special character(s)",
                     number: "Atleast 1 numeric character(s)",
                     capital: "Atleast 1 upper case character(s)",
-                    match:'Not used in past 4 passwords'
                   }}
                   iconComponents={{
                     ValidIcon: (
@@ -229,14 +228,12 @@ const ResetingPasswordForm = ({ onSubmiting, uid, token }) => {
                   }}
                   sx={{
                     marginTop: "10px",
-                    background: "#fff",
-                    border: "1px solid #808080",
+                    background: "#f5f5f5",
+                    border: "1px solid #ccc",
                     color: "#777",
                     width: "-webkit-fill-available",
                     marginLeft: "9px",
                     textTransform: "capitalize",
-                    padding:'8px',
-                    fontSize:'15px'
                   }}
                 >
                   Generate a Strong Password
