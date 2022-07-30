@@ -105,9 +105,29 @@ legend.css-1ftyaf0 span {
 // }
 
 .passwordMeter {
+  
   div {
     div {
       height: 4px !important;
     }
   }
+}
+.password-meter{
+  border: 1px solid #c5baba87;
+}
+.passwordMeter::after {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid #c5baba87;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  border-left: 2px solid #c5baba87;
+  top: 100%;
+  left: 50%;
+  margin-left: 0px;
+  content: "";
+  transform: rotate(45deg);
+  margin-top: -78px;
+  background: #fff;
 }
