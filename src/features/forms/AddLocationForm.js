@@ -14,8 +14,12 @@ import {
 } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
+import { ReactComponent as spaceIcon } from "./space.svg";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
+import space from "./space.svg";
+import Amenitities from "./Amentities.svg";
+import cermony from "./cermony.svg";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import addLogoImage from "../../assets/images/iconadd.png";
 import SearchIcon from "@mui/icons-material/Search";
@@ -341,6 +345,7 @@ const AddRoomForm = ({ close, RoomValues }) => {
                 setActive3(false);
               }}
             >
+              <img src={space} alt="logo" />
               Define Space{" "}
             </div>
             <div
@@ -353,6 +358,7 @@ const AddRoomForm = ({ close, RoomValues }) => {
                 setActive3(false);
               }}
             >
+              <img src={Amenitities} alt="logo" />
               Define Amenities
             </div>
             <div
@@ -365,6 +371,7 @@ const AddRoomForm = ({ close, RoomValues }) => {
                 setActive3(true);
               }}
             >
+              <img src={cermony} alt="logo" />
               Ceremony Type
             </div>
           </div>
