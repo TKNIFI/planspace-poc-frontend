@@ -104,6 +104,7 @@ export default function Locations() {
   const [open, setOpen] = useState(false);
   const [locations, setLocations] = useState([]);
   const [company, setCompany] = useState([]);
+  const [editLocVal, setEditLocVal] = useState({});
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [loading, setLoading] = React.useState(false);
 
@@ -358,6 +359,10 @@ export default function Locations() {
           {locations.map((location) => (
             <Card
               className="card-hover"
+              onClick={() => {
+                setOpenEditForm(true);
+                setEditLocVal(location);
+              }}
               sx={{
                 maxWidth: 345,
                 p: 1,
@@ -435,32 +440,51 @@ export default function Locations() {
           popUp={(message) => toast.success(message)}
         />
       </Drawer>
-      <Drawer
-        title="Update Location"
-        width={innerWidth > 1900 ? 1250 : 900}
-        onClose={handleClose}
-        visible={openEditForm}
-        closable={false}
-        bodyStyle={{
-          paddingBottom: 80,
-        }}
-        extra={
-          <IconButton
-            edge="start"
-            sx={{ color: "white" }}
-            onClick={() => {
-              setOpenEditForm(false);
-              // setEditRecord(null);
-            }}
-            aria-label="close"
-          >
-            <CloseCircleOutlined />
-          </IconButton>
-        }
-      >
-        <EditLocationForm editRecordValues={editRecordValues} />
-      </Drawer>
 
+      {openEditForm ? (
+        <Drawer
+          title="Update Location"
+          width={innerWidth > 1900 ? 1250 : 900}
+          onClose={handleClose}
+          visible={openEditForm}
+          closable={false}
+          bodyStyle={{
+            paddingBottom: 80,
+          }}
+          extra={
+            <IconButton
+              edge="start"
+              sx={{ color: "white" }}
+              onClick={() => {
+                setOpenEditForm(false);
+                setEditLocVal({
+                  name: "",
+                  address_line1: "",
+                  address_line2: "",
+                  city: "",
+                  state: "",
+                  zip_code: "",
+                  phone: "",
+                  email: "",
+                  logo: "",
+                });
+                // setEditRecord(null);
+              }}
+              aria-label="close"
+            >
+              <CloseCircleOutlined />
+            </IconButton>
+          }
+        >
+          <EditLocationForm
+            editLocVal={editLocVal}
+            setEditLocVal={setEditLocVal}
+            editRecordValues={editRecordValues}
+          />
+        </Drawer>
+      ) : (
+        ""
+      )}
       <Drawer
         className="ant-drawer-title"
         title={company[0]?.name}
